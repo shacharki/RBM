@@ -1,13 +1,117 @@
 body {
+  height: 100%;
   margin: 0;
   font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
-    'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
-    sans-serif;
+  'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
+  sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+
+  background-image: url(layout/images/Shamir.jpg);
+  min-height: 100%;
+  min-width: 100%;
+  background-size: cover;
+  background-repeat: no-repeat;
+  background-attachment: fixed;
 }
 
 code {
   font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
-    monospace;
+  monospace;
 }
+
+.sec-design{
+  margin: auto;
+  margin-top: 15%;
+  margin-bottom: 20%;
+  align-items: center;
+  background-color: rgba(255, 255, 255, 0.8);
+  border-radius: 15px;
+  padding: 5%;
+  width: 40%;
+}
+
+.feedback-design{
+  margin: auto;
+  margin-top: 20%;
+  margin-bottom: 20%;
+  align-items: center;
+  background-color: rgba(255, 255, 255, 0.8);
+  border-radius: 15px;
+  padding: 5%;
+  width: 60%;
+
+}
+
+hr {
+  background-color: #37300f;
+  height: 5px;
+}
+
+#studentList{
+  background-color: azure;
+  text-align: right;
+  display:inline;
+  float: right;
+  width: 90%;
+  padding: 5%;
+}
+
+button{
+  width: 100%;
+  background-color: #3399ff;
+  color: white;
+  padding: 14px 20px;
+  margin: 8px 0;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+}
+button:hover {
+  background-color: #0088cc;
+}
+#logout{
+  background-color:#ff4d4d;
+}
+#logout:hover{
+  background-color:#ff1a1a;
+}
+
+
+label{
+  display: block;
+  width: 100%;
+  text-align: right;
+}
+
+.radio input, input[type=checkbox]{
+  text-align: right;
+  display:inline;
+  float: right;
+}
+
+.checkboxes{
+  border-radius: 6px;
+  background-color: #ecf0f1;
+  padding: 20px;
+  height: 150px;
+  overflow: auto;
+}
+
+
+#fr{
+  margin: 0;
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  width: 20%;
+  height: 20%;
+  text-align: center;
+  justify-content: center;
+  transform: translate(-50%, -50%);
+  border: 3px solid green;
+  padding: 10px;
+  background-color: azure;
+  z-index: 1000;
+}
+
