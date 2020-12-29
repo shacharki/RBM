@@ -44,7 +44,7 @@ function App2() {
     }
     function login()
     {
-        auth.signInWithEmailAndPassword("shachar0528@gmail.com", "0528312sh").then(res=>{
+        auth.signInWithEmailAndPassword("s@gmail.com", "123123").then(res=>{
             if(res)
             {
                 console.log("sucsses")

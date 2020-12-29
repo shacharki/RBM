@@ -13,6 +13,8 @@ export function BackPage(prop,data)
         pathname: `${prop.history.goBack()}`,
         data: data,
     })
+    console.log(data)
+
 }
 export function NextPage(prop,path,data)
 {
@@ -20,7 +22,7 @@ export function NextPage(prop,path,data)
         pathname: `${prop.location.pathname}/${path}`,
         data: data,
     })
-    // console.log(data)
+    console.log(data)
 }
 
 
@@ -99,9 +101,18 @@ class UserPage extends React.Component {
     }
 
     render() {
-        // console.log(this.state.user)
+        console.log("this:"+this.state)
+        console.log("this.state.loadPage:"+this.state.loadPage)
+        console.log("this.state.name:"+this.state.name)
+        console.log("this.state.data:"+this.state.data)
+        console.log("this.state.email:"+this.state.email)
+        console.log("this.state.user.data:"+this.state.user.data)
+
+        console.log("user:"+this.state.user)
         // if(this.state.user.email)
-        //     console.log("this is email : "+this.state.user.email)
+            console.log("this is email : "+this.state.user.email)
+        console.log("hhhhhhhhhhhh: ")
+
         if (this.state.loadPage) {
             return (
                 <div className="sec-design">
@@ -118,12 +129,12 @@ class UserPage extends React.Component {
                             </Button>
 
 
-                            <button onClick={() => this.loadUser("Student")}>Enter Student</button>
-                            <button onClick={() => this.loadUser("Guide")}>Enter Guide</button>
+                            {/*<button onClick={() => this.loadUser("Student")}>Enter Student</button>*/}
+                            <button onClick={() => this.loadUser("Researcher")}>Enter Researcher</button>
                             <button onClick={() => this.loadUser("Manager")}>Enter Manager</button>
                             <button onClick={() => this.loadTempPage("TempStudent")}>Enter TempStudent</button>
-                            <button onClick={() => this.loadTempPage("TempGuide")}>Enter TempGuide</button>
-                            <button onClick={() => this.loadTempPage("TempManager")}>Enter TempManager</button>
+                            {/*<button onClick={() => this.loadTempPage("TempGuide")}>Enter TempGuide</button>*/}
+                            {/*<button onClick={() => this.loadTempPage("TempManager")}>Enter TempManager</button>*/}
 
                             <button onClick={() => this.loadPage(true)}>loading page</button>
                             <button onClick={() => this.loadPage(false)}>unloading page</button>

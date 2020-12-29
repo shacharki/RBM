@@ -1,0 +1,19 @@
+.rows .row {
+    display: inline-block;
+}
+
+input[type=text], input[type=date] {
+    color: grey;
+    width: 100%;
+    padding: 12px 20px;
+    margin: 8px 0;
+    border-radius: 4px;
+    box-sizing: border-box;
+    text-align: right;
+    appearance: none;
+    font-family: "Helvetica", arial, sans-serif;
+    font-size: 18px;
+    border:1px solid #ecf0f1;
+    background:#ecf0f1;
+    visibility: visible ;
+}
