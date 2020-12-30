@@ -55,9 +55,20 @@ class SignUp extends React.Component {
                 return
             }
             await this.setState({approve:false})
+            console.log("this.state.email"+this.state.email)
+            console.log("this.state.phone"+this.state.phone)
             var newUser = await CreateNewUser(this.state.email,this.state.phone)
+            console.log("this.state.email"+this.state.email)
+
             this.setState({uid:newUser.user.uid})
+            console.log("newUser.user.uid"+newUser.user.uid)
+            console.log("this.state"+this.state)
+
             await RegisterUser(newUser.user,this.state)
+            console.log("newUser.user.uid"+newUser.user.uid)
+
+            console.log("this.state"+this.state)
+
             // await DeleteUser(email)
             alert("ההרשמה בוצעה בהצלחה נא להמתין לאישור מנהל")
             this.props.history.push({
@@ -183,7 +194,7 @@ class SignUp extends React.Component {
                             <div>
 
                                 <label>
-                                    <input type="radio" value="guides" checked={this.state.type==='guides'} onChange={e =>
+                                    <input type="radio" value="managers" checked={this.state.type==='managers'} onChange={e =>
                                         this.setState({type:e.target.value})}/>
                                     מנהל
                                 </label>

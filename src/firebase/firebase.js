@@ -3,6 +3,7 @@ import 'firebase/auth'
 import 'firebase/firebase-firestore'
 // import * as admin from 'firebase-admin';
 
+
 const firebaseConfig = {
     apiKey: "AIzaSyAE7I2YNI5d5VtnQt_aGEpLuYGtkapu8Oo",
     authDomain: "rbms-b759b.firebaseapp.com",
@@ -24,6 +25,8 @@ export const auth = firebase.auth();
 export const db = firebase.firestore();
 // export  const admin = admin.auth();
 export default firebase;
+
+
 //
 // console.log(admin);
 //
@@ -52,13 +55,21 @@ export default firebase;
 // })
 
 export async function CreateNewUser(email,phone) {
-    var res = await auth.createUserWithEmailAndPassword(email,phone)
+    console.log("email"+email)
+
+    var res = auth.createUserWithEmailAndPassword(email,phone)
+    console.log("res"+res)
+
     return res;
 }
 
 export async function RegisterUser(uid,user) {
+
+
     uid.updateProfile({displayName:user.fname+" "+ user.lname})
-    await db.collection("waitforapproval").doc(uid.uid).set(user);
+    db.collection("waitforapproval").doc(uid.uid).set(user);
+    console.log("uid"+uid)
+    console.log("user"+user)
     return;
 }
 export async function DeleteUser(uid) {
@@ -74,16 +85,16 @@ export async function CreateUser(user) {
     // res.user.updateProfile({displayName:user.fname+" "+ user.lname})
 
     if(user.type==="testers") {
-        await db.collection("students").doc(user.uid).set(user)
-        await db.collection("guides").doc(user.uid).set(user)
+        // await db.collection("students").doc(user.uid).set(user)
+        await db.collection("researcher").doc(user.uid).set(user)
         await db.collection("managers").doc(user.uid).set(user)
     }
     await  db.collection(user.type).doc(user.uid).set(user)
-    var team=await db.collection('Teams').doc(user.team.id);
-    team.set({
-        name: user.teamName,
-        guide: db.doc('guides/'+user.uid)
-    })
+    // var team=await db.collection('Teams').doc(user.team.id);
+    // team.set({
+    //     name: user.teamName,
+    //     guide: db.doc('guides/'+user.uid)
+    // })
 
     await db.collection("waitforapproval").doc(user.email).delete();
     await DeleteUser(user.uid)
@@ -182,11 +193,15 @@ export async function getStudentForms(uid) {
 
 export async function getUser(user)
 {
+    console.log("userjs"+user)
+
     // var testers = await db.collection('testers').doc(user.uid).get()
     var researcher = await db.collection('researcher').doc(user.uid).get()
     var managers = await db.collection('managers').doc(user.uid).get()
-    // var wait = await db.collection('waitforapproval').doc(user.uid).get()
+    var wait = await db.collection('waitforapproval').doc(user.uid).get()
 
+    console.log(user.data())
+    console.log("mangers"+managers.data())
     // console.log(user)
     // console.log(testers.data())
     // if(wait.exists)
@@ -194,9 +209,9 @@ export async function getUser(user)
     // else if(testers.exists)
     //     return 'Tester'
     if(managers.exists)
-        return 'Manager'
+        return 'Managers'
     else if(researcher.exists)
-        return 'researcher'
+        return 'Researcher'
     // else if(students.exists)
     //     return 'Student'
     else
