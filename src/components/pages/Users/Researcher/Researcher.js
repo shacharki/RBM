@@ -122,11 +122,13 @@ class Researcher extends React.Component {
                             </div>
                         </div>
                     }
-                    <h2> שלום {this.state.user.displayName} </h2>
+
+                    <h2> שלום {auth.currentUser.email} </h2>
+                    {/*<h2> שלום {this.state.user.displayName} </h2>*/}
                     <form id="instructor_menu" className="form-design" name="student_form" method="POST">
                         <button id="feedback-button" className="btn btn-info" onClick={() => {
                             NextPage(this.props, "Feedback", this.state.user)
-                        }}>מילוי משוב<span
+                        }}>מילוי בקשה לרכישה<span
                             className="fa fa-arrow-right"></span></button>
                         <button id="report-button" className="btn btn-info" onClick={() => {
                             NextPage(this.props, "Profile", this.state.user)

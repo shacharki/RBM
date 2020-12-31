@@ -9,20 +9,24 @@ import ClipLoader from "react-spinners/ClipLoader";
 
 export function BackPage(prop,data)
 {
+    console.log("BackPage_data: "+data)
+
     prop.history.push({
         pathname: `${prop.history.goBack()}`,
         data: data,
     })
-    console.log(data)
 
 }
 export function NextPage(prop,path,data)
 {
+    console.log("NextPage_data"+data)
+    console.log("NextPage_path"+path)
+    console.log("NextPage_prop"+prop)
+
     prop.history.push({
         pathname: `${prop.location.pathname}/${path}`,
         data: data,
     })
-    console.log(data)
 }
 
 
@@ -48,19 +52,24 @@ class UserPage extends React.Component {
 
     async componentDidMount() {
         auth.onAuthStateChanged(async user=>{
+
             if(user)
             {
 
                 // console.log(user)
-                var type = await getUser(user)
+                var type =await getUser(user)
                 await this.setState({
                     isLoad: true,
                     user: user,
                     type: type
                 })
+                console.log("type"+type)
+
+
                 if(type!=='Tester')
                 {
-                    this.loadUser(type)
+
+                        this.loadUser(type)
                 }
                 // if(href[4] === user.uid && (href[3] === type||type==='Tester'))
                 // {
@@ -101,17 +110,17 @@ class UserPage extends React.Component {
     }
 
     render() {
-        console.log("this:"+this.state)
-        console.log("this.state.loadPage:"+this.state.loadPage)
-        console.log("this.state.name:"+this.state.name)
-        console.log("this.state.data:"+this.state.data)
-        console.log("this.state.email:"+this.state.email)
-        console.log("this.state.user.data:"+this.state.user.data)
-
-        console.log("user:"+this.state.user)
-        // if(this.state.user.email)
-            console.log("this is email : "+this.state.user.email)
-        console.log("hhhhhhhhhhhh: ")
+        // console.log("this:"+this.state)
+        // console.log("this.state.loadPage:"+this.state.loadPage)
+        // console.log("this.state.name:"+this.state.name)
+        // console.log("this.state.data:"+this.state.data)
+        // console.log("this.state.email:"+this.state.email)
+        // console.log("this.state.user.data:"+this.state.user.data)
+        //
+        // console.log("user:"+this.state.user)
+        // // if(this.state.user.email)
+        //     console.log("this is email : "+this.state.user.email)
+        // console.log("hhhhhhhhhhhh: ")
 
         if (this.state.loadPage) {
             return (
@@ -180,6 +189,7 @@ class UserPage extends React.Component {
     loadUser(page)
     {
         this.props.history.push({
+
             pathname: `/${page}/${this.state.user.uid}`,
             // pathname: `/Temp${page}`,
             data: this.state.user // your data array of objects

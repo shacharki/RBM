@@ -67,7 +67,7 @@ export async function RegisterUser(uid,user) {
 
 
     uid.updateProfile({displayName:user.fname+" "+ user.lname})
-    db.collection("waitforapproval").doc(uid.uid).set(user);
+    await db.collection("waitforapproval").doc(uid.uid).set(user);
     console.log("uid"+uid)
     console.log("user"+user)
     return;
@@ -193,22 +193,17 @@ export async function getStudentForms(uid) {
 
 export async function getUser(user)
 {
-    console.log("userjs"+user)
-
     // var testers = await db.collection('testers').doc(user.uid).get()
     var researcher = await db.collection('researcher').doc(user.uid).get()
     var managers = await db.collection('managers').doc(user.uid).get()
     var wait = await db.collection('waitforapproval').doc(user.uid).get()
 
-    console.log(user.data())
-    console.log("mangers"+managers.data())
-    // console.log(user)
     // console.log(testers.data())
-    // if(wait.exists)
-    //     return 'wait'
+    if(wait.exists)
+        return 'wait'
     // else if(testers.exists)
     //     return 'Tester'
-    if(managers.exists)
+    else if(managers.exists)
         return 'Managers'
     else if(researcher.exists)
         return 'Researcher'
