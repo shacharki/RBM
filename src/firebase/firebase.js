@@ -87,7 +87,7 @@ export async function CreateUser(user) {
     if(user.type==="testers") {
         // await db.collection("students").doc(user.uid).set(user)
         await db.collection("researcher").doc(user.uid).set(user)
-        await db.collection("managers").doc(user.uid).set(user)
+        await db.collection("manager").doc(user.uid).set(user)
     }
     await  db.collection(user.type).doc(user.uid).set(user)
     // var team=await db.collection('Teams').doc(user.team.id);
@@ -124,16 +124,16 @@ export async function signOut() {
     return
 }
 
-export async function getGuide(uid) {
-    var guide = await db.collection("guides").doc(uid);
+export async function getResearcher(uid) {
+    var researcher = await db.collection("researcher").doc(uid);
     // console.log(guide);
-    return guide;
+    return researcher;
 }
 
-export async function getGuideData(uid) {
-    var guideData = await (await db.collection("guides").doc(uid).get()).data();
+export async function getResearcherData(uid) {
+    var researcherData = await (await db.collection("researcher").doc(uid).get()).data();
     // console.log(guideData);
-    return guideData;
+    return researcherData;
 }
 
 export async function getGuideFormByDate(uid, date) {
@@ -195,7 +195,7 @@ export async function getUser(user)
 {
     // var testers = await db.collection('testers').doc(user.uid).get()
     var researcher = await db.collection('researcher').doc(user.uid).get()
-    var managers = await db.collection('managers').doc(user.uid).get()
+    var manager = await db.collection('managers').doc(user.uid).get()
     var wait = await db.collection('waitforapproval').doc(user.uid).get()
 
     // console.log(testers.data())
@@ -203,8 +203,8 @@ export async function getUser(user)
         return 'wait'
     // else if(testers.exists)
     //     return 'Tester'
-    else if(managers.exists)
-        return 'Managers'
+    else if(manager.exists)
+        return 'Manager'
     else if(researcher.exists)
         return 'Researcher'
     // else if(students.exists)

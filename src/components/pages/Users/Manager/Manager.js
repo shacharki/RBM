@@ -2,6 +2,7 @@ import React from "react";
 import {auth, getUser, signOut} from '../../../../firebase/firebase'
 import {NextPage} from "../UserPage";
 import ClipLoader from "react-spinners/ClipLoader";
+import './Manager.css'
 
 class Manager extends React.Component {
     constructor(props) {
@@ -25,10 +26,10 @@ class Manager extends React.Component {
 
     async componentDidMount() {
         var href =  window.location.href.split("/",5)
-        console.log("href: "+href)
         auth.onAuthStateChanged(async user=>{
             if(user)
             {
+
 
                 var type = await getUser(user)
                 if(type === "wait")
@@ -38,9 +39,10 @@ class Manager extends React.Component {
                     return
                 }
 
+
                 if(href[4] === user.uid && (href[3] === type||type==='Tester'))
                 {
-                    this.setState({
+                    await this.setState({
                         isLoad: true,
                         user: user,
                         type: type
@@ -108,38 +110,47 @@ class Manager extends React.Component {
                             </div>
                         </div>
                     }
-                    <div> שלום {this.state.user.displayName}</div>
+                    <h2>  שלום למנהל {this.state.user.displayName}</h2>
                     <button id="report-button" className="btn btn-info" onClick={() => {
                         this.ChangePage("UserApproval")
                         return
                     }}>אישור משתמשים<span
                         className="fa fa-arrow-right"></span></button>
-                    <button id="report-button" className="btn btn-info" onClick={() => {
-                        // this.ChangePage("Updates")
-                        return
-                    }}>עדכון ופעולות<span
-                        className="fa fa-arrow-right"></span></button>
 
                     <button id="report-button" className="btn btn-info" onClick={() => {
+                         //this.ChangePage("Updates")
+                        return
+                    }}>אישור דוחות ובקשות<span
+                        className="fa fa-arrow-right"></span></button>
+
+                    <button id="rep-button" className="btn btn-info" onClick={() => {
                         // this.ChangePage("Reports")
                         return
-                    }}>צפייה בדו"ח נוכחות<span
+                    }}>תקציבי מחקר<span
                         className="fa fa-arrow-right"></span></button>
-                    <button id="feedback-button" className="btn btn-info" onClick={() => {
+
+                    <button id="feedba-button" className="btn btn-info" onClick={() => {
                         // this.ChangePage("Feedbacks/Student")
                         return
-                    }}>צפייה במשובי חניכים<span
+                    }}>דיווח הוצאות<span
                         className="fa fa-arrow-right"></span></button>
-                    <button id="feedback-button" className="btn btn-info" onClick={() => {
+
+                    <button id="feedbac-button" className="btn btn-info" onClick={() => {
                         // this.ChangePage("Feedbacks/Guide")
                         return
-                    }}>צפייה במשובי
-                        מדריכים<span
+                    }}>דוחות כספיים<span
                             className="fa fa-arrow-right"></span></button>
+
                     <button id="report-button" className="btn btn-info" onClick={() => {
+                        NextPage(this.props, "Profile", this.state.user)
+                    }}>צ'אט לחוקר<span
+                        className="fa fa-arrow-right"></span></button>
+
+                    <button id="r-button" className="btn btn-info" onClick={() => {
                         NextPage(this.props, "Profile", this.state.user)
                     }}>עדכון פרטים או סיסמא<span
                         className="fa fa-arrow-right"></span></button>
+
                     <button id="logout" className="btn btn-info" onClick={() => {
                         signOut()
                     }}>התנתק
@@ -148,7 +159,6 @@ class Manager extends React.Component {
                 </div>
             );
         } else {
-            // console.log(this.state.spinner)
             return (
                 <div>
                     {!this.state.spinner[0] ? "" :
@@ -180,6 +190,7 @@ class Manager extends React.Component {
     }
 
     ChangePage(path) {
+        console.log("path: "+path)
 
         this.props.history.push({
             pathname: `${this.props.location.pathname}/${path}`,

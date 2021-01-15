@@ -2,6 +2,7 @@ import React from "react";
 import {auth, getUser, signOut} from '../../../../firebase/firebase'
 import {NextPage} from "../UserPage";
 import ClipLoader from "react-spinners/ClipLoader";
+import './Researcher.css'
 
 
 class Researcher extends React.Component {
@@ -28,7 +29,7 @@ class Researcher extends React.Component {
 
     async componentDidMount() {
         var href =  window.location.href.split("/",5)
-        // console.log(href)
+        console.log(href)
         auth.onAuthStateChanged(async user=>{
             if(user)
             {
@@ -122,15 +123,26 @@ class Researcher extends React.Component {
                             </div>
                         </div>
                     }
-
-                    <h2> שלום {auth.currentUser.email} </h2>
-                    {/*<h2> שלום {this.state.user.displayName} </h2>*/}
+                    {/*{this.state.user.displayName}*/}
+                    <h2> שלום לחוקר {this.state.user.displayName}</h2>
                     <form id="instructor_menu" className="form-design" name="student_form" method="POST">
                         <button id="feedback-button" className="btn btn-info" onClick={() => {
                             NextPage(this.props, "Feedback", this.state.user)
                         }}>מילוי בקשה לרכישה<span
                             className="fa fa-arrow-right"></span></button>
+                        <button id="feed-button" className="btn btn-info" onClick={() => {
+                            NextPage(this.props, "Feedback", this.state.user)
+                        }}>מצב הוצאות ויתרה<span
+                            className="fa fa-arrow-right"></span></button>
+                        <button id="f-button" className="btn btn-info" onClick={() => {
+                            NextPage(this.props, "Feedback", this.state.user)
+                        }}>דוח מדעי<span
+                            className="fa fa-arrow-right"></span></button>
                         <button id="report-button" className="btn btn-info" onClick={() => {
+                            NextPage(this.props, "Profile", this.state.user)
+                        }}>צ'אט למנהל<span
+                            className="fa fa-arrow-right"></span></button>
+                        <button id="repor-button" className="btn btn-info" onClick={() => {
                             NextPage(this.props, "Profile", this.state.user)
                         }}>עדכון פרטים או סיסמא<span
                             className="fa fa-arrow-right"></span></button>

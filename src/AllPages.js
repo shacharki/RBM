@@ -9,6 +9,10 @@ import App2 from "./App2";
 
 import Researcher from './components/pages/Users/Researcher/Researcher';
 import Managers from './components/pages/Users/Manager/Manager';
+
+import UserApproval from "./components/pages/Users/Manager/UserApproval";
+
+import Profile from "./components/pages/Users/profile";
 import Wait from "./components/pages/Users/await";
 import notFound from "./404";
 
@@ -39,10 +43,13 @@ function LoadPage() {
                     <Route exact path="/User/:404" component={notFound} />
 
                     <Route exact path="/Researcher/:id" component={Researcher} />
-                    <Route exact path="/Researcher/:id/:404" component={notFound} />
+                    <Route exact path="/Researcher/:id/profile" component={Profile} />
+
 
                     <Route exact path="/Manager/:id" component={Managers} />
-                    <Route exact path="/Manager/:id/:404" component={notFound} />
+                    {/*<Route exact path="/Manager/:id/:404" component={notFound} />*/}
+                    <Route exact path="/Manager/:id/UserApproval" component={UserApproval} />
+                    <Route exact path="/Manager/:id/profile" component={Profile} />
 
 
 
