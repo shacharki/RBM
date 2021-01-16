@@ -90,38 +90,28 @@ class UserApproval extends React.Component {
     radio(e,index,user)
     {
 
-        var student = document.getElementById("students"+index)
-        var guide = document.getElementById("guides"+index)
+        var researcher = document.getElementById("researcher"+index)
         var manager = document.getElementById("managers"+index)
         var tester = document.getElementById("testers"+index)
 
 
         user.type = e.target.value;
 
-        if(e.target === student) {
-            student.checked=true;
-            guide.checked=false;
-            manager.checked=false;
-            tester.checked=false;
 
-        }
-        else if(e.target === guide) {
-            student.checked=false;
-            guide.checked=true;
+        if(e.target === researcher) {
+            researcher.checked=true;
             manager.checked=false;
             tester.checked=false;
 
         }
         else if(e.target === manager) {
-            student.checked=false;
-            guide.checked=false;
+            researcher.checked=false;
             manager.checked=true;
             tester.checked=false;
 
         }
         else {
-            student.checked=false;
-            guide.checked=false;
+            researcher.checked=false;
             manager.checked=false;
             tester.checked=true;
         }
@@ -222,11 +212,6 @@ class UserApproval extends React.Component {
 
 
                                     </Grid>
-                                    {/*<Grid item xs={12}>*/}
-                                    {/*    <div className="text-below-image">*/}
-                                    {/*        <button>אישור בקשות מסומנות</button>*/}
-                                    {/*    </div>*/}
-                                    {/*</Grid>*/}
                                     <Grid item xs={12}>
                                         <button id="feedback-button" className="btn btn-info" onClick={() => {
                                             this.BackPage()
@@ -236,10 +221,6 @@ class UserApproval extends React.Component {
                                 </Grid>
                             </Grid>
                         </div>
-
-
-                        {/*<button id="feedback-button" className="btn btn-info"  onClick={()=>{this.chooseLayout}}>חזרה לתפריט<span className="fa fa-arrow-right"></span></button>*/}
-
 
                     </div>
                 );
@@ -315,27 +296,9 @@ class UserApproval extends React.Component {
 
 
                         }
-                        {/*<br/>*/}
-                        {/*<b> קבוצה: </b>{user.teamName}<br/>*/}
-                        {/*<Select  placeholder={" החלף קבוצה "} options={options} onChange={(e)=>{*/}
-                        {/*    user.team = e.value;*/}
-                        {/*    user.teamName = e.label;*/}
-                        {/*}} />*/}
-                    </Grid>
-                    {/*<Grid item xs={12}>*/}
-                    {/*    <b> החלף תפקיד: </b><br/>*/}
-                    {/*</Grid>*/}
-                    {/*<Grid item xs={3}>*/}
 
-                    {/*    <div>*/}
-                    {/*        <label>*/}
-                    {/*            <input id ={"Researcher"+index} type="radio" value="Researcher" onClick={e => {*/}
-                    {/*                this.radio(e,index,user)*/}
-                    {/*            }}/>*/}
-                    {/*            חוקר*/}
-                    {/*        </label>*/}
-                    {/*    </div>*/}
-                    {/*</Grid>*/}
+                    </Grid>
+
                     <Grid item xs={3}>
                         <div>
 
@@ -358,17 +321,7 @@ class UserApproval extends React.Component {
                             </label>
                         </div>
                     </Grid>
-                    {/*<Grid item xs={3}>*/}
-                    {/*    <div>*/}
 
-                    {/*        <label>*/}
-                    {/*            <input id ={"testers"+index} type="radio" value="testers"  onClick={e => {*/}
-                    {/*                this.radio(e,index,user)*/}
-                    {/*            }}/>*/}
-                    {/*            בודק*/}
-                    {/*        </label>*/}
-                    {/*    </div>*/}
-                    {/*</Grid>*/}
                     <Grid item xs={12}>
                         <div className="text-below-image">
                             <label className="container">אישור בקשה<input type='checkbox'  onChange={e=>{

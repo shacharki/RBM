@@ -1,15 +1,13 @@
 import React from "react";
 import {
     auth,
-    // getStudentData,
-    // getStudent,
-    getUser,
-    getResearcherData,
+    getUser, getResearcherData,
     getManagerData, getResearcher, getManager
 } from '../../../firebase/firebase'
 import Grid from "@material-ui/core/Grid";
 import TextField from "@material-ui/core/TextField";
 import ClipLoader from "react-spinners/ClipLoader";
+import {Typography} from "@material-ui/core";
 
 
 class Profile extends React.Component {
@@ -28,7 +26,6 @@ class Profile extends React.Component {
 
     async componentDidMount() {
         var href =  window.location.href.split("/",5)
-        // console.log(href)
         auth.onAuthStateChanged(async user=>{
             if(user)
             {
@@ -72,18 +69,10 @@ class Profile extends React.Component {
 
     async getDate() {
         var user = (auth.currentUser).uid
-        // var student = await getStudentData(user)
         var researcher = await getResearcherData(user)
         var manager = await getManagerData(user)
-        // if (student) {
-        //     this.setState({
-        //         fname: student.fname,
-        //         lname: student.lname,
-        //         phone: student.phone,
-        //
-        //     })
-        // }
-         if (researcher) {
+
+        if (researcher) {
             this.setState({
                 fname: researcher.fname,
                 lname: researcher.lname,
@@ -102,37 +91,7 @@ class Profile extends React.Component {
         }
     }
 
-    // async sendData(){
-    //     if(this.state.password && this.state.Vpassword){
-    //         if(this.state.password !== this.state.Vpassword){
-    //             alert("הסיסמא ואימות הסיסמא לא תואמים")
-    //             return
-    //         }
-    //         else if((this.state.password).length <6){
-    //             alert("הסיסמא צריכה להיות יותר מ6 תווים")
-    //             return
-    //         }
-    //         auth.currentUser.updatePassword(this.state.password)
-    //     }
-    //     else if((!this.state.password && this.state.Vpassword)||(this.state.password && !this.state.Vpassword)){
-    //         alert("אנא מלא את כל הנתונים")
-    //         return
-    //     }
-    //     // console.log(this.state)
-    //     var user=(auth.currentUser).uid
-    //     var student = await getStudent(user)
-    //     // console.log(student)
-    //     var updateStudent = {
-    //         fname:this.state.fname,
-    //         lname:this.state.lname,
-    //         phone:this.state.phone,
-    //     }
-    //
-    //     student.update(updateStudent).then(()=>
-    //     {
-    //         alert("הפרטים עודכנו בהצלחה")
-    //     })
-    // }
+
     async sendData(){
         if(this.state.password && this.state.Vpassword){
             if(this.state.password !== this.state.Vpassword){
@@ -150,25 +109,24 @@ class Profile extends React.Component {
             alert("אנא מלא את כל הנתונים")
             return
         }
-         console.log("this.state",this.state)
-        console.log("this.state.type",this.state.type)
-
         var user=(auth.currentUser).uid
-       if(this.state.type === "researcher")
+
+        if(this.state.type === "Researcher")
         {
             user = await getResearcher(user)
         }
-        else if(this.state.type === "manager")
+        else if(this.state.type === "Manager")
         {
             user = await getManager(user)
         }
-         console.log("user",user)
         var updateStudent = {
             fname:this.state.fname,
             lname:this.state.lname,
             phone:this.state.phone,
         }
-        console.log("fname:this.state.fname",this.state.fname)
+        console.log("this.state.fname",this.state.fname)
+        console.log("this.state.lname",this.state.lname)
+        console.log("this.state.phone",this.state.phone)
 
         user.update(updateStudent).then(()=>
         {
@@ -194,7 +152,6 @@ class Profile extends React.Component {
                                     backgroundColor: "rgba(255,255,255,0.85)",
                                     borderRadius: "25px"
                                 }}
-                                    //   css={override}
                                             size={120}
                                             color={"#123abc"}
 
@@ -202,7 +159,9 @@ class Profile extends React.Component {
                             </div>
                         </div>
                     }
+                    <h2>עדכון פרטים</h2>
                     <Grid container spacing={2}>
+
                         <Grid item xs={6}>
                             <TextField
                                 inputProps={{style: {textAlign: 'center'}}}
@@ -211,7 +170,7 @@ class Profile extends React.Component {
                                 type="string"
                                 autoComplete="off"
                                 value={this.state.lname}
-                                onChange={e => {
+                                onChange={(e) => {
                                     this.setState({lname: e.target.value})
                                 }}
                                 variant="standard"
@@ -228,7 +187,7 @@ class Profile extends React.Component {
                                 autoComplete="off"
                                 autoFocus
                                 value={this.state.fname}
-                                onChange={e => {
+                                onChange={(e) => {
                                     this.setState({fname: e.target.value})
                                 }}
                                 variant="standard"
@@ -304,7 +263,6 @@ class Profile extends React.Component {
                             backgroundColor: "rgba(255,255,255,0.85)",
                             borderRadius: "25px"
                         }}
-                            //   css={override}
                                     size={120}
                                     color={"#123abc"}
 

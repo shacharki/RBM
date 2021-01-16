@@ -15,44 +15,12 @@ const firebaseConfig = {
 
 firebase.initializeApp(firebaseConfig);
 
-// var serviceAccount = require("./adminYbl");
-//
-// admin.initializeApp({
-//     credential: admin.credential.cert(serviceAccount),
-//     databaseURL: "https://ybl-project-b5e04.firebaseio.com"
-// });
+
 export const auth = firebase.auth();
 export const db = firebase.firestore();
-// export  const admin = admin.auth();
 export default firebase;
 
 
-//
-// console.log(admin);
-//
-//
-// admin.auth().createUser({
-//     email: 'user@example.com',
-//     emailVerified: false,
-//     phoneNumber: '+11234567890',
-//     password: 'secretPassword',
-//     displayName: 'John Doe',
-//     photoURL: 'http://www.example.com/12345678/photo.png',
-//     disabled: false
-// })
-//     .then(function(userRecord) {
-//         // See the UserRecord reference doc for the contents of userRecord.
-//         console.log('Successfully created new user:', userRecord.uid);
-//     })
-//     .catch(function(error) {
-//         console.log('Error creating new user:', error);
-//     });
-
-// db.collection("Teams").doc().get().then(res=>{
-//     // console.log(res)
-// }).catch(e=>{
-//     console.log(e)
-// })
 
 export async function CreateNewUser(email,phone) {
     console.log("email"+email)
@@ -79,22 +47,12 @@ export async function DeleteUser(uid) {
 
 export async function CreateUser(user) {
 
-
-    // console.log(user)
-    // var res = await auth.createUserWithEmailAndPassword(user.email,user.phone)
-    // res.user.updateProfile({displayName:user.fname+" "+ user.lname})
-
     if(user.type==="testers") {
-        // await db.collection("students").doc(user.uid).set(user)
         await db.collection("researcher").doc(user.uid).set(user)
         await db.collection("manager").doc(user.uid).set(user)
     }
     await  db.collection(user.type).doc(user.uid).set(user)
-    // var team=await db.collection('Teams').doc(user.team.id);
-    // team.set({
-    //     name: user.teamName,
-    //     guide: db.doc('guides/'+user.uid)
-    // })
+
 
     await db.collection("waitforapproval").doc(user.email).delete();
     await DeleteUser(user.uid)
@@ -191,20 +149,23 @@ export async function getStudentForms(uid) {
 }
 
 
-export async function getUser(user)
-{
+export async function getUser(user) {
     // var testers = await db.collection('testers').doc(user.uid).get()
     var researcher = await db.collection('researcher').doc(user.uid).get()
     var manager = await db.collection('managers').doc(user.uid).get()
     var wait = await db.collection('waitforapproval').doc(user.uid).get()
 
     // console.log(testers.data())
-    if(wait.exists)
+    if (wait.exists)
         return 'wait'
-    // else if(testers.exists)
+        // else if(testers.exists)
     //     return 'Tester'
-    else if(manager.exists)
+    else if (manager.exists)
+    {
+        console.log("manager.data()",manager.data())
         return 'Manager'
+    }
+
     else if(researcher.exists)
         return 'Researcher'
     // else if(students.exists)
@@ -225,12 +186,7 @@ export async function getManagerData(uid) {
     // console.log(managerData);
     return managerData;
 }
-export async function getTeamFeedbackByDate(teamPath,date) {
-    var team = await db.collection("Teams").doc(teamPath).collection("Dates").doc(date).get();
-    var teamFeedback=team.data()
-    // console.log(teamFeedback);
-    return teamFeedback;
-}
+
 
 
 

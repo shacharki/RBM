@@ -66,7 +66,7 @@ class Login extends React.Component {
                             </Avatar>
                         </Grid>
                         <Grid item xs={4}>
-                            <Typography component="h1" variant="h5">
+                            <Typography component="h2" variant="h5">
                                 התחברות
                             </Typography>
                         </Grid>
