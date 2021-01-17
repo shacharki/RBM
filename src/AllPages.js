@@ -4,6 +4,8 @@ import {BrowserRouter as Router, Switch, Route} from 'react-router-dom';
 import PageHome from './components/pages/PageHome/PageHome';
 import SignUp from './components/pages/SignUp/SignUp';
 import Login from './components/pages/Login/Login';
+import resetPassword from './components/pages/Login/resetPassword';
+
 import UserPage from "./components/pages/Users/UserPage";
 import App2 from "./App2";
 
@@ -33,6 +35,8 @@ function LoadPage() {
                     <Route exact path="/wait/:id" component={Wait} />
                     <Route exact path="/Login" component={Login} />
                     <Route exact path="/Login/:404" component={notFound} />
+                    <Route exact path="/resetPassword" component={resetPassword} />
+
 
                     <Route exact path="/SignUp" component={SignUp} />
                     <Route exact path="/SignUp/:404" component={notFound} />
