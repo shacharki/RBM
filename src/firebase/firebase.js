@@ -102,7 +102,7 @@ export async function getUser(user) {
         return 'wait'
     else if (manager.exists)
     {
-        console.log("manager.data()",manager.data())
+        // console.log("manager.data()",manager.data())
         return 'Manager'
     }
     else if(researcher.exists)

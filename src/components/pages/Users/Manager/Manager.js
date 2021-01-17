@@ -109,42 +109,42 @@ class Manager extends React.Component {
                         </div>
                     }
                     <h2>  שלום למנהל {this.state.user.displayName}</h2>
-                    <button id="report-button" className="btn btn-info" onClick={() => {
+                    <button id="UserApproval" className="btn btn-info" onClick={() => {
                         this.ChangePage("UserApproval")
                         return
                     }}>אישור משתמשים<span
                         className="fa fa-arrow-right"></span></button>
 
-                    <button id="report-button" className="btn btn-info" onClick={() => {
+                    <button id="ReportsApproval" className="btn btn-info" onClick={() => {
                          //this.ChangePage("")
                         return
                     }}>אישור דוחות ובקשות<span
                         className="fa fa-arrow-right"></span></button>
 
-                    <button id="rep-button" className="btn btn-info" onClick={() => {
+                    <button id="ResearchBudgets" className="btn btn-info" onClick={() => {
                         // this.ChangePage("")
                         return
                     }}>תקציבי מחקר<span
                         className="fa fa-arrow-right"></span></button>
 
-                    <button id="feedba-button" className="btn btn-info" onClick={() => {
+                    <button id="ExpenseReporting" className="btn btn-info" onClick={() => {
                         // this.ChangePage("")
                         return
                     }}>דיווח הוצאות<span
                         className="fa fa-arrow-right"></span></button>
 
-                    <button id="feedbac-button" className="btn btn-info" onClick={() => {
+                    <button id="financialReports" className="btn btn-info" onClick={() => {
                         // this.ChangePage("")
                         return
                     }}>דוחות כספיים<span
                             className="fa fa-arrow-right"></span></button>
 
-                    <button id="report-button" className="btn btn-info" onClick={() => {
-                        NextPage(this.props, "Profile", this.state.user)
+                    <button id="ChatResearcher" className="btn btn-info" onClick={() => {
+                        // NextPage(this.props, "", this.state.user)
                     }}>צ'אט לחוקר<span
                         className="fa fa-arrow-right"></span></button>
 
-                    <button id="r-button" className="btn btn-info" onClick={() => {
+                    <button id="UpdateDetails" className="btn btn-info" onClick={() => {
                         NextPage(this.props, "Profile", this.state.user)
                     }}>עדכון פרטים או סיסמא<span
                         className="fa fa-arrow-right"></span></button>
@@ -185,9 +185,8 @@ class Manager extends React.Component {
         })
     }
 
-    ChangePage(path) {
-        console.log("path: "+path)
-
+    ChangePage(path)
+    {
         this.props.history.push({
             pathname: `${this.props.location.pathname}/${path}`,
             data: this.state.user

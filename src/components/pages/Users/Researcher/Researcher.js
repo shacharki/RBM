@@ -124,23 +124,23 @@ class Researcher extends React.Component {
                     }
                     <h2> שלום לחוקר {this.state.user.displayName}</h2>
                     <form id="instructor_menu" className="form-design" name="student_form" method="POST">
-                        <button id="feedback-button" className="btn btn-info" onClick={() => {
-                            NextPage(this.props, "Feedback", this.state.user)
+                        <button id="PurchaseRequest" className="btn btn-info" onClick={() => {
+                            // NextPage(this.props, "", this.state.user)
                         }}>מילוי בקשה לרכישה<span
                             className="fa fa-arrow-right"></span></button>
 
-                        <button id="feed-button" className="btn btn-info" onClick={() => {
-                            NextPage(this.props, "Feedback", this.state.user)
+                        <button id="BalanceMode" className="btn btn-info" onClick={() => {
+                            // NextPage(this.props, "", this.state.user)
                         }}>מצב הוצאות ויתרה<span
                             className="fa fa-arrow-right"></span></button>
 
-                        <button id="f-button" className="btn btn-info" onClick={() => {
-                            NextPage(this.props, "Feedback", this.state.user)
+                        <button id="ScientificReport" className="btn btn-info" onClick={() => {
+                            // NextPage(this.props, "", this.state.user)
                         }}>דוח מדעי<span
                             className="fa fa-arrow-right"></span></button>
 
-                        <button id="report-button" className="btn btn-info" onClick={() => {
-                            NextPage(this.props, "Profile", this.state.user)
+                        <button id="ChatManager" className="btn btn-info" onClick={() => {
+                            // NextPage(this.props, "", this.state.user)
                         }}>צ'אט למנהל<span
                             className="fa fa-arrow-right"></span></button>
 

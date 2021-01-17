@@ -76,7 +76,6 @@ class Profile extends React.Component {
                 fname: researcher.fname,
                 lname: researcher.lname,
                 phone: researcher.phone,
-
             })
         } else if (manager) {
 
@@ -84,12 +83,9 @@ class Profile extends React.Component {
                 fname: manager.fname,
                 lname: manager.lname,
                 phone: manager.phone,
-
             })
-            // console.log(this.state)
         }
     }
-
 
     async sendData(){
         if(this.state.password && this.state.Vpassword){
@@ -101,13 +97,16 @@ class Profile extends React.Component {
                 alert("הסיסמא צריכה להיות יותר מ6 תווים")
                 return
             }
-            console.log(this.state.password)
             auth.currentUser.updatePassword(this.state.password)
         }
         else if((!this.state.password && this.state.Vpassword)||(this.state.password && !this.state.Vpassword)){
             alert("אנא מלא את כל הנתונים")
+            // console.log("this.state.password",this.state.password)
+            // console.log("this.state.Vpassword",this.state.Vpassword)
+
             return
         }
+
         var user=(auth.currentUser).uid
 
         if(this.state.type === "Researcher")
@@ -118,11 +117,23 @@ class Profile extends React.Component {
         {
             user = await getManager(user)
         }
-        var updateStudent = {
-            fname:this.state.fname,
-            lname:this.state.lname,
-            phone:this.state.phone,
+        if(this.state.Vpassword)
+        {
+            var updateStudent = {
+                fname:this.state.fname,
+                lname:this.state.lname,
+                phone:this.state.phone,
+                password:this.state.password,
+
+            }
+        }else{
+            var updateStudent = {
+                fname:this.state.fname,
+                lname:this.state.lname,
+                phone:this.state.phone,
+            }
         }
+
 
         user.update(updateStudent).then(()=>
         {
@@ -215,7 +226,7 @@ class Profile extends React.Component {
                                 name="password"
                                 type="password"
                                 autoComplete="off"
-                                
+                                // value={this.state.password}
                                 onChange={(e) => {
                                     this.setState({password: e.target.value})
                                 }}
@@ -231,6 +242,7 @@ class Profile extends React.Component {
                                 name="password"
                                 type="password"
                                 autoComplete="off"
+                                // value={this.state.password}
                                 onChange={(e) => {
                                     this.setState({Vpassword: e.target.value})
                                 }}
