@@ -3,7 +3,6 @@ import Select from 'react-select'
 import {db, CreateUser, DeleteUser, auth, getUser} from '../../../../firebase/firebase'
 import Grid from "@material-ui/core/Grid";
 import '../Manager/Manager.css';
-// import TempManager from "./TempManager";
 import ClipLoader from "react-spinners/ClipLoader";
 
 
@@ -129,7 +128,6 @@ class UserApproval extends React.Component {
                                         backgroundColor: "rgba(255,255,255,0.85)",
                                         borderRadius: "25px"
                                     }}
-                                        //   css={override}
                                                 size={120}
                                                 color={"#123abc"}
 
@@ -152,7 +150,6 @@ class UserApproval extends React.Component {
                                             backgroundColor: "rgba(255,255,255,0.85)",
                                             borderRadius: "25px"
                                         }}
-                                            //   css={override}
                                                     size={120}
                                                     color={"#123abc"}
 
@@ -186,7 +183,6 @@ class UserApproval extends React.Component {
                                         backgroundColor: "rgba(255,255,255,0.85)",
                                         borderRadius: "25px"
                                     }}
-                                        //   css={override}
                                                 size={120}
                                                 color={"#123abc"}
 
@@ -194,6 +190,9 @@ class UserApproval extends React.Component {
                                 </div>
                             </div>
                         }
+                        <div align="right">
+                            <h2>אישור משתמשים</h2>
+                        </div>
                         <div id="name-group" className="form-group">
                             <Grid container spacing={2}>
                                 <Grid item xs={12}>
@@ -235,7 +234,6 @@ class UserApproval extends React.Component {
                                         backgroundColor: "rgba(255,255,255,0.85)",
                                         borderRadius: "25px"
                                     }}
-                                        //   css={override}
                                                 size={120}
                                                 color={"#123abc"}
 
@@ -255,7 +253,6 @@ class UserApproval extends React.Component {
             }
         }
         else {
-            // console.log(this.state.spinner)
             return (
                 <div>
                     {!this.state.spinner[0] ? "" :
@@ -371,7 +368,6 @@ class UserApproval extends React.Component {
     loadUser(page)
     {
         this.props.history.push({
-            // pathname: `/${page}/${this.state.user.id}`,
             pathname: `/Temp${page}`,
             data: this.state.user // your data array of objects
         })

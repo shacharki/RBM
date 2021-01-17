@@ -21,7 +21,6 @@ class Manager extends React.Component {
 
     loadPage(event){
         this.setState({loading:event})
-        //    this.render()
     }
 
     async componentDidMount() {
@@ -102,7 +101,6 @@ class Manager extends React.Component {
                                     backgroundColor: "rgba(255,255,255,0.85)",
                                     borderRadius: "25px"
                                 }}
-                                    //   css={override}
                                             size={120}
                                             color={"#123abc"}
 
@@ -118,25 +116,25 @@ class Manager extends React.Component {
                         className="fa fa-arrow-right"></span></button>
 
                     <button id="report-button" className="btn btn-info" onClick={() => {
-                         //this.ChangePage("Updates")
+                         //this.ChangePage("")
                         return
                     }}>אישור דוחות ובקשות<span
                         className="fa fa-arrow-right"></span></button>
 
                     <button id="rep-button" className="btn btn-info" onClick={() => {
-                        // this.ChangePage("Reports")
+                        // this.ChangePage("")
                         return
                     }}>תקציבי מחקר<span
                         className="fa fa-arrow-right"></span></button>
 
                     <button id="feedba-button" className="btn btn-info" onClick={() => {
-                        // this.ChangePage("Feedbacks/Student")
+                        // this.ChangePage("")
                         return
                     }}>דיווח הוצאות<span
                         className="fa fa-arrow-right"></span></button>
 
                     <button id="feedbac-button" className="btn btn-info" onClick={() => {
-                        // this.ChangePage("Feedbacks/Guide")
+                        // this.ChangePage("")
                         return
                     }}>דוחות כספיים<span
                             className="fa fa-arrow-right"></span></button>
@@ -155,7 +153,6 @@ class Manager extends React.Component {
                         signOut()
                     }}>התנתק
                     </button>
-                    {/*<button onClick={() => this.loadTempPage("User")}>חזרה להמשך בדיקות דפים</button>*/}
                 </div>
             );
         } else {
@@ -169,7 +166,6 @@ class Manager extends React.Component {
                                     backgroundColor: "rgba(255,255,255,0.85)",
                                     borderRadius: "25px"
                                 }}
-                                    //   css={override}
                                             size={120}
                                             color={"#123abc"}
 
@@ -203,7 +199,6 @@ class Manager extends React.Component {
     {
         this.props.history.push({
             pathname: `/${page}/${this.state.user.id}`,
-            // pathname: `/Temp${page}`,
             data: this.state.user // your data array of objects
         })
     }

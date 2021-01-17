@@ -66,22 +66,11 @@ class UserPage extends React.Component {
 
                         this.loadUser(type)
                 }
-                // if(href[4] === user.uid && (href[3] === type||type==='Tester'))
-                // {
 
                 this.setState({loadPage:true})
                 this.loadSpinner(false,"")
                 this.render()
                 return
-                // }
-                // else
-                // {
-                //
-                //     // window.location.href = `/${type}/${href[4]}`;
-                //     alert('המנהל עדיין לא אישר את הבקשה')
-                //     window.location.href = '/Login';
-                //     return
-                // }
 
             }
             else {
@@ -121,13 +110,8 @@ class UserPage extends React.Component {
                                 Logout
                             </Button>
 
-
-                            {/*<button onClick={() => this.loadUser("Student")}>Enter Student</button>*/}
                             <button onClick={() => this.loadUser("Researcher")}>Enter Researcher</button>
                             <button onClick={() => this.loadUser("Manager")}>Enter Manager</button>
-                            {/*<button onClick={() => this.loadTempPage("TempStudent")}>Enter TempStudent</button>*/}
-                            {/*<button onClick={() => this.loadTempPage("TempGuide")}>Enter TempGuide</button>*/}
-                            {/*<button onClick={() => this.loadTempPage("TempManager")}>Enter TempManager</button>*/}
 
                             <button onClick={() => this.loadPage(true)}>loading page</button>
                             <button onClick={() => this.loadPage(false)}>unloading page</button>
@@ -138,7 +122,6 @@ class UserPage extends React.Component {
                                         backgroundColor: "rgba(255,255,255,0.85)",
                                         borderRadius: "25px"
                                     }}
-                                        //   css={override}
                                                 size={150}
                                                 color={"#123abc"}
 
@@ -160,7 +143,6 @@ class UserPage extends React.Component {
                             backgroundColor: "rgba(255,255,255,0.85)",
                             borderRadius: "25px"
                         }}
-                            //   css={override}
                                     size={120}
                                     color={"#123abc"}
 
@@ -175,7 +157,6 @@ class UserPage extends React.Component {
         this.props.history.push({
 
             pathname: `/${page}/${this.state.user.uid}`,
-            // pathname: `/Temp${page}`,
             data: this.state.user // your data array of objects
         })
     }
@@ -204,9 +185,6 @@ class UserPage extends React.Component {
         return(
             <div dir='rtl' >
                 שלום {user.displayName}
-                {/*    <span>*/}
-                {/*    {isLoaded ? <Users user={user} isLoaded={isLoaded}/> : <div/>}*/}
-                {/*</span>*/}
             </div>
         )
     }

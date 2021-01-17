@@ -7,7 +7,6 @@ import {
 import Grid from "@material-ui/core/Grid";
 import TextField from "@material-ui/core/TextField";
 import ClipLoader from "react-spinners/ClipLoader";
-import {Typography} from "@material-ui/core";
 
 
 class Profile extends React.Component {
@@ -124,9 +123,6 @@ class Profile extends React.Component {
             lname:this.state.lname,
             phone:this.state.phone,
         }
-        console.log("this.state.fname",this.state.fname)
-        console.log("this.state.lname",this.state.lname)
-        console.log("this.state.phone",this.state.phone)
 
         user.update(updateStudent).then(()=>
         {
@@ -159,9 +155,10 @@ class Profile extends React.Component {
                             </div>
                         </div>
                     }
+                    <div align="right">
                     <h2>עדכון פרטים</h2>
+                    </div>
                     <Grid container spacing={2}>
-
                         <Grid item xs={6}>
                             <TextField
                                 inputProps={{style: {textAlign: 'center'}}}
@@ -218,6 +215,7 @@ class Profile extends React.Component {
                                 name="password"
                                 type="password"
                                 autoComplete="off"
+                                
                                 onChange={(e) => {
                                     this.setState({password: e.target.value})
                                 }}

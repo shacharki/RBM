@@ -19,10 +19,6 @@ class PageHome extends React.Component {
         await auth.onAuthStateChanged(user => {
             if(user) {
                 this.setState({user:user})
-                // this.props.history.push({
-                //     pathname: '/User',
-                //     data: user // your data array of objects
-                // })
             }
         })
     }
