@@ -116,7 +116,7 @@ class Manager extends React.Component {
                         className="fa fa-arrow-right"></span></button>
 
                     <button id="ReportsApproval" className="btn btn-info" onClick={() => {
-                         //this.ChangePage("")
+                         this.ChangePage("ReportsApproval")
                         return
                     }}>אישור דוחות ובקשות<span
                         className="fa fa-arrow-right"></span></button>

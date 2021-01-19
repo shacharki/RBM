@@ -125,7 +125,7 @@ class Researcher extends React.Component {
                     <h2> שלום לחוקר {this.state.user.displayName}</h2>
                     <form id="instructor_menu" className="form-design" name="student_form" method="POST">
                         <button id="PurchaseRequest" className="btn btn-info" onClick={() => {
-                            // NextPage(this.props, "", this.state.user)
+                             NextPage(this.props, "PurchaseRequest", this.state.user)
                         }}>מילוי בקשה לרכישה<span
                             className="fa fa-arrow-right"></span></button>
 

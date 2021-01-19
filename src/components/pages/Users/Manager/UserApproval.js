@@ -320,11 +320,11 @@ class UserApproval extends React.Component {
                     </Grid>
 
                     <Grid item xs={12}>
-                        <div className="text-below-image">
-                            <label className="container">אישור בקשה<input type='checkbox'  onChange={e=>{
-                                user.approve = e.target.checked
-                            } }/></label>
-                        </div>
+                        {/*<div className="text-below-image">*/}
+                        {/*    <label className="container">אישור בקשה<input type='checkbox'  onChange={e=>{*/}
+                        {/*        user.approve = e.target.checked*/}
+                        {/*    } }/></label>*/}
+                        {/*</div>*/}
 
                     </Grid>
 
