@@ -115,8 +115,8 @@ class Manager extends React.Component {
                     }}>אישור משתמשים<span
                         className="fa fa-arrow-right"></span></button>
 
-                    <button id="ReportsApproval" className="btn btn-info" onClick={() => {
-                         this.ChangePage("ReportsApproval")
+                    <button id="mngRequestPurchase" className="btn btn-info" onClick={() => {
+                         this.ChangePage("mngRequestPurchase")
                         return
                     }}>אישור דוחות ובקשות<span
                         className="fa fa-arrow-right"></span></button>
@@ -128,7 +128,7 @@ class Manager extends React.Component {
                         className="fa fa-arrow-right"></span></button>
 
                     <button id="ExpenseReporting" className="btn btn-info" onClick={() => {
-                        // this.ChangePage("")
+                         // this.ChangePage("")
                         return
                     }}>דיווח הוצאות<span
                         className="fa fa-arrow-right"></span></button>
@@ -138,6 +138,12 @@ class Manager extends React.Component {
                         return
                     }}>דוחות כספיים<span
                             className="fa fa-arrow-right"></span></button>
+
+                    <button id="ExpenseReporting" className="btn btn-info" onClick={() => {
+                        this.ChangePage("UpdatesFirebase")
+                        return
+                    }}>פעולות ועדכון<span
+                        className="fa fa-arrow-right"></span></button>
 
                     <button id="ChatResearcher" className="btn btn-info" onClick={() => {
                         // NextPage(this.props, "", this.state.user)

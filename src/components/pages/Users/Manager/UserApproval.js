@@ -57,8 +57,8 @@ class UserApproval extends React.Component {
                     });
                     this.setState({users: usersList});
 
-                    var nameTeams =  await db.collection("Teams").get();
-                    nameTeams.forEach(doc=>{
+                    var nameData =  await db.collection("Data").get();
+                    nameData.forEach(doc=>{
                         options.push({ value: doc.ref, label: doc.data().name })
                     })
 

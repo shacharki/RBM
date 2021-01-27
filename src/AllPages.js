@@ -10,12 +10,12 @@ import UserPage from "./components/pages/Users/UserPage";
 import App2 from "./App2";
 
 import Researcher from './components/pages/Users/Researcher/Researcher';
-import PurchaseRequest from "./components/pages/Users/Researcher/PurchaseRequest";
-// import RequestPurchase from "./components/pages/Users/Researcher/RequestPurchase";
+ import RequestPurchase from "./components/pages/Users/Researcher/RequestPurchase";
 
 
 import Managers from './components/pages/Users/Manager/Manager';
-// import ReportsApproval from "./components/pages/Users/Manager/ReportsApproval";
+import mngRequestPurchase from "./components/pages/Users/Manager/mngRequestPurchase";
+import UpdatesFirebase from "./components/pages/Users/Manager/UpdatesFirebase";
 
 
 import UserApproval from "./components/pages/Users/Manager/UserApproval";
@@ -25,7 +25,6 @@ import Wait from "./components/pages/Users/await";
 import notFound from "./404";
 
 
-//import resetPassword from './components/pages/Login/resetPassword';
 
 
 function LoadPage() {
@@ -54,15 +53,15 @@ function LoadPage() {
 
                     <Route exact path="/Researcher/:id" component={Researcher} />
                     <Route exact path="/Researcher/:id/profile" component={Profile} />
-                    <Route exact path="/Researcher/:id/PurchaseRequest" component={PurchaseRequest} />
-                    {/*<Route exact path="/Researcher/:id/RequestPurchase" component={RequestPurchase} />*/}
+                    <Route exact path="/Researcher/:id/RequestPurchase" component={RequestPurchase} />
 
 
                     <Route exact path="/Manager/:id" component={Managers} />
                     {/*<Route exact path="/Manager/:id/:404" component={notFound} />*/}
                     <Route exact path="/Manager/:id/UserApproval" component={UserApproval} />
                     <Route exact path="/Manager/:id/profile" component={Profile} />
-                    {/*<Route exact path="/Manager/:id/ReportsApproval" component={ReportsApproval} />*/}
+                    <Route exact path="/Manager/:id/mngRequestPurchase" component={mngRequestPurchase} />
+                    <Route exact path="/Manager/:id/UpdatesFirebase" component={UpdatesFirebase} />
 
 
 

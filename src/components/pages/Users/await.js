@@ -15,7 +15,7 @@ class Wait extends React.Component {
     }
 
     async componentDidMount() {
-        alert('המנהל עדיין לא אישר את הבקשה')
+        // alert('המנהל עדיין לא אישר את הבקשה')
         window.location.href = '/Login';
         return
     }

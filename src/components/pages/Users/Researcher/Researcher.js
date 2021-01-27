@@ -29,7 +29,7 @@ class Researcher extends React.Component {
 
     async componentDidMount() {
         var href =  window.location.href.split("/",5)
-        console.log(href)
+        // console.log(href)
         auth.onAuthStateChanged(async user=>{
             if(user)
             {
@@ -124,13 +124,13 @@ class Researcher extends React.Component {
                     }
                     <h2> שלום לחוקר {this.state.user.displayName}</h2>
                     <form id="instructor_menu" className="form-design" name="student_form" method="POST">
-                        <button id="PurchaseRequest" className="btn btn-info" onClick={() => {
-                             NextPage(this.props, "PurchaseRequest", this.state.user)
-                        }}>מילוי בקשה לרכישה<span
+                        <button id="RequestPurchase" className="btn btn-info" onClick={() => {
+                             NextPage(this.props, "RequestPurchase", this.state.user)
+                        }}>בקשה לרכישה<span
                             className="fa fa-arrow-right"></span></button>
 
                         <button id="BalanceMode" className="btn btn-info" onClick={() => {
-                            // NextPage(this.props, "", this.state.user)
+                             // NextPage(this.props, "", this.state.user)
                         }}>מצב הוצאות ויתרה<span
                             className="fa fa-arrow-right"></span></button>
 

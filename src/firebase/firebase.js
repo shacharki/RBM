@@ -75,7 +75,7 @@ export async function getResearcherData(uid) {
 }
 
 export async function getResearcherFormByDate(uid, date) {
-    var ResearcherData = await (await db.collection("researcher").doc(uid).collection("comes").doc(date).get()).data();
+    var ResearcherData = await (await db.collection("researcher").doc(uid).collection("request").doc(date).get()).data();
     return ResearcherData;
 }
 
@@ -86,11 +86,23 @@ export async function getPathData(path) {
 
 export async function getResearcherForms(uid) {
     var forms = [];
-    var researcherData = await db.collection("researcher").doc(uid).collection("comes").get();
+    var researcherData = await db.collection("researcher").doc(uid).collection("request").get();
     researcherData.docs.forEach(doc=>{
         forms.push(doc.data());
     })
     return forms;
+}
+
+export async function CreateNewTeam(team) {
+    await  db.collection("Data").doc().set({name:team}).then(()=>{
+            alert("הקבוצה נוספה בהצלחה")
+            return true;
+        }
+    ).catch((e)=>{
+        alert("משהו השתבש הקבוצה לא נוספה ")
+        return false;
+    })
+
 }
 
 export async function getUser(user) {

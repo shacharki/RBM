@@ -21,6 +21,8 @@ class SignUp extends React.Component {
             email:'',
             ID: '',
             phone:'',
+            team:'',
+            teamName:'',
             type:'',
             password:'',
 
@@ -29,11 +31,27 @@ class SignUp extends React.Component {
 
     }
 
+    async  GetTeams() {
+        // console.log("בדיקה")
+
+        if (!op) {
+            op=true
+            var nameTeams = await db.collection("Data")
+                .orderBy('name','asc')
+                .get()
+            // console.log(nameTeams)
+            nameTeams.forEach(doc => {
+                options.push({value: doc.ref, label: doc.data().name})
+            })
+             console.log("options",options)
+
+        }
+    }
 
     async onRegister() {
         try {
 
-            if(!this.state.fname||!this.state.lname||!this.state.email||!this.state.phone) {
+            if(!this.state.fname||!this.state.lname||!this.state.email||!this.state.team||!this.state.phone) {
                 alert("נא למלא את כל השדות החובה")
                 return
             }
@@ -74,6 +92,8 @@ class SignUp extends React.Component {
                                 value={this.state.fname}
                                 onChange={e => {
                                     this.setState({fname:e.target.value})
+                                    this.GetTeams()
+
                                 }}
                                 variant="standard"
                                 required
@@ -91,6 +111,8 @@ class SignUp extends React.Component {
                                 value={this.state.lname}
                                 onChange={e => {
                                     this.setState({lname:e.target.value})
+                                    this.GetTeams()
+
                                 }}
                                 variant="standard"
                                 required
@@ -108,7 +130,9 @@ class SignUp extends React.Component {
                                 value={this.state.phone}
                                 onChange={e => {
                                     this.setState({phone:e.target.value})
-                                    this.setState({password:e.target.value})
+                                    // this.setState({password:e.target.value})
+                                    this.GetTeams()
+
 
                                 }}
                                 variant="standard"
@@ -127,6 +151,8 @@ class SignUp extends React.Component {
                                 value={this.state.ID}
                                 onChange={e => {
                                     this.setState({ID:e.target.value})
+                                    this.GetTeams()
+
                                 }}
                                 variant="standard"
                                 fullWidth
@@ -144,6 +170,8 @@ class SignUp extends React.Component {
                                 value={this.state.email}
                                 onChange={e => {
                                     this.setState({email:e.target.value})
+                                    this.GetTeams()
+
                                 }}
                                 variant="standard"
                                 required
@@ -172,6 +200,14 @@ class SignUp extends React.Component {
                                 </label>
                             </div>
                         </Grid>
+
+                        <Grid item xs={12} hidden={options.length<=0}>
+                            <Select  placeholder={" בחר קטגוריה " }options={options} onChange={e=>{
+                                // console.log(e.label,e.value);
+                                this.setState({team:e.value,teamName:e.label})
+                            }} required/>
+                        </Grid>
+
 
                         <Grid item xs={12}>
                             <div>
