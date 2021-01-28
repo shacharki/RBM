@@ -221,19 +221,50 @@ class RequestPurchase extends React.Component {
     async addDataToTeam(researcher,date)
     {
 
-        var formResearcher = (await researcher.collection('request').doc(date).get()).ref
+        var formResearcher = (await researcher.collection('request').doc(date).get()).ref;
         try{
             var team = (await researcher.get()).data();
+            var name =(team.fname + " "+team.lname);
+
             var teamCollection = await db.collection("Data").doc(team.team.id)
-            var newDate = teamCollection.collection("Requests").doc(date);
+            // var Collection = await teamCollection.collection("Requests").doc(name)
+            var newDate = await teamCollection.collection("Requests").doc(date)
+            // var newDate = Collection.collection(date).doc();
             var doc =  await newDate.get()
             var {year,month,day} = this.parser(date)
             var fullDate = new Date()
             fullDate.setTime(0)
             fullDate.setFullYear(year,month-1,day)
 
+            console.log("team.team.id",team.team.id)
+            console.log("teamCollection",teamCollection)
+            console.log("newDate",newDate)
+            console.log("fullDate",fullDate)
+            console.log("formResearcher",formResearcher)
+
+            // var temp = newDate.set({
+            //     date:fullDate,
+            //     RequestResearcher: formResearcher,
+            //     nameResearcher: team.fname + " "+team.lname,
+            //
+            // })
+            //
+            // // db.collection("Data").doc().set({name})
+            // await db.collection("Data").doc().collection(name).set(temp).then(()=>{
+            //         alert("הדוח נוסף")
+            //         return true;
+            //     }
+            // ).catch((e)=>{
+            //     alert("הדוח לא הוסף")
+            //     return false;
+            // })
+
+
             if(!doc.exists){
                 console.log("1111")
+                console.log("doc.exists",doc.exists)
+                console.log("doc",doc)
+
                 newDate.set({
                     date:fullDate,
                     RequestResearcher: formResearcher,
@@ -243,28 +274,17 @@ class RequestPurchase extends React.Component {
             }
             else {
                 console.log("2222")
+                console.log("doc.exists",doc.exists)
+                console.log("doc",doc)
 
-                // newDate.set({
-                //     date:fullDate,
-                //     RequestResearcher: formResearcher,
-                //     nameResearcher: team.fname + " "+team.lname,
-                //
-                // })
-
-                // console.log(formResearcher)
                 newDate.update({
                     date:fullDate,
                     RequestResearcher: formResearcher,
-                    // topicMeeting:this.state.form.q1,
                 })
             }
         }catch(error) {
-            console.log("eror")
-
             alert(error.message)
         }
-
-
 
     }
 

@@ -95,11 +95,11 @@ export async function getResearcherForms(uid) {
 
 export async function CreateNewTeam(team) {
     await  db.collection("Data").doc().set({name:team}).then(()=>{
-            alert("הקבוצה נוספה בהצלחה")
+            alert("המשתמש נוצר בהצלחה")
             return true;
         }
     ).catch((e)=>{
-        alert("משהו השתבש הקבוצה לא נוספה ")
+        alert("משהו השתבש המשתמש לא נוצר ")
         return false;
     })
 

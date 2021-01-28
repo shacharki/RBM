@@ -156,25 +156,25 @@ class UpdatesFirebase extends Component {
                     }
                     <Grid container spacing={2}>
                         <Grid item xs={12}>
-                            <input type="text" name="team" placeholder="שם קבוצה חדשה" onChange={this.handleChange}/>
+                            <input type="text" name="team" placeholder="שם משתמש חדש" onChange={this.handleChange}/>
                         </Grid>
                         <Grid item xs={6} >
                             <button onClick={async ()=>{
                                 var newTeam= this.state.newTeamName
                                 await CreateNewTeam(newTeam)
                                 window.location.reload(true)
-                            }}>צור קבוצה חדשה</button>
+                            }}>צור משתמש חדש</button>
                         </Grid>
                         <Grid item xs={6}>
                             <button onClick={()=>{
                                 if(this.state.newTeamName && this.state.newTeamName.length > 0)
                                     this.setState({replaceTeamName:true})
                                 else
-                                    alert("שם הקבוצה החדשה לא יכול להיות ריק")
-                            }}>החלף שם לקבוצה קיימת </button>
+                                    alert("שם המשתמש החדש לא יכול להיות ריק")
+                            }}>החלף שם למשתמש קיים </button>
                         </Grid>
                         <Grid item xs={8} hidden={!this.state.replaceTeamName}>
-                            <Select  placeholder={" בחר קבוצה להחלפת שם "} options={options} onChange={(e)=>{
+                            <Select  placeholder={" בחר משתמש להחלפת שם "} options={options} onChange={(e)=>{
                                 // console.log(e.label,e.value);
                                 this.setState({teamPath:e.value,teamName:e.label})
                             }} required/>
@@ -185,7 +185,7 @@ class UpdatesFirebase extends Component {
                                 if(this.state.teamName !== this.state.newTeamName) {
                                     await this.setState({replaceTeamName: false})
                                     await this.state.teamPath.update({name:this.state.newTeamName})
-                                    alert('בוצע שינוי שם  קבוצה בהצלחה')
+                                    alert('בוצע שינוי שם בהצלחה')
                                     window.location.reload(true);
 
                                 }
@@ -199,10 +199,10 @@ class UpdatesFirebase extends Component {
                             <button onClick={()=>{
                                 this.setState({delete:!this.state.delete})
                                 this.deleteTeam()
-                            }}>{this.state.delete?'הסתר מחיקת קבוצה':'הצג מחיקת קבוצה'} </button>
+                            }}>{this.state.delete?'הסתר מחיקת משתמש':'הצג מחיקת משתמש'} </button>
                         </Grid>
                         <Grid item xs={8} hidden={!this.state.delete}>
-                            <Select  placeholder={" בחר קבוצה "} options={options} onChange={(e)=>{
+                            <Select  placeholder={" בחר משתמש "} options={options} onChange={(e)=>{
                                 // console.log(e.label,e.value);
                                 this.setState({teamPath:(e.value).path,teamName:e.label})
                             }} required/>
@@ -231,7 +231,7 @@ class UpdatesFirebase extends Component {
                                     })
 
                                     await db.doc(this.state.teamPath).delete().then(function() {
-                                        alert("הקבוצה נמחקה בהצלחה!");
+                                        alert("המשתמש נמחק בהצלחה");
                                     }).catch(function(error) {
                                         console.error("Error removing document: ", error);
                                     });
@@ -240,7 +240,7 @@ class UpdatesFirebase extends Component {
                                 }
                                 else
                                 {
-                                    // console.log("בחר קבוצה")
+                                    // console.log("בחר חוקר")
                                 }
                             }}>מחק</button>
                         </Grid>
@@ -251,13 +251,13 @@ class UpdatesFirebase extends Component {
                                     this.getAllUsers('researcher')
                                     this.setState({showresearchers:!this.state.showresearchers,researcherTeamName:null,researcherName:null})
 
-                                }} >{this.state.showresearchers?'הסתר רשימת חוקרים':'הצג רשימת חוקרים'}</button>
+                                }} >{this.state.showresearchers?'הסתר רשימת משתמשים':'הצג רשימת משתמשים'}</button>
                                 {
                                     (this.state.showresearchers && this.state.researchers) ? (
                                         <div>
                                             <Grid item xs={12}>
                                                 נמצאו:{this.state.researchers.length} חוקרים
-                                                <Select placeholder={" מצא חוקר "} options={researchersOptions}
+                                                <Select placeholder={" מצא משתמש "} options={researchersOptions}
                                                         onChange={(e) => {
                                                             // console.log(e.label, e.value);
                                                             this.setState({researchers: [e.value]})
@@ -341,11 +341,11 @@ class UpdatesFirebase extends Component {
 
     async getAllUsers(user) {
         this.loadSpinner(true,"מיבא נתוני משתמשים")
-        console.log("this.state",this.state)
-        console.log("this.state.researchers",this.state.researchers)
-        console.log("this.state.researchersEmpty",this.state.researchersEmpty)
-        console.log("this.state.Data",this.state.Data)
-        console.log("this.state.TeamEmpty",this.state.TeamEmpty)
+        // console.log("this.state",this.state)
+        // console.log("this.state.researchers",this.state.researchers)
+        // console.log("this.state.researchersEmpty",this.state.researchersEmpty)
+        // console.log("this.state.Data",this.state.Data)
+        // console.log("this.state.TeamEmpty",this.state.TeamEmpty)
 
         if ((user === 'researcher' && this.state.researchers && this.state.researchers > 1) ||
             (user === 'researchersEmpty' && this.state.researchersEmpty && this.state.researchersEmpty > 1) ||
@@ -411,7 +411,7 @@ class UpdatesFirebase extends Component {
 
     async handleSubmit(event)
     {
-        this.loadSpinner(true,"מיבא קטגוריות")
+        this.loadSpinner(true,"מיבא נתונים")
         // console.log(this.state.teamPath)
         if(!this.state.date) {
             this.loadSpinner(false,"")
@@ -439,7 +439,7 @@ class UpdatesFirebase extends Component {
                     })
                     this.render()
                     this.setState({loadPage:true})
-                    this.loadSpinner(true,"מיבא קטגוריות")
+                    this.loadSpinner(true,"מיבא נתונים")
                     var nameTeams =  await db.collection("Data").get();
                     nameTeams.forEach(doc=>{
                         options.push({ value: doc.ref, label: doc.data().name })
@@ -485,10 +485,10 @@ class UpdatesFirebase extends Component {
             <div id="name-group" className="form-group" dir="rtl">
                 <div className="report" id="report">
                     <div>
-                        <h4> שם קבוצה: {team.name} </h4>
+                        <h4> שם החוקר: {team.name} </h4>
                         <Grid container spacing={2}>
                             <Grid item xs={8}>
-                                <Select  placeholder={" שיבוץ מדריך "} options={emptyresearchersOptions} onChange={(e)=>{
+                                <Select  placeholder={" שיבוץ חוקר "} options={emptyresearchersOptions} onChange={(e)=>{
                                     // console.log(e.label,e.value);
                                     this.setState({emtpyresearcherTeamPath:e.value,emtpyresearcherTeamName:e.label})
                                 }} />
@@ -515,10 +515,10 @@ class UpdatesFirebase extends Component {
                         <h4> טלפון: {user.phone}</h4>
                         <h4> אימייל: {user.email}</h4>
                         <h4> ת.ז: {user.ID}</h4>
-                        <h4> קבוצה: {user.teamName}</h4>
+                        <h4> חוקר: {user.teamName}</h4>
                         <Grid container spacing={2}>
                             <Grid item xs={8}>
-                                <Select  placeholder={" החלף קבוצה "} options={options} onChange={(e)=>{
+                                <Select  placeholder={" החלף חוקר "} options={options} onChange={(e)=>{
                                     // console.log(e.label,e.value);
                                     user.optionss = e.label
                                     var teamPath = this.state.researcherTeamPath
@@ -543,60 +543,7 @@ class UpdatesFirebase extends Component {
                                     this.setState({researcherTeamPath:teamPath,researcherTeamName:teamName})
                                 }} />
                             </Grid>
-                            {/*<Grid item xs={4} hidden={!this.state.researcherTeamName || this.state.researcherTeamName.length <= index  || this.state.researcherTeamName[index] === user.teamName}>*/}
-                            {/*    <button onClick={async ()=>{*/}
-                            {/*        this.loadSpinner(true,"מעדכן נתונים")*/}
-                            {/*        // console.log('in1')*/}
-                            {/*        if(user.type==='researcher' || user.type==='testers') {*/}
-                            {/*            // console.log('in2')*/}
-                            {/*            // console.log(user.uid)*/}
 
-
-                            {/*            try{*/}
-                            {/*                var updateTeam;*/}
-                            {/*                var oldresearcher = await db.collection('Data').doc(this.state.researcherTeamPath[index].id).get()*/}
-                            {/*                // console.log('in5')*/}
-                            {/*                // console.log(oldresearcher.data())*/}
-
-                            {/*                await db.doc((oldresearcher.data().researcher).path).update({*/}
-                            {/*                    teamName:null,*/}
-                            {/*                    team:null*/}
-                            {/*                })*/}
-                            {/*                // console.log('in6')*/}
-
-                            {/*            }*/}
-                            {/*            catch(e){*/}
-                            {/*                // console.log('in7')*/}
-                            {/*                console.log('לקבוצה לא היה מדריך לפני')*/}
-                            {/*                console.log(e)*/}
-                            {/*            }*/}
-                            {/*            try{*/}
-                            {/*                // console.log(user.team.id)*/}
-                            {/*                await db.collection('Data').doc(user.team.id).update({*/}
-                            {/*                    researcher: null*/}
-                            {/*                })*/}
-                            {/*            }*/}
-                            {/*            catch{*/}
-                            {/*                console.log("למדריך לא הייתה קבוצה לפני")*/}
-                            {/*            }*/}
-                            {/*            updateTeam = await db.collection('researcher').doc(user.uid)*/}
-                            {/*            // console.log('in3')*/}
-                            {/*            await updateTeam.update({*/}
-                            {/*                teamName:this.state.researcherTeamName[index],*/}
-                            {/*                team:this.state.researcherTeamPath[index]*/}
-                            {/*            })*/}
-
-                            {/*            // console.log(this.state.researcherTeamPath)*/}
-                            {/*            await db.collection('Data').doc(this.state.researcherTeamPath[index].id).update({*/}
-                            {/*                researcher: updateTeam*/}
-                            {/*            })*/}
-                            {/*            this.getAllUsers('researcher')*/}
-                            {/*        }*/}
-
-                            {/*        this.loadSpinner(false,'')*/}
-                            {/*        alert('הוחלפה קבוצה')*/}
-                            {/*    }}>החלף</button>*/}
-                            {/*</Grid>*/}
                         </Grid>
                     </div>
                 </div>

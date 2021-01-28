@@ -6,6 +6,12 @@ import {Button} from "@material-ui/core";
 import {Link} from "react-router-dom";
 import {db, RegisterUser,CreateNewUser} from "../../../firebase/firebase";
 import './SignUp.css'
+// import {getAllUsers} from "src/components/pages/Users/Manager/UpdatesFirebase.js"
+
+// var researchersOptions = []
+// var emptyresearchersOptions = []
+// var emptyTeamOptions = []
+// var TeamOptions = []
 
 
 const options = [
@@ -34,13 +40,18 @@ class SignUp extends React.Component {
     async  GetTeams() {
         // console.log("בדיקה")
 
+        // var temp =await getAllUsers('teamEmpty')
+        // // this.setState({showTeamWithoutGuide:!this.state.showTeamWithoutGuide})
+        // this.setState({TeamEmpty:[e.value]})
+
         if (!op) {
             op=true
             var nameTeams = await db.collection("Data")
                 .orderBy('name','asc')
                 .get()
-            // console.log(nameTeams)
+             console.log("nameTeams",nameTeams)
             nameTeams.forEach(doc => {
+
                 options.push({value: doc.ref, label: doc.data().name})
             })
              console.log("options",options)
@@ -71,6 +82,76 @@ class SignUp extends React.Component {
             alert(error.message)
         }
     }
+
+    //
+    // async getAllUsers(user) {
+    //     this.loadSpinner(true,"מיבא נתוני משתמשים")
+    //     // console.log("this.state",this.state)
+    //     // console.log("this.state.researchers",this.state.researchers)
+    //     // console.log("this.state.researchersEmpty",this.state.researchersEmpty)
+    //     // console.log("this.state.Data",this.state.Data)
+    //     // console.log("this.state.TeamEmpty",this.state.TeamEmpty)
+    //
+    //     if ((user === 'researcher' && this.state.researchers && this.state.researchers > 1) ||
+    //         (user === 'researchersEmpty' && this.state.researchersEmpty && this.state.researchersEmpty > 1) ||
+    //         (user === 'teamEmpty' && this.state.TeamEmpty && this.state.TeamEmpty > 1) ||
+    //         (user === 'Data' && this.state.Data && this.state.Data > 1)) {
+    //         this.loadSpinner(false,"")
+    //         return
+    //     }
+    //     // console.log(user)
+    //     var temp = user
+    //     if (user === 'researcher')
+    //         researchersOptions = []
+    //     else if (user === 'researchersEmpty') {
+    //         emptyresearchersOptions = []
+    //         temp = 'researcher'
+    //     } else if (user === 'teamEmpty') {
+    //         emptyTeamOptions = []
+    //         temp = 'Data'
+    //     } else if (user === 'Data') {
+    //         TeamOptions = []
+    //         temp = 'Data'
+    //     }
+    //     var allUsers = []
+    //     await db.collection(temp).get().then(res => {
+    //         res.forEach(res => {
+    //             if (res.data().uid) {
+    //                 if (user === 'researcher') {
+    //                     allUsers.push(res)
+    //                     researchersOptions.push({value: res, label: res.data().fname + ' ' + res.data().lname})
+    //
+    //                 } else if (user === 'researchersEmpty' && !res.data().team) {
+    //                     allUsers.push(res)
+    //                     emptyresearchersOptions.push({value: res, label: res.data().fname + ' ' + res.data().lname})
+    //                 }
+    //             } else if (user === 'teamEmpty' && !res.data().researcher) {
+    //                 allUsers.push(res)
+    //                 emptyTeamOptions.push({value: res, label: res.name})
+    //
+    //             } else if (user === 'Data' && res.data().researcher) {
+    //                 allUsers.push(res)
+    //                 TeamOptions.push({value: res, label: res.name})
+    //             }
+    //         })
+    //     })
+    //     if (user === 'researcher') {
+    //         this.setState({researchers: allUsers})
+    //         this.createCsvFile(allUsers,'researcher')
+    //     }
+    //     else if (user === 'researchersEmpty')
+    //         this.setState({researchersEmpty: allUsers})
+    //     else if (user === 'studentEmpty')
+    //         this.setState({StudentEmpty: allUsers})
+    //     else if (user === 'teamEmpty')
+    //         this.setState({TeamEmpty: allUsers})
+    //     else if (user === 'Data') {
+    //         this.setState({Data: allUsers})
+    //     }
+    //
+    //     this.loadSpinner(false,"")
+    //     console.log("all users",allUsers)
+    // }
 
 
 
@@ -202,7 +283,7 @@ class SignUp extends React.Component {
                         </Grid>
 
                         <Grid item xs={12} hidden={options.length<=0}>
-                            <Select  placeholder={" בחר קטגוריה " }options={options} onChange={e=>{
+                            <Select  placeholder={" בחר שם " }options={options}  onChange={e=>{
                                 // console.log(e.label,e.value);
                                 this.setState({team:e.value,teamName:e.label})
                             }} required/>

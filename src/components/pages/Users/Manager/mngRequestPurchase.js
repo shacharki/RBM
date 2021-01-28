@@ -243,7 +243,7 @@ class mngRequestPurchase extends Component {
                                     </Grid>
 
                                     <Grid item xs={6} hidden={!this.state.options}>
-                                        <Select id = 'select'  placeholder={" בחר קטגוריה "} options={this.state.options} onChange={(e)=>{
+                                        <Select id = 'select'  placeholder={" בחר חוקר "} options={this.state.options} onChange={(e)=>{
                                             // console.log(e.label,e.value);
                                             this.setState({team:e.value,teamName:e.label})
                                         }} required/>
@@ -251,7 +251,7 @@ class mngRequestPurchase extends Component {
                                     <Grid item xs={3} hidden={!this.state.options}>
                                         <label id="insert-student" className="title-input" htmlFor="name"> &nbsp;</label>
                                         {
-                                            !this.state.teamName?"לא נבחרה קטגוריה": this.state.teamName
+                                            !this.state.teamName?"לא נבחר חוקר": this.state.teamName
                                         }
 
                                     </Grid>
