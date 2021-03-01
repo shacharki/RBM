@@ -207,7 +207,7 @@ class RequestPurchase extends React.Component {
                 date:form.date
             }).then(async ()=>{
                 await this.addDataToTeam(researcher,form.date);
-                alert("הטופס נשלח בהצלחה ניתן לשנות פרטים עד לחתימת המנהל")
+                alert("הטופס נשלח בהצלחה")
                 this.loadSpinner(false)
                 window.location.reload(true);
 
@@ -261,9 +261,9 @@ class RequestPurchase extends React.Component {
 
 
             if(!doc.exists){
-                console.log("1111")
-                console.log("doc.exists",doc.exists)
-                console.log("doc",doc)
+
+                // console.log("doc.exists",doc.exists)
+                // console.log("doc",doc)
 
                 newDate.set({
                     date:fullDate,
@@ -273,9 +273,9 @@ class RequestPurchase extends React.Component {
                 })
             }
             else {
-                console.log("2222")
-                console.log("doc.exists",doc.exists)
-                console.log("doc",doc)
+
+                // console.log("doc.exists",doc.exists)
+                // console.log("doc",doc)
 
                 newDate.update({
                     date:fullDate,
@@ -399,6 +399,7 @@ class RequestPurchase extends React.Component {
                         <input type="date" id="insert-date" name="date" onChange={(e) => this.handleChange(e)}
                                required/>
 
+                        <br/>
 
                         <Grid item xs={6}>
                             <TextField
@@ -418,6 +419,7 @@ class RequestPurchase extends React.Component {
                         </Grid>
 
                         <h4>המזמין: מכון שמיר למחקר - ע"ר</h4>
+
 
                         <div id="name-group">
                             <label id="QL" className="title-input">טלפון המכון: 04-6123901. פקס: 04-6961930</label>
@@ -478,96 +480,160 @@ class RequestPurchase extends React.Component {
                         </Grid>
 
                         <h4>פירוט ההצעה:</h4>
+                    <table border="1">
 
+                        <tr>
+                            <th>מק"ט</th>
+                            <th>תיאור הפריט</th>
+                            <th>מחיר במט"ח</th>
+                            <th>מחיר יח' בש"ח</th>
+                            <th>מס' יחידות</th>
+                            <th>מחיר בש"ח</th>
 
-                        <Grid item xs={6}>
-                            <TextField
-                                inputProps={{style: {textAlign: 'center'}}}
-                                id="q5i"
-                                name="q5"
-                                type="tel"
-                                autoComplete="off"
-                                value={this.state.q5}
-                                onChange={(e) => {
+                        </tr>
+                        <tr>
+                            <td>
+                                <div id="name-group">
+                                    <input type="text" name="q5" id="q5i" placeholder={''}
+                                           value={this.state.form.q5 ? (this.state.form.q5) : ('')} onChange={(e) => {
+                                        this.handleChange(e)
+                                    }} required/>
+                                </div>
+                            </td>
+                            <td>    <div id="name-group">
+                                <input type="text" name="q6" id="q6i" placeholder={''}
+                                       value={this.state.form.q6 ? (this.state.form.q6) : ('')} onChange={(e) => {
                                     this.handleChange(e)
-                                }}
-                                variant="standard"
-                                fullWidth
-                                label="מק'ט:"
-                            />
-                        </Grid>
+                                }} required/>
+                            </div></td>
+                            <td><div id="name-group">
+                                <input type="text" name="q7" id="q7i" placeholder={''}
+                                       value={this.state.form.q7 ? (this.state.form.q7) : ('')} onChange={(e) => {
+                                    this.handleChange(e)
+                                }} required/>
+                            </div></td>
+                            <td><div id="name-group">
+                                <input type="text" name="q8" id="q8i" placeholder={''}
+                                       value={this.state.form.q8 ? (this.state.form.q8) : ('')} onChange={(e) => {
+                                    this.handleChange(e)
+                                }} required/>
+                            </div></td>
+                            <td><div id="name-group">
+                                <input type="text" name="q9" id="q9i" placeholder={''}
+                                       value={this.state.form.q9 ? (this.state.form.q9) : ('')} onChange={(e) => {
+                                    this.handleChange(e)
+                                }} required/>
+                            </div></td>
+                            <td><div id="name-group">
+                                <input type="text" name="q10" id="q10i" placeholder={''}
+                                       value={this.state.form.q10 ? (this.state.form.q10) : ('')} onChange={(e) => {
+                                    this.handleChange(e)
+                                }} required/>
+                            </div></td>
+
+                        </tr>
+                        <tr>
+                            <td>
+                                <div id="name-group">
+                                    <input type="text" name="q50" id="q50i" placeholder={''}
+                                           value={this.state.form.q50 ? (this.state.form.q50) : ('')} onChange={(e) => {
+                                        this.handleChange(e)
+                                    }} required/>
+                                </div>
+                            </td>
+                            <td>    <div id="name-group">
+                                <input type="text" name="q60" id="q60i" placeholder={''}
+                                       value={this.state.form.q60 ? (this.state.form.q60) : ('')} onChange={(e) => {
+                                    this.handleChange(e)
+                                }} required/>
+                            </div></td>
+                            <td><div id="name-group">
+                                <input type="text" name="q70" id="q70i" placeholder={''}
+                                       value={this.state.form.q70 ? (this.state.form.q70) : ('')} onChange={(e) => {
+                                    this.handleChange(e)
+                                }} required/>
+                            </div></td>
+                            <td><div id="name-group">
+                                <input type="text" name="q80" id="q80i" placeholder={''}
+                                       value={this.state.form.q80 ? (this.state.form.q80) : ('')} onChange={(e) => {
+                                    this.handleChange(e)
+                                }} required/>
+                            </div></td>
+                            <td><div id="name-group">
+                                <input type="text" name="q90" id="q90i" placeholder={''}
+                                       value={this.state.form.q90 ? (this.state.form.q90) : ('')} onChange={(e) => {
+                                    this.handleChange(e)
+                                }} required/>
+                            </div></td>
+                            <td><div id="name-group">
+                                <input type="text" name="q100" id="q100i" placeholder={''}
+                                       value={this.state.form.q100 ? (this.state.form.q100) : ('')} onChange={(e) => {
+                                    this.handleChange(e)
+                                }} required/>
+                            </div></td>
+
+                        </tr>
+                        <tr>
+                            <td>
+                                <div id="name-group">
+                                    <input type="text" name="q51" id="q51i" placeholder={''}
+                                           value={this.state.form.q51 ? (this.state.form.q51) : ('')} onChange={(e) => {
+                                        this.handleChange(e)
+                                    }} required/>
+                                </div>
+                            </td>
+                            <td>    <div id="name-group">
+                                <input type="text" name="q61" id="q61i" placeholder={''}
+                                       value={this.state.form.q61 ? (this.state.form.q61) : ('')} onChange={(e) => {
+                                    this.handleChange(e)
+                                }} required/>
+                            </div></td>
+                            <td><div id="name-group">
+                                <input type="text" name="q71" id="q71i" placeholder={''}
+                                       value={this.state.form.q71 ? (this.state.form.q71) : ('')} onChange={(e) => {
+                                    this.handleChange(e)
+                                }} required/>
+                            </div></td>
+                            <td><div id="name-group">
+                                <input type="text" name="q81" id="q81i" placeholder={''}
+                                       value={this.state.form.q81 ? (this.state.form.q81) : ('')} onChange={(e) => {
+                                    this.handleChange(e)
+                                }} required/>
+                            </div></td>
+                            <td><div id="name-group">
+                                <input type="text" name="q91" id="q91i" placeholder={''}
+                                       value={this.state.form.q91 ? (this.state.form.q91) : ('')} onChange={(e) => {
+                                    this.handleChange(e)
+                                }} required/>
+                            </div></td>
+                            <td><div id="name-group">
+                                <input type="text" name="q101" id="q101i" placeholder={''}
+                                       value={this.state.form.q101 ? (this.state.form.q101) : ('')} onChange={(e) => {
+                                    this.handleChange(e)
+                                }} required/>
+                            </div></td>
+                            <br/>
+
+                        </tr>
+                    </table>
+
+                        {/*<div id="name-group">*/}
+                        {/*    <label id="Q102L" className="title-input">סה"כ כולל מע"מ: </label>*/}
+                        {/*    <input type="text" name="q102" id="q102i" placeholder={'התשובה שלך'}*/}
+                        {/*           value={this.state.form.q102 ? (this.state.form.q102) : ('')} onChange={(e) => {*/}
+                        {/*        this.handleChange(e)*/}
+                        {/*    }} required/>*/}
+                        {/*</div>*/}
                         <br/>
 
-                        <div id="name-group">
-                            <label id="Q6L" className="title-input">תיאור הפריט:</label>
-                            <input type="text" name="q6" id="q6i" placeholder={'התשובה שלך'}
-                                   value={this.state.form.q6 ? (this.state.form.q6) : ('')} onChange={(e) => {
-                                this.handleChange(e)
-                            }} required/>
-                        </div>
-
                         <Grid item xs={6}>
                             <TextField
                                 inputProps={{style: {textAlign: 'center'}}}
-                                id="q7i"
-                                name="q7"
+                                id="q11i"
+                                name="q11"
                                 type="tel"
                                 autoComplete="off"
-                                value={this.state.q7}
-                                onChange={(e) => {
-                                    this.handleChange(e)
-                                }}
-                                variant="standard"
-                                fullWidth
-                                label="מחיר במט'ח"
-                            />
-                        </Grid>
-                        <br/>
-
-                        <Grid item xs={6}>
-                            <TextField
-                                inputProps={{style: {textAlign: 'center'}}}
-                                id="q8i"
-                                name="q8"
-                                type="tel"
-                                autoComplete="off"
-                                value={this.state.q8}
-                                onChange={(e) => {
-                                    this.handleChange(e)
-                                }}
-                                variant="standard"
-                                fullWidth
-                                label="מחיר בש'ח"
-                            />
-                        </Grid>
-                        <br/>
-
-                        <Grid item xs={6}>
-                            <TextField
-                                inputProps={{style: {textAlign: 'center'}}}
-                                id="q9i"
-                                name="q9"
-                                type="tel"
-                                autoComplete="off"
-                                value={this.state.q9}
-                                onChange={(e) => {
-                                    this.handleChange(e)
-                                }}
-                                variant="standard"
-                                fullWidth
-                                label="מס יחידות"
-                            />
-                        </Grid>
-                        <br/>
-
-                        <Grid item xs={6}>
-                            <TextField
-                                inputProps={{style: {textAlign: 'center'}}}
-                                id="q10i"
-                                name="q10"
-                                type="tel"
-                                autoComplete="off"
-                                value={this.state.q10}
+                                value={this.state.q11}
                                 onChange={(e) => {
                                     this.handleChange(e)
                                 }}
@@ -590,15 +656,13 @@ class RequestPurchase extends React.Component {
                             <br/>
                         </div>
 
-                        <div id="name-group">
-                            <label id="Q11L" className="title-input">נא לתאם את קבלת המשלוח עם:</label>
-                            <input type="text" name="q11" id="q11i" placeholder={'התשובה שלך'}
-                                   value={this.state.form.q11 ? (this.state.form.q11) : ('')} onChange={(e) => {
-                                this.handleChange(e)
-                            }} required/>
-                        </div>
-
-                        <h4>לשימוש משרד המכון בלבד:</h4>
+                        {/*<div id="name-group">*/}
+                        {/*    <label id="Q11L" className="title-input">נא לתאם את קבלת המשלוח עם:</label>*/}
+                        {/*    <input type="text" name="q11" id="q11i" placeholder={'התשובה שלך'}*/}
+                        {/*           value={this.state.form.q11 ? (this.state.form.q11) : ('')} onChange={(e) => {*/}
+                        {/*        this.handleChange(e)*/}
+                        {/*    }} required/>*/}
+                        {/*</div>*/}
 
                         <Grid item xs={6}>
                             <TextField
@@ -613,10 +677,12 @@ class RequestPurchase extends React.Component {
                                 }}
                                 variant="standard"
                                 fullWidth
-                                label="מטרת הרכישה"
+                                label="נא לתאם את קבלת המשלוח עם"
                             />
                         </Grid>
                         <br/>
+
+                        <h4>לשימוש משרד המכון בלבד:</h4>
 
                         <Grid item xs={6}>
                             <TextField
@@ -631,7 +697,7 @@ class RequestPurchase extends React.Component {
                                 }}
                                 variant="standard"
                                 fullWidth
-                                label="תקציב המחקר"
+                                label="מטרת הרכישה"
                             />
                         </Grid>
                         <br/>
@@ -649,6 +715,24 @@ class RequestPurchase extends React.Component {
                                 }}
                                 variant="standard"
                                 fullWidth
+                                label="תקציב המחקר"
+                            />
+                        </Grid>
+                        <br/>
+
+                        <Grid item xs={6}>
+                            <TextField
+                                inputProps={{style: {textAlign: 'center'}}}
+                                id="q15i"
+                                name="q15"
+                                type="tel"
+                                autoComplete="off"
+                                value={this.state.q15}
+                                onChange={(e) => {
+                                    this.handleChange(e)
+                                }}
+                                variant="standard"
+                                fullWidth
                                 label="מס' מחקר"
                             />
                         </Grid>
@@ -657,14 +741,6 @@ class RequestPurchase extends React.Component {
                         <div id="name-group">
                             <label id="QL" className="title-input">שם החוקר: {this.state.user.displayName}</label>
                             <br/>
-                        </div>
-
-                        <div id="name-group">
-                            <label id="Q15L" className="title-input">חתימת החוקר:</label>
-                            <input type="text" name="q15" id="q15i" placeholder={'התשובה שלך'}
-                                   value={this.state.form.q15 ? (this.state.form.q15) : ('')} onChange={(e) => {
-                                this.handleChange(e)
-                            }} required/>
                         </div>
 
                         <Grid item xs={6}>
@@ -680,11 +756,10 @@ class RequestPurchase extends React.Component {
                                 }}
                                 variant="standard"
                                 fullWidth
-                                label="תאריך החשבונית"
+                                label="חתימת החוקר"
                             />
                         </Grid>
                         <br/>
-
 
                         <Grid item xs={6}>
                             <TextField
@@ -694,6 +769,25 @@ class RequestPurchase extends React.Component {
                                 type="tel"
                                 autoComplete="off"
                                 value={this.state.q17}
+                                onChange={(e) => {
+                                    this.handleChange(e)
+                                }}
+                                variant="standard"
+                                fullWidth
+                                label="תאריך החשבונית"
+                            />
+                        </Grid>
+                        <br/>
+
+
+                        <Grid item xs={6}>
+                            <TextField
+                                inputProps={{style: {textAlign: 'center'}}}
+                                id="q18i"
+                                name="q18"
+                                type="tel"
+                                autoComplete="off"
+                                value={this.state.q18}
                                 onChange={(e) => {
                                     this.handleChange(e)
                                 }}

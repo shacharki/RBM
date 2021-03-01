@@ -83,12 +83,43 @@ class mngRequestPurchase extends Component {
     }
 
 
+    async Word( element ) {
+
+        var html, link, blob, url, css;
+
+        css = (
+            '<style>' +
+            '@page WordSection1{size: 841.95pt 595.35pt;mso-page-orientation: landscape;}' +
+            'div.WordSection1 {page: WordSection1;}' +
+            '</style>'
+        );
+
+        html = element.innerHTML;
+        blob = new Blob(['\ufeff', css + html], {
+            type: 'application/msword'
+        });
+        url = URL.createObjectURL(blob);
+        link = document.createElement('A');
+        link.href = url;
+        link.download = 'Document';  // default name without extension
+        document.body.appendChild(link);
+        if (navigator.msSaveOrOpenBlob ) navigator.msSaveOrOpenBlob( blob, 'Document.doc'); // IE10-11
+        else link.click();  // other browsers
+        document.body.removeChild(link);
+    };
+
     createCsvFile(forms,RequestResearcher)
     {
+        // var url,link
+        //
+        // blob= new Blob([layout/images/imagg.jpg], {
+        //     type: 'application/msword'
+        // });
+        // url = URL.createObjectURL(blob);
+        // link.href = url;
         csvData = [
             [
                 "",
-                "שם החוקר",
                 "תאריך הבקשה",
                 "שם הספק",
                 "נייד",
@@ -97,13 +128,15 @@ class mngRequestPurchase extends Component {
                 "מק'ט",
                 "תיאור הפריט",
                 "מחיר במט'ח",
-                "מחיר בש'ח",
+                "מחיר יח בש'ח",
                 "מס' יחידות",
+                "מחיר בש'ח",
                 "סה'כ כולל מע'מ",
                 "נא לתאם קבלת משלוח עם",
                 "מטרת הרכישה",
                 "תקציב המחקר",
                 "מס' המחקר",
+                "שם החוקר",
                 "חתימת החוקר",
                 "תאריך החשבונית",
                 "מס' חשבונית",
@@ -113,8 +146,8 @@ class mngRequestPurchase extends Component {
         RequestResearcher.map(report=>{
             // console.log(RequestResearcher)
             csvData.push([
-                report.form.team,
-                report.form.name,
+                // report.form.team,
+                // report.form.name,
                 report.form.date,
                 report.form.q1,
                 report.form.q2,
@@ -126,6 +159,18 @@ class mngRequestPurchase extends Component {
                 report.form.q8,
                 report.form.q9,
                 report.form.q10,
+                report.form.q50,
+                report.form.q60,
+                report.form.q70,
+                report.form.q80,
+                report.form.q90,
+                report.form.q100,
+                report.form.q51,
+                report.form.q61,
+                report.form.q71,
+                report.form.q81,
+                report.form.q91,
+                report.form.q101,
                 report.form.q11,
                 report.form.q12,
                 report.form.q13,
@@ -133,7 +178,7 @@ class mngRequestPurchase extends Component {
                 report.form.q15,
                 report.form.q16,
                 report.form.q17,
-
+                report.form.q18,
 
 
 
@@ -266,6 +311,27 @@ class mngRequestPurchase extends Component {
                                 </Grid>
                             </div>
                             {this.state.forms?(
+                                // <Grid  item xs={12} hidden={!this.state.show} >
+                                //
+                                //     <CSVLink
+                                //         data={csvData}
+                                //         filename={this.state.dateFrom+"-"+this.state.dateTo+"בקשות לרכישה.csv"}
+                                //         className="btn btn-primary"
+                                //         target="_blank"
+                                //     >
+                                //         <button>
+                                //             הורדת כל הבקשות לרכישה בתאריכים הנבחרים
+                                //         </button>
+                                //     </CSVLink>
+                                //     {
+                                //         this.state.forms.map((Form,index) => (
+                                //             <Grid  item xs={12}  key={index}>
+                                //                 <hr/>
+                                //                 {this.Requests(Form.data(),index)}
+                                //             </Grid >
+                                //         ))
+                                //     }
+                                // </Grid >
                                 <Grid  item xs={12} hidden={!this.state.show} >
 
                                     <CSVLink
@@ -275,7 +341,7 @@ class mngRequestPurchase extends Component {
                                         target="_blank"
                                     >
                                         <button>
-                                            הורדת כל הבקשות לרכישה בתאריכים הנבחרים
+                                              הורדת הבקשות בתאריכים שנבחרו לאקסל
                                         </button>
                                     </CSVLink>
                                     {
@@ -283,7 +349,19 @@ class mngRequestPurchase extends Component {
                                             <Grid  item xs={12}  key={index}>
                                                 <hr/>
                                                 {this.Requests(Form.data(),index)}
+                                                <CSVLink
+
+                                                    data={csvData}
+                                                    filename={this.state.dateFrom+"-"+this.state.dateTo+"בקשה לרכישה.doc"}
+                                                    className="btn btn-primary"
+                                                    target="_blank"
+                                                >
+                                                    <button>
+                                                        הורדת הבקשה לוורד
+                                                    </button>
+                                                </CSVLink>
                                             </Grid >
+
                                         ))
                                     }
                                 </Grid >
@@ -341,9 +419,9 @@ class mngRequestPurchase extends Component {
                     <div className="report" id="report">
                         <div>
                             <div dir="rtl">
-                                <h4> שם החוקר: {form.nameGuide}</h4>
+                                <h4> שם החוקר: {form.nameResearcher}</h4>
                                 <h4> תאריך הבקשה: {day+'/'+month+"/"+year}</h4>
-                                <h4> שם הספק: {requests.q1}</h4>
+                                <h4><label id="Q1L" className="title-input"> שם הספק: {requests.q1?(requests.q1):('לא נכתבה תשובה לשאלה זו')}</label></h4>
                                 <div id="name-group">
                                     <h4>  <label id="Q2L" className="title-input"> נייד: {requests.q2?(requests.q2):('לא נכתבה תשובה לשאלה זו')}</label>
                                     </h4>
@@ -354,46 +432,124 @@ class mngRequestPurchase extends Component {
                                 <div id="name-group" >
                                     <h4> <label id="Q4L" className="title-input">מצורפת הצעת מחיר מס': {requests.q4?(requests.q4):('לא נכתבה תשובה לשאלה זו')}</label></h4>
                                 </div>
+
+                                <h4>פירוט ההצעה:</h4>
+                                <table border="1">
+
+                                    <tr>
+                                        <th>מק"ט</th>
+                                        <th>תיאור הפריט</th>
+                                        <th>מחיר במט"ח</th>
+                                        <th>מחיר יח' בש"ח</th>
+                                        <th>מס' יחידות</th>
+                                        <th>מחיר בש"ח</th>
+
+                                    </tr>
+                                    <tr>
+                                        <td><div id="name-group" >
+                                            <h4> <label id="Q5L" className="title-input" htmlFor="name">{requests.q5?(requests.q5):('לא נכתבה תשובה לשאלה זו')}</label></h4>
+                                        </div></td>
+
+                                        <td><div id="name-group" >
+                                            <h4> <label id="Q6L" className="title-input" htmlFor="name">{requests.q6?(requests.q6):('לא נכתבה תשובה לשאלה זו')}</label></h4>
+                                        </div></td>
+
+                                        <td><div id="name-group" >
+                                            <h4> <label id="Q7L" className="title-input" htmlFor="name">{requests.q7?(requests.q7):('לא נכתבה תשובה לשאלה זו')}</label></h4>
+                                        </div></td>
+
+                                        <td><div id="name-group" >
+                                            <h4> <label id="Q8L" className="title-input" htmlFor="name"> {requests.q8?(requests.q8):('לא נכתבה תשובה לשאלה זו')}</label></h4>
+                                        </div></td>
+
+                                        <td><div id="name-group" >
+                                            <h4> <label id="insert-name" className="title-input" htmlFor="name"> {requests.q9?(requests.q9):('לא נכתבה תשובה לשאלה זו')}</label></h4>
+                                        </div></td>
+
+                                        <td><div id="name-group" >
+                                            <h4> <label id="insert-name" className="title-input" htmlFor="name"> {requests.q10?(requests.q10):('לא נכתבה תשובה לשאלה זו')}</label></h4>
+                                        </div></td>
+
+                                    </tr>
+
+                                    <tr>
+                                        <td><div id="name-group" >
+                                            <h4> <label id="Q50L" className="title-input" htmlFor="name">{requests.q50?(requests.q50):('לא נכתבה תשובה לשאלה זו')}</label></h4>
+                                        </div></td>
+
+                                        <td><div id="name-group" >
+                                            <h4> <label id="Q60L" className="title-input" htmlFor="name">{requests.q60?(requests.q60):('לא נכתבה תשובה לשאלה זו')}</label></h4>
+                                        </div></td>
+
+                                        <td><div id="name-group" >
+                                            <h4> <label id="Q70L" className="title-input" htmlFor="name">{requests.q70?(requests.q70):('לא נכתבה תשובה לשאלה זו')}</label></h4>
+                                        </div></td>
+
+                                        <td><div id="name-group" >
+                                            <h4> <label id="Q80L" className="title-input" htmlFor="name"> {requests.q80?(requests.q80):('לא נכתבה תשובה לשאלה זו')}</label></h4>
+                                        </div></td>
+
+                                        <td><div id="name-group" >
+                                            <h4> <label id="Q90L" className="title-input" htmlFor="name"> {requests.q90?(requests.q90):('לא נכתבה תשובה לשאלה זו')}</label></h4>
+                                        </div></td>
+
+                                        <td><div id="name-group" >
+                                            <h4> <label id="Q100L" className="title-input" htmlFor="name"> {requests.q100?(requests.q100):('לא נכתבה תשובה לשאלה זו')}</label></h4>
+                                        </div></td>
+
+                                    </tr>
+
+                                    <tr>
+                                        <td><div id="name-group" >
+                                            <h4> <label id="Q51L" className="title-input" htmlFor="name">{requests.q51?(requests.q51):('לא נכתבה תשובה לשאלה זו')}</label></h4>
+                                        </div></td>
+
+                                        <td><div id="name-group" >
+                                            <h4> <label id="Q61L" className="title-input" htmlFor="name">{requests.q61?(requests.q61):('לא נכתבה תשובה לשאלה זו')}</label></h4>
+                                        </div></td>
+
+                                        <td><div id="name-group" >
+                                            <h4> <label id="Q71L" className="title-input" htmlFor="name">{requests.q71?(requests.q71):('לא נכתבה תשובה לשאלה זו')}</label></h4>
+                                        </div></td>
+
+                                        <td><div id="name-group" >
+                                            <h4> <label id="Q81L" className="title-input" htmlFor="name"> {requests.q81?(requests.q81):('לא נכתבה תשובה לשאלה זו')}</label></h4>
+                                        </div></td>
+
+                                        <td><div id="name-group" >
+                                            <h4> <label id="Q91L" className="title-input" htmlFor="name"> {requests.q91?(requests.q91):('לא נכתבה תשובה לשאלה זו')}</label></h4>
+                                        </div></td>
+
+                                        <td><div id="name-group" >
+                                            <h4> <label id="Q101L" className="title-input" htmlFor="name"> {requests.q101?(requests.q101):('לא נכתבה תשובה לשאלה זו')}</label></h4>
+                                        </div></td>
+
+                                    </tr>
+                                </table>
+
                                 <div id="name-group" >
-                                    <h4> <label id="Q5L" className="title-input">מק"ט: {requests.q5?(requests.q5):('לא נכתבה תשובה לשאלה זו')}</label></h4>
+                                    <h4> <label id="Q11L" className="title-input" htmlFor="name">סה"כ כולל מע"מ: {requests.q11?(requests.q11):('לא נכתבה תשובה לשאלה זו')}</label></h4>
                                 </div>
                                 <div id="name-group" >
-                                    <h4> <label id="Q6L" className="title-input">תיאור הפריט:</label></h4>
-                                    {requests.q6?(requests.q6):('לא נכתבה תשובה לשאלה זו')}
+                                    <h4> <label id="Q12L" className="title-input" htmlFor="name">נא לתאם קבלת משלוח עם: {requests.q12?(requests.q12):('לא נכתבה תשובה לשאלה זו')}</label></h4>
                                 </div>
                                 <div id="name-group" >
-                                    <h4> <label id="Q7L" className="title-input" htmlFor="name">מחיר במט"ח: {requests.q7?(requests.q7):('לא נכתבה תשובה לשאלה זו')}</label></h4>
+                                    <h4> <label id="Q13L" className="title-input" htmlFor="name">מטרת הרכישה:</label></h4>{requests.q13?(requests.q13):('לא נכתבה תשובה לשאלה זו')}
                                 </div>
                                 <div id="name-group" >
-                                    <h4> <label id="Q8L" className="title-input" htmlFor="name">מחיר בש"ח: {requests.q8?(requests.q8):('לא נכתבה תשובה לשאלה זו')}</label></h4>
+                                    <h4> <label id="Q14L" className="title-input" htmlFor="name">תקציב המחקר: {requests.q14?(requests.q14):('לא נכתבה תשובה לשאלה זו')}</label></h4>
                                 </div>
                                 <div id="name-group" >
-                                    <h4> <label id="insert-name" className="title-input" htmlFor="name">מס' יחידות: {requests.q9?(requests.q9):('לא נכתבה תשובה לשאלה זו')}</label></h4>
+                                    <h4> <label id="Q15L" className="title-input" htmlFor="name">מס' המחקר: {requests.q15?(requests.q15):('לא נכתבה תשובה לשאלה זו')}</label></h4>
                                 </div>
                                 <div id="name-group" >
-                                    <h4> <label id="Q10L" className="title-input" htmlFor="name">סה"כ כולל מע"מ: {requests.q10?(requests.q10):('לא נכתבה תשובה לשאלה זו')}</label></h4>
+                                    <h4> <label id="Q16L" className="title-input" htmlFor="name">חתימת החוקר: {requests.q16?(requests.q16):('לא נכתבה תשובה לשאלה זו')}</label></h4>
                                 </div>
                                 <div id="name-group" >
-                                    <h4> <label id="Q11L" className="title-input" htmlFor="name">נא לתאם קבלת משלוח עם: {requests.q11?(requests.q11):('לא נכתבה תשובה לשאלה זו')}</label></h4>
+                                    <h4> <label id="Q17L" className="title-input" htmlFor="name">תאריך החשבונית: {requests.q17?(requests.q17):('לא נכתבה תשובה לשאלה זו')}</label></h4>
                                 </div>
                                 <div id="name-group" >
-                                    <h4> <label id="Q12L" className="title-input" htmlFor="name">מטרת הרכישה:</label></h4>
-                                    {requests.q12?(requests.q12):('לא נכתבה תשובה לשאלה זו')}
-                                </div>
-                                <div id="name-group" >
-                                    <h4> <label id="Q13L" className="title-input" htmlFor="name">תקציב המחקר: {requests.q13?(requests.q13):('לא נכתבה תשובה לשאלה זו')}</label></h4>
-                                </div>
-                                <div id="name-group" >
-                                    <h4> <label id="Q14L" className="title-input" htmlFor="name">מס' המחקר: {requests.q14?(requests.q14):('לא נכתבה תשובה לשאלה זו')}</label></h4>
-                                </div>
-                                <div id="name-group" >
-                                    <h4> <label id="Q15L" className="title-input" htmlFor="name">חתימת החוקר: {requests.q15?(requests.q15):('לא נכתבה תשובה לשאלה זו')}</label></h4>
-                                </div>
-                                <div id="name-group" >
-                                    <h4> <label id="Q16L" className="title-input" htmlFor="name">תאריך החשבונית: {requests.q16?(requests.q16):('לא נכתבה תשובה לשאלה זו')}</label></h4>
-                                </div>
-                                <div id="name-group" >
-                                    <h4> <label id="Q17L" className="title-input" htmlFor="name">מס' חשבונית: {requests.q17?(requests.q17):('לא נכתבה תשובה לשאלה זו')}</label></h4>
+                                    <h4> <label id="Q18L" className="title-input" htmlFor="name">מס' חשבונית: {requests.q18?(requests.q18):('לא נכתבה תשובה לשאלה זו')}</label></h4>
                                 </div>
                             </div>
                         </div>

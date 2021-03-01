@@ -50,11 +50,11 @@ class SignUp extends React.Component {
                 .orderBy('name','asc')
                 .get()
              console.log("nameTeams",nameTeams)
-            nameTeams.forEach(doc => {
 
+            nameTeams.forEach(doc => {
                 options.push({value: doc.ref, label: doc.data().name})
             })
-             console.log("options",options)
+            console.log("options",options)
 
         }
     }

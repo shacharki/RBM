@@ -14,7 +14,7 @@ var emptyStudentsOptions = []
 var emptyTeamOptions = []
 var TeamOptions = []
 var csvresearchersData = []
-var csvStudentsData = []
+var csvmanagersData = []
 class UpdatesFirebase extends Component {
 
     constructor(props) {
@@ -64,6 +64,7 @@ class UpdatesFirebase extends Component {
     }
 
 
+
     createCsvFile(users,type)
     {
         if(type ==='researcher')
@@ -99,7 +100,7 @@ class UpdatesFirebase extends Component {
         }
         else
         {
-            csvStudentsData = [
+            csvmanagersData = [
                 [
                     "שם פרטי",
                     "שם משפחה",
@@ -112,7 +113,7 @@ class UpdatesFirebase extends Component {
             ];
             users.map(user=>{
                 if(user) {
-                    csvStudentsData.push([
+                    csvmanagersData.push([
                         user.data().fname,
                         user.data().lname,
                         user.data().ID,
@@ -251,13 +252,13 @@ class UpdatesFirebase extends Component {
                                     this.getAllUsers('researcher')
                                     this.setState({showresearchers:!this.state.showresearchers,researcherTeamName:null,researcherName:null})
 
-                                }} >{this.state.showresearchers?'הסתר רשימת משתמשים':'הצג רשימת משתמשים'}</button>
+                                }} >{this.state.showresearchers?'הסתר רשימת חוקרים':'הצג רשימת חוקרים'}</button>
                                 {
                                     (this.state.showresearchers && this.state.researchers) ? (
                                         <div>
                                             <Grid item xs={12}>
                                                 נמצאו:{this.state.researchers.length} חוקרים
-                                                <Select placeholder={" מצא משתמש "} options={researchersOptions}
+                                                <Select placeholder={" מצא חוקר "} options={researchersOptions}
                                                         onChange={(e) => {
                                                             // console.log(e.label, e.value);
                                                             this.setState({researchers: [e.value]})
@@ -276,7 +277,21 @@ class UpdatesFirebase extends Component {
                                                     </button>
                                                 </CSVLink>
                                             </Grid>
+
+                                            <Grid item xs={12}>
+                                                <CSVLink
+                                                    data={csvresearchersData}
+                                                    filename={"רשימת חוקרים.doc"}
+                                                    className="btn btn-primary"
+                                                    target="_blank"
+                                                >
+                                                    <button>
+                                                         וורד הורדת פרטי קשר חוקרים
+                                                    </button>
+                                                </CSVLink>
+                                            </Grid>
                                         </div> ) : ('')
+
                                 }
                                 {
                                     (!this.state.researchers || !this.state.showresearchers)?'':
@@ -518,30 +533,30 @@ class UpdatesFirebase extends Component {
                         <h4> חוקר: {user.teamName}</h4>
                         <Grid container spacing={2}>
                             <Grid item xs={8}>
-                                <Select  placeholder={" החלף חוקר "} options={options} onChange={(e)=>{
-                                    // console.log(e.label,e.value);
-                                    user.optionss = e.label
-                                    var teamPath = this.state.researcherTeamPath
-                                    var teamName = this.state.researcherTeamName
-                                    if(teamPath && teamName) {
-                                        if (index < teamPath.length) {
-                                            teamPath[index] = e.value
-                                            teamName[index] = e.label
-                                        }
-                                        else
-                                        {
-                                            teamPath.push(e.value)
-                                            teamName.push(e.label)
-                                        }
-                                    }
-                                    else
-                                    {
-                                        teamPath = [e.value]
-                                        teamName = [e.label]
+                                {/*<Select  placeholder={" החלף חוקר "} options={options} onChange={(e)=>{*/}
+                                {/*    // console.log(e.label,e.value);*/}
+                                {/*    user.optionss = e.label*/}
+                                {/*    var teamPath = this.state.researcherTeamPath*/}
+                                {/*    var teamName = this.state.researcherTeamName*/}
+                                {/*    if(teamPath && teamName) {*/}
+                                {/*        if (index < teamPath.length) {*/}
+                                {/*            teamPath[index] = e.value*/}
+                                {/*            teamName[index] = e.label*/}
+                                {/*        }*/}
+                                {/*        else*/}
+                                {/*        {*/}
+                                {/*            teamPath.push(e.value)*/}
+                                {/*            teamName.push(e.label)*/}
+                                {/*        }*/}
+                                {/*    }*/}
+                                {/*    else*/}
+                                {/*    {*/}
+                                {/*        teamPath = [e.value]*/}
+                                {/*        teamName = [e.label]*/}
 
-                                    }
-                                    this.setState({researcherTeamPath:teamPath,researcherTeamName:teamName})
-                                }} />
+                                {/*    }*/}
+                                {/*    this.setState({researcherTeamPath:teamPath,researcherTeamName:teamName})*/}
+                                {/*}} />*/}
                             </Grid>
 
                         </Grid>
