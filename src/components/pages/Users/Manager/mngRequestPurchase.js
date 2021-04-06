@@ -4,9 +4,15 @@ import Select from "react-select";
 import {auth, db, getPathData, getUser} from "../../../../firebase/firebase";
 import ClipLoader from "react-spinners/ClipLoader";
 import { CSVLink } from "react-csv";
+import {Button} from "@material-ui/core";
+import * as docx from "docx";
 
+import { saveAs } from "file-saver";
+import {Footer, Header, Paragraph} from "docx";
+import { readFileSync } from 'fs';
+import TextField from "@material-ui/core/TextField";
 
-
+var sum =0
 var csvData = [];
 
 
@@ -14,22 +20,89 @@ class mngRequestPurchase extends Component {
 
     constructor(props) {
         super(props);
-        this.state =
-            {
-                isLoaded:false,
-                show:false,
-                loadPage:false,
-                spinner: [true,'נא להמתין הדף נטען'],
+        this.state = {
+            loadPage:false,
+            spinner: [true,'נא להמתין הדף נטען'],
+            page:'menu',
+            user: props.location,
+            error:false,
+            showreport:false,
+            loading: true,
+            rule:"Manager",
+            prevDate:'',
+            viewResearcher: false,
+            date:"",
+            form : {
+                date:"",
+                team:"",
+                name:"",
             }
+        };
+
+
+        this.handleSubmit = this.handleSubmit.bind(this)
+        this.handleChange = this.handleChange.bind(this)
+        this.approvResearcher = this.approvResearcher.bind(this)
+        this.RequestPurchase = this.RequestPurchase.bind(this)
     }
 
 
-
+    // async  GetAllData() {
+    //     this.loadSpinner(true,"מיבא נתונים")
+    //     var from = this.GetDates(this.state.dateFrom)
+    //     var to = this.GetDates(this.state.dateTo)
+    //
+    //
+    //     if(!this.state.dateFrom || !this.state.dateTo )
+    //     {
+    //         alert("נא למלא תאריך התחלה וסיום")
+    //         this.loadSpinner(false,'')
+    //         return
+    //     }
+    //
+    //     var optionsAll=[]
+    //
+    //     var allData = await db.collection("Data")
+    //         .orderBy('date').get()
+    //
+    //     var TeamcollectionAll = allData.docs.map( async function(doc) {
+    //         // console.log("in 2")
+    //         var RequestsAll = await db.collection("Data").doc().collection("Requests")
+    //             .where('date','>=',from)
+    //             .where('date','<=',to)
+    //             .get()
+    //
+    //         if(!RequestsAll.empty)
+    //         {
+    //             var formsAll=[]
+    //             RequestsAll.forEach(async function(doc){
+    //                 if(doc.data().RequestResearcher)
+    //                 {
+    //                     var FormsResearcherAll = await getPathData(doc.data().RequestResearcher.path)
+    //                     formsAll.push(FormsResearcherAll)
+    //                 }
+    //             })
+    //             return [doc,RequestsAll,formsAll]
+    //         }
+    //
+    //     })
+    //     Promise.all(TeamcollectionAll).then(res => {
+    //         res.forEach(item=>{
+    //             // console.log("in 3")
+    //             if(item)
+    //                 optionsAll.push({ value: item, label:  item[0].data(), name: 'הצג הכל'})
+    //         })
+    //         this.setState({optionsAll:optionsAll})
+    //         // console.log("in 4")
+    //         this.loadSpinner(false,"")
+    //     })
+    // }
 
     async  GetData() {
         this.loadSpinner(true,"מיבא נתונים")
         var from = this.GetDates(this.state.dateFrom)
         var to = this.GetDates(this.state.dateTo)
+
 
         if(!this.state.dateFrom || !this.state.dateTo )
         {
@@ -43,10 +116,11 @@ class mngRequestPurchase extends Component {
         var nameData = await db.collection("Data")
             .orderBy('name','asc')
             .get()
+        // var allData = await db.collection("Data")
+        //     .orderBy('date').get()
+        //
+        // console.log("allData",allData)
 
-
-
-        // console.log("in 1")
         var Teamcollection = nameData.docs.map( async function(doc) {
             // console.log("in 2")
             var Requests = await db.collection("Data").doc(doc.id).collection("Requests")
@@ -79,7 +153,6 @@ class mngRequestPurchase extends Component {
             // console.log("in 4")
             this.loadSpinner(false,"")
         })
-
     }
 
 
@@ -106,6 +179,7 @@ class mngRequestPurchase extends Component {
         if (navigator.msSaveOrOpenBlob ) navigator.msSaveOrOpenBlob( blob, 'Document.doc'); // IE10-11
         else link.click();  // other browsers
         document.body.removeChild(link);
+        alert("test")
     };
 
     createCsvFile(forms,RequestResearcher)
@@ -190,7 +264,7 @@ class mngRequestPurchase extends Component {
 
     async componentDidMount() {
         var href =  window.location.href.split("/",5)
-        // console.log(href)
+
         auth.onAuthStateChanged(async user=>{
             if(user)
             {
@@ -287,6 +361,16 @@ class mngRequestPurchase extends Component {
                                             className="fa fa-arrow-right"></span></button>
                                     </Grid>
 
+
+
+                                    {/*<Grid item xs={6} hidden={!this.state.optionsAll}>*/}
+                                    {/*    <button id="select" className="btn btn-info" onClick={()=>{*/}
+                                    {/*        this.GetAllData()*/}
+                                    {/*    }}>הצג הכל<span*/}
+                                    {/*        className="fa fa-arrow-right"></span></button>*/}
+                                    {/*</Grid>*/}
+
+
                                     <Grid item xs={6} hidden={!this.state.options}>
                                         <Select id = 'select'  placeholder={" בחר חוקר "} options={this.state.options} onChange={(e)=>{
                                             // console.log(e.label,e.value);
@@ -344,23 +428,42 @@ class mngRequestPurchase extends Component {
                                               הורדת הבקשות בתאריכים שנבחרו לאקסל
                                         </button>
                                     </CSVLink>
+
+
+
                                     {
+
                                         this.state.forms.map((Form,index) => (
-                                            <Grid  item xs={12}  key={index}>
+                                            <Grid item xs={12} key={index}>
                                                 <hr/>
                                                 {this.Requests(Form.data(),index)}
-                                                <CSVLink
-
-                                                    data={csvData}
-                                                    filename={this.state.dateFrom+"-"+this.state.dateTo+"בקשה לרכישה.doc"}
-                                                    className="btn btn-primary"
-                                                    target="_blank"
-                                                >
-                                                    <button>
-                                                        הורדת הבקשה לוורד
-                                                    </button>
-                                                </CSVLink>
-                                            </Grid >
+                                                <div>
+                                                    <Button
+                                                        type="submit"
+                                                        fullWidth
+                                                        variant="contained"
+                                                        onClick={() => {
+                                                            this.generate()
+                                                        }}>
+                                                        הורדת קובץ
+                                                    </Button>
+                                                </div>
+                                            </Grid>
+                                            // <Grid  item xs={12}  key={index}>
+                                            //     <hr/>
+                                            //     {this.Requests(Form.data(),index)}
+                                            //     <CSVLink
+                                            //
+                                            //         data={csvData}
+                                            //         filename={this.state.dateFrom+"-"+this.state.dateTo+"בקשה לרכישה.doc"}
+                                            //         className="btn btn-primary"
+                                            //         target="_blank"
+                                            //     >
+                                            //         <button>
+                                            //             הורדת הבקשה לוורד
+                                            //         </button>
+                                            //     </CSVLink>
+                                            // </Grid >
 
                                         ))
                                     }
@@ -372,7 +475,6 @@ class mngRequestPurchase extends Component {
                 </div>
             )
         } else {
-            // console.log(this.state.spinner)
             return (
                 <div>
                     {!this.state.spinner[0] ? "" :
@@ -383,7 +485,6 @@ class mngRequestPurchase extends Component {
                                     backgroundColor: "rgba(255,255,255,0.85)",
                                     borderRadius: "25px"
                                 }}
-                                    //   css={override}
                                             size={120}
                                             color={"#123abc"}
 
@@ -395,25 +496,108 @@ class mngRequestPurchase extends Component {
         }
     }
 
+
+
+
+
+
+
+    generate() {
+        const doc = new docx.Document();
+        const path = require('path');
+        const fs = require('fs')
+        const { promisify } = require('util');
+
+
+        const {
+                Media,
+                Paragraph,
+            } = docx;
+
+        // const filePath = '../../../layout/images/logoUp.jpg';
+
+
+        try {
+            const data = fs.readFileSync('../../../layout/images/logoUp.jpg', 'utf8')
+            console.log("data",data)
+        } catch (err) {
+            console.error(err)
+            console.log("err")
+
+        }
+        var img = '../../../layout/images/logoUp.jpg'
+
+        doc.addSection({
+            properties: {},
+            headers: {
+                default: new Header({
+                    // children: [new Paragraph("Header text")],
+                    children: [ new Paragraph(img)],
+                }),
+            },
+            footers: {
+                default: new Footer({
+                    children: [new Paragraph("Footer text")],
+                }),
+            },
+            children: [
+                new Paragraph({
+                    children: [
+                        new docx.TextRun("Hello World"),
+                        new docx.TextRun({
+                            text: "Foo Bar",
+                            bold: true,
+                        }),
+
+                    ],
+
+                }),
+                new Paragraph({
+                    children: [
+                        new docx.TextRun({
+                            text: "\tGithub is the best",
+                            bold: true,
+                        }),
+
+                    ],
+
+                }),
+
+            ],
+        });
+
+        docx.Packer.toBlob(doc).then(blob => {
+            console.log(blob);
+            saveAs(blob, "בקשה לרכישה.doc");
+            console.log("Document created successfully");
+
+
+        });
+    }
+
+
     Requests(form,index)
     {
-        // console.log(csvData)
-        //  console.log("this.state",this.state)
+        var user = form.uid
+        // console.log("form",form)
+        //
         // console.log("this.state.RequestResearcher",this.state.RequestResearcher)
 
         if(index>=this.state.RequestResearcher.length)
         {
             return
         }
-        // console.log(this.state.show)
         if(form && this.state.show) {
-            // console.log(form)
             var requests = this.state.RequestResearcher[index].form
             var date =form.date.toDate()
             var day = date.getDate()
             var month = date.getMonth()+1
             var year = date.getFullYear()
-            // console.log(RequestResearcher)
+            if (day<10)
+                day='0'+day
+            if (month<10)
+                month='0'+month
+
             return (
                 <div id="name-group" className="form-group" dir="rtl">
                     <div className="report" id="report">
@@ -421,16 +605,16 @@ class mngRequestPurchase extends Component {
                             <div dir="rtl">
                                 <h4> שם החוקר: {form.nameResearcher}</h4>
                                 <h4> תאריך הבקשה: {day+'/'+month+"/"+year}</h4>
-                                <h4><label id="Q1L" className="title-input"> שם הספק: {requests.q1?(requests.q1):('לא נכתבה תשובה לשאלה זו')}</label></h4>
+                                <h4><label id="Q1L" className="title-input"> שם הספק: {requests.q1?(requests.q1):('')}</label></h4>
                                 <div id="name-group">
-                                    <h4>  <label id="Q2L" className="title-input"> נייד: {requests.q2?(requests.q2):('לא נכתבה תשובה לשאלה זו')}</label>
+                                    <h4>  <label id="Q2L" className="title-input"> נייד: {requests.q2?(requests.q2):('')}</label>
                                     </h4>
                                 </div>
                                 <div id="name-group" >
-                                    <h4><label id="Q3L" className="title-input"> טופס הזמנה מס': {requests.q3?(requests.q3):('לא נכתבה תשובה לשאלה זו')}</label></h4>
+                                    <h4><label id="Q3L" className="title-input"> טופס הזמנה מס': {requests.q3?(requests.q3):('')}</label></h4>
                                 </div>
                                 <div id="name-group" >
-                                    <h4> <label id="Q4L" className="title-input">מצורפת הצעת מחיר מס': {requests.q4?(requests.q4):('לא נכתבה תשובה לשאלה זו')}</label></h4>
+                                    <h4> <label id="Q4L" className="title-input">מצורפת הצעת מחיר מס': {requests.q4?(requests.q4):('')}</label></h4>
                                 </div>
 
                                 <h4>פירוט ההצעה:</h4>
@@ -447,110 +631,162 @@ class mngRequestPurchase extends Component {
                                     </tr>
                                     <tr>
                                         <td><div id="name-group" >
-                                            <h4> <label id="Q5L" className="title-input" htmlFor="name">{requests.q5?(requests.q5):('לא נכתבה תשובה לשאלה זו')}</label></h4>
+                                            <h4> <label id="Q5L" className="title-input" htmlFor="name">{requests.q5?(requests.q5):('')}</label></h4>
                                         </div></td>
 
                                         <td><div id="name-group" >
-                                            <h4> <label id="Q6L" className="title-input" htmlFor="name">{requests.q6?(requests.q6):('לא נכתבה תשובה לשאלה זו')}</label></h4>
+                                            <h4> <label id="Q6L" className="title-input" htmlFor="name">{requests.q6?(requests.q6):('')}</label></h4>
                                         </div></td>
 
                                         <td><div id="name-group" >
-                                            <h4> <label id="Q7L" className="title-input" htmlFor="name">{requests.q7?(requests.q7):('לא נכתבה תשובה לשאלה זו')}</label></h4>
+                                            <h4> <label id="Q7L" className="title-input" htmlFor="name">{requests.q7?(requests.q7):('')}</label></h4>
                                         </div></td>
 
                                         <td><div id="name-group" >
-                                            <h4> <label id="Q8L" className="title-input" htmlFor="name"> {requests.q8?(requests.q8):('לא נכתבה תשובה לשאלה זו')}</label></h4>
+                                            <h4> <label id="Q8L" className="title-input" htmlFor="name"> {requests.q8?(requests.q8):('')}</label></h4>
                                         </div></td>
 
                                         <td><div id="name-group" >
-                                            <h4> <label id="insert-name" className="title-input" htmlFor="name"> {requests.q9?(requests.q9):('לא נכתבה תשובה לשאלה זו')}</label></h4>
+                                            <h4> <label id="insert-name" className="title-input" htmlFor="name"> {requests.q9?(requests.q9):('')}</label></h4>
                                         </div></td>
 
                                         <td><div id="name-group" >
-                                            <h4> <label id="insert-name" className="title-input" htmlFor="name"> {requests.q10?(requests.q10):('לא נכתבה תשובה לשאלה זו')}</label></h4>
-                                        </div></td>
-
-                                    </tr>
-
-                                    <tr>
-                                        <td><div id="name-group" >
-                                            <h4> <label id="Q50L" className="title-input" htmlFor="name">{requests.q50?(requests.q50):('לא נכתבה תשובה לשאלה זו')}</label></h4>
-                                        </div></td>
-
-                                        <td><div id="name-group" >
-                                            <h4> <label id="Q60L" className="title-input" htmlFor="name">{requests.q60?(requests.q60):('לא נכתבה תשובה לשאלה זו')}</label></h4>
-                                        </div></td>
-
-                                        <td><div id="name-group" >
-                                            <h4> <label id="Q70L" className="title-input" htmlFor="name">{requests.q70?(requests.q70):('לא נכתבה תשובה לשאלה זו')}</label></h4>
-                                        </div></td>
-
-                                        <td><div id="name-group" >
-                                            <h4> <label id="Q80L" className="title-input" htmlFor="name"> {requests.q80?(requests.q80):('לא נכתבה תשובה לשאלה זו')}</label></h4>
-                                        </div></td>
-
-                                        <td><div id="name-group" >
-                                            <h4> <label id="Q90L" className="title-input" htmlFor="name"> {requests.q90?(requests.q90):('לא נכתבה תשובה לשאלה זו')}</label></h4>
-                                        </div></td>
-
-                                        <td><div id="name-group" >
-                                            <h4> <label id="Q100L" className="title-input" htmlFor="name"> {requests.q100?(requests.q100):('לא נכתבה תשובה לשאלה זו')}</label></h4>
+                                            <h4> <label id="insert-name" className="title-input" htmlFor="name"> {requests.q10?(requests.q10):('')}</label></h4>
                                         </div></td>
 
                                     </tr>
 
                                     <tr>
                                         <td><div id="name-group" >
-                                            <h4> <label id="Q51L" className="title-input" htmlFor="name">{requests.q51?(requests.q51):('לא נכתבה תשובה לשאלה זו')}</label></h4>
+                                            <h4> <label id="Q50L" className="title-input" htmlFor="name">{requests.q50?(requests.q50):('')}</label></h4>
                                         </div></td>
 
                                         <td><div id="name-group" >
-                                            <h4> <label id="Q61L" className="title-input" htmlFor="name">{requests.q61?(requests.q61):('לא נכתבה תשובה לשאלה זו')}</label></h4>
+                                            <h4> <label id="Q60L" className="title-input" htmlFor="name">{requests.q60?(requests.q60):('')}</label></h4>
                                         </div></td>
 
                                         <td><div id="name-group" >
-                                            <h4> <label id="Q71L" className="title-input" htmlFor="name">{requests.q71?(requests.q71):('לא נכתבה תשובה לשאלה זו')}</label></h4>
+                                            <h4> <label id="Q70L" className="title-input" htmlFor="name">{requests.q70?(requests.q70):('')}</label></h4>
                                         </div></td>
 
                                         <td><div id="name-group" >
-                                            <h4> <label id="Q81L" className="title-input" htmlFor="name"> {requests.q81?(requests.q81):('לא נכתבה תשובה לשאלה זו')}</label></h4>
+                                            <h4> <label id="Q80L" className="title-input" htmlFor="name"> {requests.q80?(requests.q80):('')}</label></h4>
                                         </div></td>
 
                                         <td><div id="name-group" >
-                                            <h4> <label id="Q91L" className="title-input" htmlFor="name"> {requests.q91?(requests.q91):('לא נכתבה תשובה לשאלה זו')}</label></h4>
+                                            <h4> <label id="Q90L" className="title-input" htmlFor="name"> {requests.q90?(requests.q90):('')}</label></h4>
                                         </div></td>
 
                                         <td><div id="name-group" >
-                                            <h4> <label id="Q101L" className="title-input" htmlFor="name"> {requests.q101?(requests.q101):('לא נכתבה תשובה לשאלה זו')}</label></h4>
+                                            <h4> <label id="Q100L" className="title-input" htmlFor="name"> {requests.q100?(requests.q100):('')}</label></h4>
+                                        </div></td>
+
+                                    </tr>
+
+                                    <tr>
+                                        <td><div id="name-group" >
+                                            <h4> <label id="Q51L" className="title-input" htmlFor="name">{requests.q51?(requests.q51):('')}</label></h4>
+                                        </div></td>
+
+                                        <td><div id="name-group" >
+                                            <h4> <label id="Q61L" className="title-input" htmlFor="name">{requests.q61?(requests.q61):('')}</label></h4>
+                                        </div></td>
+
+                                        <td><div id="name-group" >
+                                            <h4> <label id="Q71L" className="title-input" htmlFor="name">{requests.q71?(requests.q71):('')}</label></h4>
+                                        </div></td>
+
+                                        <td><div id="name-group" >
+                                            <h4> <label id="Q81L" className="title-input" htmlFor="name"> {requests.q81?(requests.q81):('')}</label></h4>
+                                        </div></td>
+
+                                        <td><div id="name-group" >
+                                            <h4> <label id="Q91L" className="title-input" htmlFor="name"> {requests.q91?(requests.q91):('')}</label></h4>
+                                        </div></td>
+
+                                        <td><div id="name-group" >
+                                            <h4> <label id="Q101L" className="title-input" htmlFor="name"> {requests.q101?(requests.q101):('')}</label></h4>
                                         </div></td>
 
                                     </tr>
                                 </table>
 
                                 <div id="name-group" >
-                                    <h4> <label id="Q11L" className="title-input" htmlFor="name">סה"כ כולל מע"מ: {requests.q11?(requests.q11):('לא נכתבה תשובה לשאלה זו')}</label></h4>
+                                    <h4> <label id="Q11L" className="title-input" htmlFor="name">סה"כ כולל מע"מ: {requests.q11?(requests.q11):('')}</label></h4>
                                 </div>
                                 <div id="name-group" >
-                                    <h4> <label id="Q12L" className="title-input" htmlFor="name">נא לתאם קבלת משלוח עם: {requests.q12?(requests.q12):('לא נכתבה תשובה לשאלה זו')}</label></h4>
+                                    <h4> <label id="Q12L" className="title-input" htmlFor="name">נא לתאם קבלת משלוח עם: {requests.q12?(requests.q12):('')}</label></h4>
                                 </div>
                                 <div id="name-group" >
-                                    <h4> <label id="Q13L" className="title-input" htmlFor="name">מטרת הרכישה:</label></h4>{requests.q13?(requests.q13):('לא נכתבה תשובה לשאלה זו')}
+                                    <h4> <label id="Q13L" className="title-input" htmlFor="name">מטרת הרכישה:</label></h4>{requests.q13?(requests.q13):('')}
                                 </div>
                                 <div id="name-group" >
-                                    <h4> <label id="Q14L" className="title-input" htmlFor="name">תקציב המחקר: {requests.q14?(requests.q14):('לא נכתבה תשובה לשאלה זו')}</label></h4>
+                                    <h4> <label id="Q14L" className="title-input" htmlFor="name">תקציב המחקר: {requests.q14?(requests.q14):('')}</label></h4>
                                 </div>
                                 <div id="name-group" >
-                                    <h4> <label id="Q15L" className="title-input" htmlFor="name">מס' המחקר: {requests.q15?(requests.q15):('לא נכתבה תשובה לשאלה זו')}</label></h4>
+                                    <h4> <label id="Q15L" className="title-input" htmlFor="name">מס' המחקר: {requests.q15?(requests.q15):('')}</label></h4>
                                 </div>
                                 <div id="name-group" >
-                                    <h4> <label id="Q16L" className="title-input" htmlFor="name">חתימת החוקר: {requests.q16?(requests.q16):('לא נכתבה תשובה לשאלה זו')}</label></h4>
+                                    <h4> <label id="Q16L" className="title-input" htmlFor="name">חתימת החוקר: {requests.q16?(requests.q16):('')}</label></h4>
+                                </div>
+
+                                <div id="name-group" >
+                                    <h4> <label id="Q17L" className="title-input" htmlFor="name">תאריך החשבונית: {requests.q17?(requests.q17):('')}</label></h4>
                                 </div>
                                 <div id="name-group" >
-                                    <h4> <label id="Q17L" className="title-input" htmlFor="name">תאריך החשבונית: {requests.q17?(requests.q17):('לא נכתבה תשובה לשאלה זו')}</label></h4>
+                                    <h4> <label id="Q18L" className="title-input" htmlFor="name">מס' חשבונית: {requests.q18?(requests.q18):('')}</label></h4>
                                 </div>
-                                <div id="name-group" >
-                                    <h4> <label id="Q18L" className="title-input" htmlFor="name">מס' חשבונית: {requests.q18?(requests.q18):('לא נכתבה תשובה לשאלה זו')}</label></h4>
-                                </div>
+
+                                <Grid item xs={6}>
+                                    <TextField
+                                        inputProps={{style: {textAlign: 'center'}}}
+                                        id="q17i"
+                                        name="q17"
+                                        type="tel"
+                                        autoComplete="off"
+                                        value={this.state.q17}
+                                        onChange={(e) => {
+                                            this.handleChange(e,year+'-'+month+"-"+day,user,sum)
+                                            //console.log("auth.currentUser.uid",auth.currentUser.uid)
+                                            if(sum==0)
+                                                sum=1
+                                        }}
+                                        variant="standard"
+                                        fullWidth
+                                        label="תאריך החשבונית"
+                                    />
+                                </Grid>
+                                <br/>
+
+
+                                <Grid item xs={6} hidden={this.state.q17==''}>
+                                    <TextField
+                                        inputProps={{style: {textAlign: 'center'}}}
+                                        id="q18i"
+                                        name="q18"
+                                        type="tel"
+                                        autoComplete="off"
+                                        value={this.state.q18}
+                                        onChange={(e) => {
+                                            this.handleChange(e,year+'-'+month+"-"+day,user,sum)
+                                            if (sum==0)
+                                                sum=2
+                                        }}
+                                        variant="standard"
+                                        fullWidth
+                                        label="מס' חשבונית"
+                                    />
+                                </Grid>
+                                <button id="sendData" className="btn btn-info" onClick={() => {
+
+                                    sum=0
+                                    this.sendRequest(this.state.form,year+'-'+month+"-"+day,user)
+
+                                }}>שמירת נתונים
+                                </button>
+                                {/*</Grid>*/}
+
+
                             </div>
                         </div>
                     </div>
@@ -591,6 +827,275 @@ class mngRequestPurchase extends Component {
         return {year,month,day}
     }
 
+    async handleChange(event,date,user,sum)
+    {
+        var form=''
+        var user1 =form.uid
+        var name = event.target.name;
+        var value = event.target.value;
+        var e = event.target
+    //     console.log("user",user)
+    //     console.log("user1",user1)
+    //     console.log("value2",value)
+    //     console.log("e2",e)
+    //     console.log("this.state.q18",this.state.q18)
+    //     console.log("this.state.q17",this.state.q17)
+
+    if( (sum==0&&name === 'q17') || (sum==1&&name === 'q18') )
+    {
+
+
+        if(name === 'q17' && event.target.value!=='' )
+        {
+
+
+            this.loadSpinner(true,"טוען נתוני חוקר")
+                // console.log("this.state.teamName",this.state.teamName)
+                // console.log("auth.currentUser.uid",auth.currentUser.uid)
+
+                var formResearcher = await db.collection("researcher").doc(user).collection("request").doc(date).get()
+
+            //     console.log("formResearcher",formResearcher)
+            // console.log("formResearcher.data()2",formResearcher.data())
+
+            if(formResearcher.data())
+            {
+                this.setState({form:formResearcher.data().form})
+                form = this.state.form
+                form[name] = value;
+                this.setState({form:form})
+
+            }
+
+        }
+        else if(name === 'q18')
+        {
+            form = this.state.form
+            form[name] = value;
+            this.setState({form:form})
+        }
+    }
+    else if((sum==0&&name === 'q18') || (sum==2&&name === 'q17')){
+        if(name === 'q18' && event.target.value!=='' )
+        {
+            this.loadSpinner(true,"טוען נתוני חוקר")
+            // console.log("this.state.teamName",this.state.teamName)
+            // console.log("auth.currentUser.uid",auth.currentUser.uid)
+
+            var formResearcher = await db.collection("researcher").doc(user).collection("request").doc(date).get()
+
+            //     console.log("formResearcher",formResearcher)
+            // console.log("formResearcher.data()2",formResearcher.data())
+
+            if(formResearcher.data())
+            {
+                // console.log("222222222222")
+                // console.log("formResearcher.data()",formResearcher.data())
+                // console.log("formResearcher.data().form",formResearcher.data().form)
+                this.setState({form:formResearcher.data().form})
+                form = this.state.form
+                form[name] = value;
+                this.setState({form:form})
+
+            }
+
+        }
+        else if(name === 'q17')
+        {
+
+            form = this.state.form
+            form[name] = value;
+            this.setState({form:form})
+        }
+    }
+        this.loadSpinner(false)
+    }
+
+
+    async handleSubmit(event)
+    {
+        if(!this.state.date) {
+            return;
+        }
+        if(this.state.date === this.state.prevDate) {
+            this.setState({viewResearcher: !this.state.viewResearcher});
+            return ;
+        }
+        this.loadSpinner(true,"מעדכן נתונים חדשים")
+        this.setState({prevDate:this.state.date});
+        // console.log("in");
+        var request = (await db.collection("researcher").doc(auth.currentUser.uid).get()).data().type;
+        const collection = await db.collection('researcher').where("request","==",request).get()
+        const researchers = [];
+        const date = this.state.date
+        const collectionPromisesTeam = collection.docs.map( async function(doc) {
+            var ref =await db.collection("researcher").doc(doc.id).collection("request").doc(date).get()
+            var user = await db.collection("researcher").doc(doc.id).get()
+            return [ref,user]
+
+        })
+
+        Promise.all(collectionPromisesTeam).then(res => {
+            // console.log("end prommis");
+            res.forEach(doc=>{
+                var approv = false;
+                var Request = ''
+                if(doc[0].exists) {
+                    approv = true;
+                    Request = doc[0].data().RequestPurchase;
+                }
+                var data = doc[1].data();
+                var ref = doc[1].id;
+                researchers.push({data,approv,ref,Request})
+            })
+            let i;
+            // console.log(researchers.length)
+            this.setState({viewResearcher: !this.state.viewResearcher});
+            for (i=0;i<researchers.length;i++)
+            {
+                if(!this.state.researchers)
+                {
+                    this.setState({researchers: researchers});
+                    this.loadSpinner(false)
+                    return
+                }
+                else if(researchers[i].approv!==this.state.researchers[i].approv)
+                {
+                    this.setState({researchers: researchers});
+                    this.loadSpinner(false)
+                    return
+                }
+
+            }
+            this.loadSpinner(false)
+        });
+
+
+    }
+    loadPage(event){
+        this.setState({loading:event})
+    }
+
+    async sendRequest(form,date,user){
+        // console.log("form2",form)
+        // console.log("form.date2",form.date)
+        // console.log("user2",user)
+
+        this.loadSpinner(true,"שליחת הבקשה")
+        var path = auth.currentUser.uid
+        try{
+            var researcher = await db.collection("researcher").doc(user)
+            // console.log("form1",form)
+            var newDate = await researcher.collection("request").doc(form.date);
+
+            newDate.set({
+                form: form,
+                date:form.date
+            }).then(async ()=>{
+                await this.addDataToTeam(researcher,form.date,user);
+                alert("הטופס נשלח בהצלחה")
+                this.loadSpinner(false)
+                window.location.reload(true);
+
+            })
+
+        }catch(error) {
+            console.log("err2")
+
+            alert(error.message)
+            this.loadSpinner(false)
+        }
+    }
+
+
+    async addDataToTeam(researcher,date,user)
+    {
+        // console.log("researcher2",researcher)
+        // console.log("date2",date)
+        //console.log("user3",user)
+
+
+        var formResearcher = (await researcher.collection('request').doc(date).get()).ref;
+        try{
+            var team = (await researcher.get()).data();
+            //var name =(team.fname + " "+team.lname);
+            var name=this.state.teamName
+
+            var teamCollection = await db.collection("Data").doc(team.team.id)
+            var newDate = await teamCollection.collection("Requests").doc(date)
+            var doc =  await newDate.get()
+            var {year,month,day} = this.parser(date)
+            var fullDate = new Date()
+            fullDate.setTime(0)
+            fullDate.setFullYear(year,month-1,day)
+            //
+            // console.log("team.team.id",team.team.id)
+            // console.log("teamCollection",teamCollection)
+            // console.log("newDate",newDate)
+            // console.log("fullDate",fullDate)
+            // console.log("formResearcher",formResearcher)
+
+
+
+            if(!doc.exists){
+
+                // console.log("doc.exists",doc.exists)
+                // console.log("doc",doc)
+
+                newDate.set({
+                    date:fullDate,
+                    RequestResearcher: formResearcher,
+                    nameResearcher: this.state.teamName,
+                   // nameResearcher: team.fname + " "+team.lname,
+
+                })
+            }
+            else {
+
+                // console.log("doc.exists",doc.exists)
+                // console.log("doc",doc)
+
+                newDate.update({
+                    date:fullDate,
+                    RequestResearcher: formResearcher,
+                })
+            }
+        }catch(error) {
+            alert(error.message)
+        }
+
+    }
+    approvResearcher(researcher)
+    {
+
+        var researchers =  this.state.researchers;
+        for(var i=0;i<researchers.length;i++)
+        {
+            if(researchers[i] === researcher)
+            {
+                researchers[i].approv = !researchers[i].approv;
+                this.setState({researchers:researchers})
+                return
+            }
+        }
+    }
+
+    RequestPurchase(event,researcher)
+    {
+        var researchers = this.state.researchers;
+        // console.log(event.target.value);
+        for(var i=0;i<researchers.length;i++)
+        {
+            if(researchers[i] === researcher)
+            {
+                researchers[i].Request = event.target.value
+                this.setState({researchers: researchers})
+                return
+            }
+        }
+    }
+
+
     GetDates(date)
     {
         // if(this.state.forms || this.state.show)
@@ -603,21 +1108,6 @@ class mngRequestPurchase extends Component {
 
         return parsDate;
 
-        // var toDate = this.parser(to)
-        // to = new Date()
-        // to.setFullYear(toDate["year"],toDate["month"]-1,toDate["day"]+1)
-        // if(fromDate["year"]>toDate["year"]){
-        //     alert("התאריך מ גדול מהתאירך עד")
-        //     return
-        // }
-        // if(fromDate["year"]===toDate["year"] && fromDate["month"]>toDate["month"]){
-        //     alert("התאריך מ גדול מהתאירך עד")
-        //     return
-        // }
-        // if(fromDate["year"]===toDate["year"] && fromDate["month"]===toDate["month"] && fromDate["day"]>toDate["day"]){
-        //     alert("התאריך מ גדול מהתאירך עד")
-        //     return
-        // }
 
     }
 

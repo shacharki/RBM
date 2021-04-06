@@ -5,6 +5,7 @@ import './Researcher.css'
 import Grid from "@material-ui/core/Grid";
 import ClipLoader from "react-spinners/ClipLoader";
 import TextField from "@material-ui/core/TextField";
+import firebase from "firebase";
 
 
 class RequestPurchase extends React.Component {
@@ -84,11 +85,20 @@ class RequestPurchase extends React.Component {
         var name = event.target.name;
         var value = event.target.value;
         var e = event.target
+        console.log("name2",name)
+        console.log("value2",value)
+        console.log("e2",e)
+
         if(name === 'date' && event.target.value!=='' )
-        {
+        {        console.log("1111111111111")
+
             this.loadSpinner(true,"טוען נתוני חוקר")
 
             var formResearcher = await db.collection("researcher").doc(auth.currentUser.uid).collection("request").doc(event.target.value).get()
+            console.log("formResearcher2",formResearcher)
+            console.log("auth.currentUser.uid",auth.currentUser.uid)
+
+
             // console.log("formResearcher.data ",formResearcher.data())
             // if(formResearcher.data() && formResearcher.data().locked) {
             //     alert("הבקשה לתאריך הנוכחי נחתם נא לבחור תאריך אחר")
@@ -100,22 +110,44 @@ class RequestPurchase extends React.Component {
             //     this.setState({form:form})
             //
             // }
+            console.log("formResearcher.data()2",formResearcher.data())
+
             if(formResearcher.data())
             {
+                console.log("222222222222222")
+                console.log("formResearcher.data()2",formResearcher.data())
+
+                console.log("formResearcher.data().form",formResearcher.data().form)
+
                 this.setState({form:formResearcher.data().form})
             }
             else
             {
+                console.log("33333333333333")
+                console.log("name22",name)
+
                 var researcherData= await db.collection("researcher").doc(auth.currentUser.uid).get()
+                console.log("auth.currentUser.uid",auth.currentUser.uid)
+
+                console.log("researcherData2",researcherData)
+                console.log("researcherData.data()2",researcherData.data())
+                console.log("researcherData.data().fname2",researcherData.data().fname)
                 form ={}
                 form[name] = value;
+                console.log("value1",value)
+                console.log("form1",form)
                 form['name']=researcherData.data().fname+' '+researcherData.data().lname;
                 // form['team']=researcherData.data().teamName
+                console.log("form1",form)
+
                 this.setState({form:form})
             }
         }
         else
         {
+            console.log("44444444444444")
+            console.log("this.state.form1",this.state.form)
+
             form = this.state.form
             form[name] = value;
             this.setState({form:form})
@@ -192,7 +224,9 @@ class RequestPurchase extends React.Component {
     }
 
     async sendRequest(form){
-        // console.log("form",form)
+         console.log("form2",form)
+        console.log("form.date2",form.date)
+
         this.loadSpinner(true,"שליחת הבקשה")
         var path = auth.currentUser.uid
         try{
@@ -201,6 +235,9 @@ class RequestPurchase extends React.Component {
             var newDate = await researcher.collection("request").doc(form.date);
             // console.log("form.date",form.date)
             // console.log("form",form)
+
+            console.log("form22",form)
+            console.log("date22",form.date)
 
             newDate.set({
                 form: form,
@@ -214,17 +251,25 @@ class RequestPurchase extends React.Component {
             })
 
         }catch(error) {
+            console.log("err2")
+
             alert(error.message)
             this.loadSpinner(false)
         }
     }
     async addDataToTeam(researcher,date)
     {
+        console.log("researcher2",researcher)
+        console.log("date2",date)
+
+        var user = firebase.auth().currentUser;
 
         var formResearcher = (await researcher.collection('request').doc(date).get()).ref;
         try{
             var team = (await researcher.get()).data();
             var name =(team.fname + " "+team.lname);
+            console.log("name2",name)
+            console.log("team2",team)
 
             var teamCollection = await db.collection("Data").doc(team.team.id)
             // var Collection = await teamCollection.collection("Requests").doc(name)
@@ -269,6 +314,7 @@ class RequestPurchase extends React.Component {
                     date:fullDate,
                     RequestResearcher: formResearcher,
                     nameResearcher: team.fname + " "+team.lname,
+                    uid: user.uid
 
                 })
             }
@@ -280,6 +326,8 @@ class RequestPurchase extends React.Component {
                 newDate.update({
                     date:fullDate,
                     RequestResearcher: formResearcher,
+                    uid: user.uid
+
                 })
             }
         }catch(error) {
@@ -656,14 +704,6 @@ class RequestPurchase extends React.Component {
                             <br/>
                         </div>
 
-                        {/*<div id="name-group">*/}
-                        {/*    <label id="Q11L" className="title-input">נא לתאם את קבלת המשלוח עם:</label>*/}
-                        {/*    <input type="text" name="q11" id="q11i" placeholder={'התשובה שלך'}*/}
-                        {/*           value={this.state.form.q11 ? (this.state.form.q11) : ('')} onChange={(e) => {*/}
-                        {/*        this.handleChange(e)*/}
-                        {/*    }} required/>*/}
-                        {/*</div>*/}
-
                         <Grid item xs={6}>
                             <TextField
                                 inputProps={{style: {textAlign: 'center'}}}
@@ -761,41 +801,41 @@ class RequestPurchase extends React.Component {
                         </Grid>
                         <br/>
 
-                        <Grid item xs={6}>
-                            <TextField
-                                inputProps={{style: {textAlign: 'center'}}}
-                                id="q17i"
-                                name="q17"
-                                type="tel"
-                                autoComplete="off"
-                                value={this.state.q17}
-                                onChange={(e) => {
-                                    this.handleChange(e)
-                                }}
-                                variant="standard"
-                                fullWidth
-                                label="תאריך החשבונית"
-                            />
-                        </Grid>
-                        <br/>
+                        {/*<Grid item xs={6}>*/}
+                        {/*    <TextField*/}
+                        {/*        inputProps={{style: {textAlign: 'center'}}}*/}
+                        {/*        id="q17i"*/}
+                        {/*        name="q17"*/}
+                        {/*        type="tel"*/}
+                        {/*        autoComplete="off"*/}
+                        {/*        value={this.state.q17}*/}
+                        {/*        onChange={(e) => {*/}
+                        {/*            this.handleChange(e)*/}
+                        {/*        }}*/}
+                        {/*        variant="standard"*/}
+                        {/*        fullWidth*/}
+                        {/*        label="תאריך החשבונית"*/}
+                        {/*    />*/}
+                        {/*</Grid>*/}
+                        {/*<br/>*/}
 
 
-                        <Grid item xs={6}>
-                            <TextField
-                                inputProps={{style: {textAlign: 'center'}}}
-                                id="q18i"
-                                name="q18"
-                                type="tel"
-                                autoComplete="off"
-                                value={this.state.q18}
-                                onChange={(e) => {
-                                    this.handleChange(e)
-                                }}
-                                variant="standard"
-                                fullWidth
-                                label="מס' חשבונית"
-                            />
-                        </Grid>
+                        {/*<Grid item xs={6}>*/}
+                        {/*    <TextField*/}
+                        {/*        inputProps={{style: {textAlign: 'center'}}}*/}
+                        {/*        id="q18i"*/}
+                        {/*        name="q18"*/}
+                        {/*        type="tel"*/}
+                        {/*        autoComplete="off"*/}
+                        {/*        value={this.state.q18}*/}
+                        {/*        onChange={(e) => {*/}
+                        {/*            this.handleChange(e)*/}
+                        {/*        }}*/}
+                        {/*        variant="standard"*/}
+                        {/*        fullWidth*/}
+                        {/*        label="מס' חשבונית"*/}
+                        {/*    />*/}
+                        {/*</Grid>*/}
                         <br/>
 
                     </div>

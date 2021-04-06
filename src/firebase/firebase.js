@@ -105,6 +105,8 @@ export async function CreateNewTeam(team) {
 
 }
 
+
+
 export async function getUser(user) {
     var researcher = await db.collection('researcher').doc(user.uid).get()
     var manager = await db.collection('managers').doc(user.uid).get()

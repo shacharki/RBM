@@ -300,7 +300,7 @@ class UserApproval extends React.Component {
                         <div>
 
                             <label>
-                                <input id ={"Researcher"+index} type="radio" value="Researcher"  onClick={e => {
+                                <input id ={"researcher"+index} type="radio" value="researcher"  onClick={e => {
                                     this.radio(e,index,user)
                                 }}/>
                                 חוקר
