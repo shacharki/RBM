@@ -139,7 +139,7 @@ class Manager extends React.Component {
                     }}>דוחות כספיים<span
                             className="fa fa-arrow-right"></span></button>
 
-                    <button id="ExpenseReporting" className="btn btn-info" onClick={() => {
+                    <button id="ExpenseReporting1" className="btn btn-info" onClick={() => {
                         this.ChangePage("UpdatesFirebase")
                         return
                     }}>פעולות ועדכון<span

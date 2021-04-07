@@ -395,27 +395,7 @@ class mngRequestPurchase extends Component {
                                 </Grid>
                             </div>
                             {this.state.forms?(
-                                // <Grid  item xs={12} hidden={!this.state.show} >
-                                //
-                                //     <CSVLink
-                                //         data={csvData}
-                                //         filename={this.state.dateFrom+"-"+this.state.dateTo+"בקשות לרכישה.csv"}
-                                //         className="btn btn-primary"
-                                //         target="_blank"
-                                //     >
-                                //         <button>
-                                //             הורדת כל הבקשות לרכישה בתאריכים הנבחרים
-                                //         </button>
-                                //     </CSVLink>
-                                //     {
-                                //         this.state.forms.map((Form,index) => (
-                                //             <Grid  item xs={12}  key={index}>
-                                //                 <hr/>
-                                //                 {this.Requests(Form.data(),index)}
-                                //             </Grid >
-                                //         ))
-                                //     }
-                                // </Grid >
+
                                 <Grid  item xs={12} hidden={!this.state.show} >
 
                                     <CSVLink
@@ -443,12 +423,15 @@ class mngRequestPurchase extends Component {
                                                         fullWidth
                                                         variant="contained"
                                                         onClick={() => {
-                                                            this.generate()
+                                                            this.generate(Form.data(),index)
                                                         }}>
                                                         הורדת קובץ
                                                     </Button>
                                                 </div>
                                             </Grid>
+
+
+
                                             // <Grid  item xs={12}  key={index}>
                                             //     <hr/>
                                             //     {this.Requests(Form.data(),index)}
@@ -467,7 +450,28 @@ class mngRequestPurchase extends Component {
 
                                         ))
                                     }
+                                    {/*{*/}
+                                    {/*this.state.forms.map((Form,index) => (*/}
+                                    {/*<Grid  item xs={12}  key={index}>*/}
+                                    {/*    <hr/>*/}
+                                    {/*    {this.Requests(Form.data(),index)}*/}
+                                    {/*    <CSVLink*/}
+
+                                    {/*        data={csvData}*/}
+                                    {/*        filename={this.state.dateFrom+"-"+this.state.dateTo+"בקשה לרכישה.doc"}*/}
+                                    {/*        className="btn btn-primary"*/}
+                                    {/*        target="_blank"*/}
+                                    {/*    >*/}
+                                    {/*        <button>*/}
+                                    {/*            הורדת הבקשה לוורד*/}
+                                    {/*        </button>*/}
+                                    {/*    </CSVLink>*/}
+                                    {/*</Grid >*/}
+
+                                    {/*))*/}
+                                    {/*}*/}
                                 </Grid >
+
                             ):(<div></div>)}
                             <button id="go-back" className="btn btn-info" onClick={()=>{this.BackPage()}}>חזור</button>
                         </div>
@@ -502,19 +506,23 @@ class mngRequestPurchase extends Component {
 
 
 
-    generate() {
+    generate(from,index) {
         const doc = new docx.Document();
         const path = require('path');
         const fs = require('fs')
         const { promisify } = require('util');
-
-
+        const data1={csvData}
+        const data2 = this.Requests(from,index)
         const {
                 Media,
                 Paragraph,
             } = docx;
 
         // const filePath = '../../../layout/images/logoUp.jpg';
+        console.log("from",from)
+        console.log("index",index)
+        console.log("data1",data1)
+        console.log("data2",data2)
 
 
         try {
@@ -525,21 +533,20 @@ class mngRequestPurchase extends Component {
             console.log("err")
 
         }
-        var img = '../../../layout/images/logoUp.jpg'
+        var img = "../../../layout/images/logoUp.jpg"
 
         doc.addSection({
             properties: {},
             headers: {
                 default: new Header({
                     // children: [new Paragraph("Header text")],
-                    children: [ new Paragraph(img)],
+                    children: [ new Paragraph(img),
+                        new Paragraph(data1),
+                        new Paragraph(data2)],
+
                 }),
             },
-            footers: {
-                default: new Footer({
-                    children: [new Paragraph("Footer text")],
-                }),
-            },
+
             children: [
                 new Paragraph({
                     children: [
@@ -564,6 +571,11 @@ class mngRequestPurchase extends Component {
                 }),
 
             ],
+            footers: {
+                default: new Footer({
+                    children: [new Paragraph("Footer text")],
+                }),
+            },
         });
 
         docx.Packer.toBlob(doc).then(blob => {
