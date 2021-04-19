@@ -1,13 +1,32 @@
-#registerBtn{
-    color: black;
-    background-color: #65b0ff;
-}
+/*#registerBtn{*/
+/*    color: black;*/
+/*    background-color: rgba(0, 120, 190, 0.69);*/
+
+/*}*/
+
+/*#LoginBtn{*/
+/*    color: black;*/
+/*background-color: rgba(0, 120, 190, 0.69);*/
+
+/*}*/
 
 #LoginBtn{
-    color: black;
-//background-color: rgba(0, 203, 0, 0.69);
-    background-color: #65b0ff;
+//color: black;
+    background-color: rgba(0, 180, 0, 0.69);
+//background-color: #65b0ff;
 
 }
 
 
+#registerBtn2{
+  //color: black;
+      background-color: rgba(0, 120, 190, 0.69);
+  //background-color: #65b0ff;
+
+  }
+#registerBtn1{
+//color: black;
+    background-color: rgba(0, 120, 190, 0.69);
+//background-color: #65b0ff;
+
+}

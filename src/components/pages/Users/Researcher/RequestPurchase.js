@@ -1,4 +1,4 @@
-import React from "react";
+import React,{ Fragment } from "react";
 import {auth, db, getUser} from '../../../../firebase/firebase';
 import { Radio, RadioGroup} from "@material-ui/core";
 import './Researcher.css'
@@ -6,7 +6,10 @@ import Grid from "@material-ui/core/Grid";
 import ClipLoader from "react-spinners/ClipLoader";
 import TextField from "@material-ui/core/TextField";
 import firebase from "firebase";
+//import {storage} from "./firebase";
 
+import ReactDOM from 'react-dom'
+import SignatureCanvas from 'react-signature-canvas'
 
 class RequestPurchase extends React.Component {
     constructor(props) {
@@ -21,6 +24,8 @@ class RequestPurchase extends React.Component {
             loading: true,
             rule:"Manager",
             prevDate:'',
+            imgUrl: "",
+
             viewResearcher: false,
             date:"",
             form : {
@@ -77,7 +82,20 @@ class RequestPurchase extends React.Component {
         spinner.push(massage)
         this.setState({spinner:spinner})
     }
+    save() {
+        const imgUrl = this.canvas.toDataURL("image/png");
+        this.setState({ imgUrl: imgUrl });
 
+    }
+    reset() {
+        this.canvas.clear();
+    }
+    canvas = {
+        clear: () => {},
+        toDataURL: (param) => {
+            return "";
+        },
+    };
     async handleChange(event)
     {
         var form=''
@@ -93,61 +111,27 @@ class RequestPurchase extends React.Component {
         {        console.log("1111111111111")
 
             this.loadSpinner(true,"טוען נתוני חוקר")
-
             var formResearcher = await db.collection("researcher").doc(auth.currentUser.uid).collection("request").doc(event.target.value).get()
-            console.log("formResearcher2",formResearcher)
-            console.log("auth.currentUser.uid",auth.currentUser.uid)
-
-
-            // console.log("formResearcher.data ",formResearcher.data())
-            // if(formResearcher.data() && formResearcher.data().locked) {
-            //     alert("הבקשה לתאריך הנוכחי נחתם נא לבחור תאריך אחר")
-            //     document.getElementById(e.id).value=''
-            //     form = this.state.form;
-            //     // console.log(name);
-            //
-            //     form[name] = '';
-            //     this.setState({form:form})
-            //
-            // }
-            console.log("formResearcher.data()2",formResearcher.data())
 
             if(formResearcher.data())
             {
                 console.log("222222222222222")
-                console.log("formResearcher.data()2",formResearcher.data())
-
-                console.log("formResearcher.data().form",formResearcher.data().form)
-
                 this.setState({form:formResearcher.data().form})
             }
             else
             {
                 console.log("33333333333333")
-                console.log("name22",name)
-
                 var researcherData= await db.collection("researcher").doc(auth.currentUser.uid).get()
-                console.log("auth.currentUser.uid",auth.currentUser.uid)
-
-                console.log("researcherData2",researcherData)
-                console.log("researcherData.data()2",researcherData.data())
-                console.log("researcherData.data().fname2",researcherData.data().fname)
                 form ={}
                 form[name] = value;
-                console.log("value1",value)
-                console.log("form1",form)
                 form['name']=researcherData.data().fname+' '+researcherData.data().lname;
                 // form['team']=researcherData.data().teamName
-                console.log("form1",form)
-
                 this.setState({form:form})
             }
         }
         else
         {
             console.log("44444444444444")
-            console.log("this.state.form1",this.state.form)
-
             form = this.state.form
             form[name] = value;
             this.setState({form:form})
@@ -155,8 +139,6 @@ class RequestPurchase extends React.Component {
         this.loadSpinner(false)
 
     }
-
-
 
 
     async handleSubmit(event)
@@ -236,9 +218,6 @@ class RequestPurchase extends React.Component {
             // console.log("form.date",form.date)
             // console.log("form",form)
 
-            console.log("form22",form)
-            console.log("date22",form.date)
-
             newDate.set({
                 form: form,
                 date:form.date
@@ -268,8 +247,8 @@ class RequestPurchase extends React.Component {
         try{
             var team = (await researcher.get()).data();
             var name =(team.fname + " "+team.lname);
-            console.log("name2",name)
-            console.log("team2",team)
+            // console.log("name2",name)
+            // console.log("team2",team)
 
             var teamCollection = await db.collection("Data").doc(team.team.id)
             // var Collection = await teamCollection.collection("Requests").doc(name)
@@ -281,11 +260,11 @@ class RequestPurchase extends React.Component {
             fullDate.setTime(0)
             fullDate.setFullYear(year,month-1,day)
 
-            console.log("team.team.id",team.team.id)
-            console.log("teamCollection",teamCollection)
-            console.log("newDate",newDate)
-            console.log("fullDate",fullDate)
-            console.log("formResearcher",formResearcher)
+            // console.log("team.team.id",team.team.id)
+            // console.log("teamCollection",teamCollection)
+            // console.log("newDate",newDate)
+            // console.log("fullDate",fullDate)
+            // console.log("formResearcher",formResearcher)
 
             // var temp = newDate.set({
             //     date:fullDate,
@@ -467,7 +446,6 @@ class RequestPurchase extends React.Component {
                         </Grid>
 
                         <h4>המזמין: מכון שמיר למחקר - ע"ר</h4>
-
 
                         <div id="name-group">
                             <label id="QL" className="title-input">טלפון המכון: 04-6123901. פקס: 04-6961930</label>
@@ -660,6 +638,7 @@ class RequestPurchase extends React.Component {
                                     this.handleChange(e)
                                 }} required/>
                             </div></td>
+
                             <br/>
 
                         </tr>
@@ -783,21 +762,86 @@ class RequestPurchase extends React.Component {
                             <br/>
                         </div>
 
+                        {/*<Grid item xs={6}>*/}
+                        {/*    <TextField*/}
+                        {/*        inputProps={{style: {textAlign: 'center'}}}*/}
+                        {/*        id="q16i"*/}
+                        {/*        name="q16"*/}
+                        {/*        type="tel"*/}
+                        {/*        autoComplete="off"*/}
+                        {/*        value={this.state.q16}*/}
+                        {/*        onChange={(e) => {*/}
+                        {/*            this.handleChange(e)*/}
+                        {/*        }}*/}
+                        {/*        variant="standard"*/}
+                        {/*        fullWidth*/}
+                        {/*        label="חתימת החוקר"*/}
+                        {/*    />*/}
+                        {/*</Grid>*/}
+                        <br/>
+
+
+                        <Fragment>
+                            <div className="main">
+                                <SignatureCanvas
+                                    penColor="green"
+                                    canvasProps={{
+                                        width: 400,
+                                        height: 200,
+                                        className: "write-name-canvas",
+                                    }}
+                                    ref={(ref) => {
+                                        this.canvas = ref;
+                                    }}
+                                    id="q16i"
+                                    name="q16"
+                                    autoComplete="off"
+                                    value={this.state.q16}
+                                    onChange={(e) => {
+                                        this.handleChange(e)
+                                    }}
+                                    variant="standard"
+                                    fullWidth
+                                    label="חתימת החוקר"
+                                />
+                                <div>
+                                    <img
+                                        className="write-name-img"
+                                        src={
+                                            this.state.imgUrl === ""
+                                                ? (this.state.imgUrl = "")
+                                                : this.state.imgUrl
+                                        }
+                                    />
+
+                                </div>
+
+                                <div className="write-name-operation">
+                                    <button onClick={() => this.reset()}>Reset</button>
+                                    <button onClick={() => this.save()}>Save</button>
+                                </div>
+                            </div>
+                        </Fragment>
+
+
+
+
                         <Grid item xs={6}>
-                            <TextField
-                                inputProps={{style: {textAlign: 'center'}}}
-                                id="q16i"
-                                name="q16"
-                                type="tel"
-                                autoComplete="off"
-                                value={this.state.q16}
-                                onChange={(e) => {
-                                    this.handleChange(e)
-                                }}
-                                variant="standard"
-                                fullWidth
-                                label="חתימת החוקר"
-                            />
+                            <SignatureCanvas penColor='green'
+                              canvasProps={{width: 200, height: 200, className: 'sigCanvas'}}
+                              id="q16i"
+                              name="q16"
+                              autoComplete="off"
+                              value={this.state.q16}
+                              onChange={(e) => {
+                              this.handleChange(e)
+                              }}
+                              variant="standard"
+                              fullWidth
+                              label="חתימת החוקר"
+
+                            />,
+
                         </Grid>
                         <br/>
 

@@ -5,16 +5,17 @@ import {auth, db, getPathData, getUser} from "../../../../firebase/firebase";
 import ClipLoader from "react-spinners/ClipLoader";
 import { CSVLink } from "react-csv";
 import {Button} from "@material-ui/core";
-import * as docx from "docx";
-
-import { saveAs } from "file-saver";
-import {Footer, Header, Paragraph} from "docx";
-import { readFileSync } from 'fs';
+import 'classlist.js';
 import TextField from "@material-ui/core/TextField";
+import  { useRef } from 'react';
+import { useReactToPrint} from 'react-to-print';
+import { render } from "react-dom";
+import ReactToPrint from 'react-to-print';
+
 
 var sum =0
 var csvData = [];
-
+var csvTableData = [];
 
 class mngRequestPurchase extends Component {
 
@@ -182,6 +183,71 @@ class mngRequestPurchase extends Component {
         alert("test")
     };
 
+    createTableFile(forms,RequestResearcher)
+    {
+        RequestResearcher.map(report=>{
+            // console.log(RequestResearcher)
+            csvTableData.push([
+                "מק'ט: ",
+                report.form.q5,
+                report.form.q50,
+                report.form.q51,
+
+                "תיאור הפריט: ",
+                report.form.q6,
+                report.form.q60,
+                report.form.q61,
+
+                "מחיר במט'ח: ",
+                report.form.q7,
+                report.form.q70,
+                report.form.q71,
+
+                "מחיר יח בש'ח: ",
+                report.form.q8,
+                report.form.q80,
+                report.form.q81,
+
+                "מס' יחידות: ",
+                report.form.q9,
+                report.form.q90,
+                report.form.q91,
+
+                "מחיר בש'ח: ",
+                report.form.q10,
+                report.form.q100,
+                report.form.q101,
+            ],)
+
+
+        const data = [
+            {id: this.report.form.q5, id1: 'Gob', id2: '2', id3: '', id4: '', id5:''},
+            {id: this.report.form.q50, id1: 'Gob', id2: '2', id3: '', id4: '', id5:''},
+            {id: this.report.form.q1, id1: 'Gob', id2: '2', id3: '', id4: '', id5:''},
+        ];
+        const columns = [{
+            dataField: 'id',
+            text: 'מק"ט'
+        }, {
+            dataField: 'id1',
+            text: 'תיאור הפריט'
+        }, {
+            dataField: 'id2',
+            text: 'מחיר במט"ח'
+        },{
+            dataField: 'id3',
+            text: 'מחיר יח בש"ח'
+        },{
+            dataField: 'id4',
+            text: 'מס יחידות'
+        },{
+            dataField: 'id5',
+            text: 'מחיר בש"ח'
+        },];
+        return report;
+        })
+    }
+
     createCsvFile(forms,RequestResearcher)
     {
         // var url,link
@@ -193,27 +259,27 @@ class mngRequestPurchase extends Component {
         // link.href = url;
         csvData = [
             [
-                "",
-                "תאריך הבקשה",
-                "שם הספק",
-                "נייד",
-                "טופס הזמנה מס'",
-                "מצורפת הצעת מחיר מס'",
-                "מק'ט",
-                "תיאור הפריט",
-                "מחיר במט'ח",
-                "מחיר יח בש'ח",
-                "מס' יחידות",
-                "מחיר בש'ח",
-                "סה'כ כולל מע'מ",
-                "נא לתאם קבלת משלוח עם",
-                "מטרת הרכישה",
-                "תקציב המחקר",
-                "מס' המחקר",
-                "שם החוקר",
-                "חתימת החוקר",
-                "תאריך החשבונית",
-                "מס' חשבונית",
+
+                // "תאריך הבקשה: ",
+                // "שם הספק: ",
+                // "נייד: ",
+                // "טופס הזמנה מס': ",
+                // "מצורפת הצעת מחיר מס': ",
+                // "מק'ט: ",
+                // "תיאור הפריט: ",
+                // "מחיר במט'ח: ",
+                // "מחיר יח בש'ח: ",
+                // "מס' יחידות: ",
+                // "מחיר בש'ח: ",
+                // "סה'כ כולל מע'מ: ",
+                // "נא לתאם קבלת משלוח עם: ",
+                // "מטרת הרכישה: ",
+                // "תקציב המחקר: ",
+                // "מס' המחקר: ",
+                // "שם החוקר: ",
+                // "חתימת החוקר: ",
+                // "תאריך החשבונית: ",
+                // "מס' חשבונית: ",
             ],
         ];
 
@@ -222,36 +288,62 @@ class mngRequestPurchase extends Component {
             csvData.push([
                 // report.form.team,
                 // report.form.name,
+                "תאריך הבקשה: ",
                 report.form.date,
+                "",
+                "שם הספק: ",
                 report.form.q1,
+                "נייד: ",
                 report.form.q2,
+                "טופס הזמנה מס': ",
                 report.form.q3,
+                "מצורפת הצעת מחיר מס': ",
                 report.form.q4,
+
+                "מק'ט: ",
                 report.form.q5,
-                report.form.q6,
-                report.form.q7,
-                report.form.q8,
-                report.form.q9,
-                report.form.q10,
                 report.form.q50,
-                report.form.q60,
-                report.form.q70,
-                report.form.q80,
-                report.form.q90,
-                report.form.q100,
                 report.form.q51,
+
+                "תיאור הפריט: ",
+                report.form.q6,
+                report.form.q60,
                 report.form.q61,
+
+                "מחיר במט'ח: ",
+                report.form.q7,
+                report.form.q70,
                 report.form.q71,
+
+                "מחיר יח בש'ח: ",
+                report.form.q8,
+                report.form.q80,
                 report.form.q81,
+
+                "מס' יחידות: ",
+                report.form.q9,
+                report.form.q90,
                 report.form.q91,
+
+                "מחיר בש'ח: ",
+                report.form.q10,
+                report.form.q100,
                 report.form.q101,
+                "נא לתאם קבלת משלוח עם: ",
                 report.form.q11,
+                "מטרת הרכישה: ",
                 report.form.q12,
+                "תקציב המחקר: ",
                 report.form.q13,
+                "מס' המחקר: ",
                 report.form.q14,
+                "שם החוקר: ",
                 report.form.q15,
+                "חתימת החוקר: ",
                 report.form.q16,
+                "תאריך החשבונית: ",
                 report.form.q17,
+                "מס' חשבונית: ",
                 report.form.q18,
 
 
@@ -422,10 +514,15 @@ class mngRequestPurchase extends Component {
                                                         type="submit"
                                                         fullWidth
                                                         variant="contained"
+
                                                         onClick={() => {
+                                                            // console.log("this.Requests(Form.data(),index)",this.Requests(Form.data(),index))
+                                                            // console.log("Form.data()",Form.data())
+                                                            // console.log("index",index)
                                                             this.generate(Form.data(),index)
+
                                                         }}>
-                                                        הורדת קובץ
+                                                        הורדת הבקשה
                                                     </Button>
                                                 </div>
                                             </Grid>
@@ -450,26 +547,7 @@ class mngRequestPurchase extends Component {
 
                                         ))
                                     }
-                                    {/*{*/}
-                                    {/*this.state.forms.map((Form,index) => (*/}
-                                    {/*<Grid  item xs={12}  key={index}>*/}
-                                    {/*    <hr/>*/}
-                                    {/*    {this.Requests(Form.data(),index)}*/}
-                                    {/*    <CSVLink*/}
 
-                                    {/*        data={csvData}*/}
-                                    {/*        filename={this.state.dateFrom+"-"+this.state.dateTo+"בקשה לרכישה.doc"}*/}
-                                    {/*        className="btn btn-primary"*/}
-                                    {/*        target="_blank"*/}
-                                    {/*    >*/}
-                                    {/*        <button>*/}
-                                    {/*            הורדת הבקשה לוורד*/}
-                                    {/*        </button>*/}
-                                    {/*    </CSVLink>*/}
-                                    {/*</Grid >*/}
-
-                                    {/*))*/}
-                                    {/*}*/}
                                 </Grid >
 
                             ):(<div></div>)}
@@ -503,88 +581,222 @@ class mngRequestPurchase extends Component {
 
 
 
-
-
-
-    generate(from,index) {
-        const doc = new docx.Document();
-        const path = require('path');
-        const fs = require('fs')
-        const { promisify } = require('util');
-        const data1={csvData}
-        const data2 = this.Requests(from,index)
-        const {
-                Media,
-                Paragraph,
-            } = docx;
-
-        // const filePath = '../../../layout/images/logoUp.jpg';
+    //
+    // generate(from,index) {
+    //     const doc = new docx.Document();
+    //     const path = require('path');
+    //     const fs = require('fs')
+    //     const { promisify } = require('util');
+    //     const data1={csvData}
+    //     const data2 = this.Requests(from,index)
+    //     const request = require('request@2.88.0');
+    //    const express = require("@runkit/runkit/express-endpoint/1.0.0");
+    //     const app = express(exports);
+    //     const docx = require('docx@5.5.0');
+    //
+    //     const {
+    //         Document,
+    //         HorizontalPositionAlign,
+    //         HorizontalPositionRelativeFrom,
+    //         Media,
+    //         Packer,
+    //         Paragraph,
+    //         VerticalPositionAlign,
+    //         VerticalPositionRelativeFrom,
+    //
+    //         } = docx;
+    //
+    //     // const filePath = '../../../layout/images/logoUp.jpg';
+    //     console.log("from",from)
+    //     console.log("index",index)
+    //     console.log("data1",data1)
+    //     console.log("data2",data2)
+    //     const download = (uri, filename, callback) => {
+    //         request.head(uri, (err, res, body) => {
+    //             request(uri).pipe(fs.createWriteStream(filename)).on('close', callback);
+    //         });
+    //     };
+    //
+    //     const URLUp = 'https://drive.google.com/file/d/1CUIqx9uc4pHVxgnQAEQzybUTsXqhFd02/view?usp=sharing';
+    //     const URLDown = 'https://drive.google.com/file/d/1iYQz7WDl0CkRMhSylwr3eVJTebIaXx0g/view?usp=sharing';
+    //     const URL = 'https://raw.githubusercontent.com/dolanmiu/docx/ccd655ef8be3828f2c4b1feb3517a905f98409d9/demo/images/cat.jpg';
+    //     app.get("/", (req, res) => {
+    //         download(URL, 'cat.jpg', async () => {
+    //             const doc = new Document();
+    //
+    //             const image1 = Media.addImage(doc, fs.readFileSync("./cat.jpg"));
+    //             const image6 = Media.addImage(doc, fs.readFileSync("./cat.jpg"), 200, 200, {
+    //                 floating: {
+    //                     horizontalPosition: {
+    //                         offset: 1014400,
+    //                     },
+    //                     verticalPosition: {
+    //                         offset: 1014400,
+    //                     },
+    //                 },
+    //             });
+    //
+    //             const image7 = Media.addImage(doc, fs.readFileSync("./cat.jpg"), 200, 200, {
+    //                 floating: {
+    //                     horizontalPosition: {
+    //                         relative: HorizontalPositionRelativeFrom.PAGE,
+    //                         align: HorizontalPositionAlign.RIGHT,
+    //                     },
+    //                     verticalPosition: {
+    //                         relative: VerticalPositionRelativeFrom.PAGE,
+    //                         align: VerticalPositionAlign.BOTTOM,
+    //                     },
+    //                 },
+    //             });
+    //
+    //             doc.addSection({
+    //                 children: [
+    //                     new Paragraph("Hello World"),
+    //                     new Paragraph(image1),
+    //                     new Paragraph(image6),
+    //                     new Paragraph(image7),
+    //                 ],
+    //             });
+    //
+    //             const b64string = await Packer.toBase64String(doc);
+    //
+    //             res.setHeader('Content-Disposition', 'attachment; filename=My Document.docx');
+    //             res.send(Buffer.from(b64string, 'base64'));
+    //         });
+    //     })
+    //
+    //     try {
+    //         const data = fs.readFileSync('../../../layout/images/logoUp.jpg', 'utf8')
+    //         console.log("data",data)
+    //     } catch (err) {
+    //         console.error(err)
+    //         console.log("err")
+    //
+    //     }
+    //     var img = "../../../layout/images/logoUp.jpg"
+    //
+    //     doc.addSection({
+    //         properties: {},
+    //         headers: {
+    //             default: new Header({
+    //                 // children: [new Paragraph("Header text")],
+    //                 children: [ new Paragraph(img),
+    //                     new Paragraph(data1),
+    //                     new Paragraph(data2)],
+    //
+    //             }),
+    //         },
+    //
+    //         children: [
+    //             new Paragraph({
+    //                 children: [
+    //                     new docx.TextRun("Hello World"),
+    //                     new docx.TextRun({
+    //                         text: "Foo Bar",
+    //                         bold: true,
+    //                     }),
+    //
+    //                 ],
+    //
+    //             }),
+    //             new Paragraph({
+    //                 children: [
+    //                     new docx.TextRun({
+    //                         text: "\tGithub is the best",
+    //                         bold: true,
+    //                     }),
+    //
+    //                 ],
+    //
+    //             }),
+    //
+    //         ],
+    //         footers: {
+    //             default: new Footer({
+    //                 children: [new Paragraph("Footer text")],
+    //             }),
+    //         },
+    //     });
+    //
+    //     docx.Packer.toBlob(doc).then(blob => {
+    //         console.log(blob);
+    //         saveAs(blob, "בקשה לרכישה.doc");
+    //         console.log("Document created successfully");
+    //
+    //
+    //     });
+    // }
+    generate(from,index){
         console.log("from",from)
         console.log("index",index)
-        console.log("data1",data1)
+        const data2 = this.Requests(from,index)
         console.log("data2",data2)
 
+        class ComponentToPrint extends React.Component {
+            render() {
+                return (
 
-        try {
-            const data = fs.readFileSync('../../../layout/images/logoUp.jpg', 'utf8')
-            console.log("data",data)
-        } catch (err) {
-            console.error(err)
-            console.log("err")
+                    <div>
 
+                        <div><h4> <label>
+                        </label></h4></div>
+
+                        <div >
+                            <img width="100%" src="http://www.up2me.co.il/imgs/22195825.jpg"/>
+                        </div>
+
+
+                        <div><h4> <label>
+                        </label></h4></div>
+
+                        {/*<div style={{fontSize: "25px", 'position': 'absolute',*/}
+                        {/*    'top': '50%',*/}
+                        {/*    'left': '70%',*/}
+                        {/*    'transform': 'translate(-50%, -50%)'}} content={() => this.Requests(from,index)}>*/}
+                        {/*        {csvData}*/}
+
+                        {/*</div>*/}
+                        <div style={{fontSize: "25px", 'position': 'absolute',
+                            'top': '50%',
+                            'left': '70%',
+                            'transform': 'translate(-50%, -50%)'}} content={() => this.Requests(from,index)}>
+                            <div className="App">
+                                <p className="Table-header">{csvTableData}</p>
+
+                            </div>
+
+                        </div>
+                        <div><h4> <label>
+                            </label></h4></div>
+
+                        <div>
+                            <img width="100%" src="http://www.up2me.co.il/imgs/25602256.jpg"/>
+                        </div>
+                    </div>
+
+                );
+            }
         }
-        var img = "../../../layout/images/logoUp.jpg"
+        const Example = () => {
+            const componentRef = useRef();
+            const handlePrint = useReactToPrint({
+                content: () => componentRef.current,
+            });
 
-        doc.addSection({
-            properties: {},
-            headers: {
-                default: new Header({
-                    // children: [new Paragraph("Header text")],
-                    children: [ new Paragraph(img),
-                        new Paragraph(data1),
-                        new Paragraph(data2)],
+            return (
+                <div>
+                    <ComponentToPrint  ref={componentRef} />
+                    <button onClick={handlePrint}>הורדה</button>
+                <div>
+                    <button id="go-back" className="btn btn-info" onClick={()=>{this.BackPage()}}>חזור</button>
 
-                }),
-            },
+                </div>
+                </div>
 
-            children: [
-                new Paragraph({
-                    children: [
-                        new docx.TextRun("Hello World"),
-                        new docx.TextRun({
-                            text: "Foo Bar",
-                            bold: true,
-                        }),
+            );
+        };
+        render(<Example />, document.querySelector("#root"));
 
-                    ],
-
-                }),
-                new Paragraph({
-                    children: [
-                        new docx.TextRun({
-                            text: "\tGithub is the best",
-                            bold: true,
-                        }),
-
-                    ],
-
-                }),
-
-            ],
-            footers: {
-                default: new Footer({
-                    children: [new Paragraph("Footer text")],
-                }),
-            },
-        });
-
-        docx.Packer.toBlob(doc).then(blob => {
-            console.log(blob);
-            saveAs(blob, "בקשה לרכישה.doc");
-            console.log("Document created successfully");
-
-
-        });
     }
 
 
@@ -1148,6 +1360,8 @@ class mngRequestPurchase extends Component {
         })
     }
 }
+
+
 
 
 

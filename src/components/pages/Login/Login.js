@@ -125,7 +125,7 @@ class Login extends React.Component {
                                     style={{style: {margin: '10px'}}}
                                     fullWidth
                                     variant="contained"
-                                    id="registerBtn"
+                                    id="registerBtn2"
                                     component={Link}
                                     to="/Signup">
                                     אין לך משתמש? הרשמה
@@ -140,7 +140,7 @@ class Login extends React.Component {
                                     style={{style: {margin: '10px'}}}
                                     fullWidth
                                     variant="contained"
-                                    id="registerBtn"
+                                    id="registerBtn1"
                                     component={Link}
                                     to="/resetPassword">
                                     שכחתי סיסמא

@@ -2,6 +2,7 @@ import firebase from 'firebase/app'
 import 'firebase/auth'
 import 'firebase/firebase-firestore'
 // import * as admin from 'firebase-admin';
+import 'firebase/firestore';
 
 
 const firebaseConfig = {
@@ -15,11 +16,12 @@ const firebaseConfig = {
 
 firebase.initializeApp(firebaseConfig);
 
+//const storage = firebase.storage();
 
 export const auth = firebase.auth();
 export const db = firebase.firestore();
 export default firebase;
-
+//export {storage};
 
 
 export async function CreateNewUser(email,phone) {
