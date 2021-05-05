@@ -12,7 +12,6 @@ import { useReactToPrint} from 'react-to-print';
 import { render } from "react-dom";
 import ReactToPrint from 'react-to-print';
 
-
 var sum =0
 var csvData = [];
 var csvTableData = [];
@@ -250,6 +249,7 @@ class mngRequestPurchase extends Component {
 
     createCsvFile(forms,RequestResearcher)
     {
+        var q5,q50,q51,q6,q60,q61,q7,q70,q71,q8,q80,q81,q9,q90,q91,q10,q100,q101
         // var url,link
         //
         // blob= new Blob([layout/images/imagg.jpg], {
@@ -301,9 +301,9 @@ class mngRequestPurchase extends Component {
                 report.form.q4,
 
                 "מק'ט: ",
-                report.form.q5,
-                report.form.q50,
-                report.form.q51,
+                q5=report.form.q5,
+                q50=report.form.q50,
+                q51=report.form.q51,
 
                 "תיאור הפריט: ",
                 report.form.q6,
@@ -349,6 +349,30 @@ class mngRequestPurchase extends Component {
 
 
             ],)
+            const data = [
+                {id: q5, id1: 'Gob', id2: '2', id3: '', id4: '', id5:''},
+                {id: q50, id1: 'Gob', id2: '2', id3: '', id4: '', id5:''},
+                {id: q51, id1: 'Gob', id2: '2', id3: '', id4: '', id5:''},
+            ];
+            const columns = [{
+                dataField: 'id',
+                text: 'מק"ט'
+            }, {
+                dataField: 'id1',
+                text: 'תיאור הפריט'
+            }, {
+                dataField: 'id2',
+                text: 'מחיר במט"ח'
+            },{
+                dataField: 'id3',
+                text: 'מחיר יח בש"ח'
+            },{
+                dataField: 'id4',
+                text: 'מס יחידות'
+            },{
+                dataField: 'id5',
+                text: 'מחיר בש"ח'
+            },];
             return report
         })
 
@@ -580,7 +604,6 @@ class mngRequestPurchase extends Component {
 
 
 
-
     //
     // generate(from,index) {
     //     const doc = new docx.Document();
@@ -735,44 +758,31 @@ class mngRequestPurchase extends Component {
         class ComponentToPrint extends React.Component {
             render() {
                 return (
-
-                    <div>
-
-                        <div><h4> <label>
-                        </label></h4></div>
-
-                        <div >
-                            <img width="100%" src="http://www.up2me.co.il/imgs/22195825.jpg"/>
-                        </div>
+                    <div style={{textAligh:'center'}}><br/>
+                        <img  width="100%" src="http://www.up2me.co.il/imgs/25602256.jpg"/>
+                        {/*<img width="100%"  src="http://www.up2me.co.il/imgs/22195825.jpg" />*/}
 
 
-                        <div><h4> <label>
-                        </label></h4></div>
+                    {/*// <div>*/}
+                    {/*//     <div>*/}
+                    {/*//         <img width="100%" src="http://www.up2me.co.il/imgs/22195825.jpg"/>*/}
+                    {/*//     </div>*/}
+                    {/*//*/}
+                    {/*    <div style={{fontSize: "25px", 'position': 'fixed',*/}
+                    {/*        'top': '50%',*/}
+                    {/*        'left': '70%',*/}
+                    {/*        'transform': 'translate(-50%, -50%)'}} content={() => this.Requests(from,index)}>*/}
+                    {/*            {csvData}*/}
+                    {/*    </div>*/}
 
-                        {/*<div style={{fontSize: "25px", 'position': 'absolute',*/}
-                        {/*    'top': '50%',*/}
-                        {/*    'left': '70%',*/}
-                        {/*    'transform': 'translate(-50%, -50%)'}} content={() => this.Requests(from,index)}>*/}
-                        {/*        {csvData}*/}
-
-                        {/*</div>*/}
-                        <div style={{fontSize: "25px", 'position': 'absolute',
+                         <div style={{fontSize: "25px", 'position': 'absolute',
                             'top': '50%',
-                            'left': '70%',
-                            'transform': 'translate(-50%, -50%)'}} content={() => this.Requests(from,index)}>
-                            <div className="App">
-                                <p className="Table-header">{csvTableData}</p>
-
-                            </div>
-
-                        </div>
-                        <div><h4> <label>
-                            </label></h4></div>
-
-                        <div>
-                            <img width="100%" src="http://www.up2me.co.il/imgs/25602256.jpg"/>
-                        </div>
-                    </div>
+                             'left': '70%',
+                             'transform': 'translate(-50%, -50%)'}} content={() => this.Requests(from,index)}>
+                                 <p className="Table-header">{csvTableData}</p>
+                         </div>
+                         <img  width="100%" src="http://www.up2me.co.il/imgs/25602256.jpg"/>
+                     </div>
 
                 );
             }
@@ -786,7 +796,10 @@ class mngRequestPurchase extends Component {
             return (
                 <div>
                     <ComponentToPrint  ref={componentRef} />
-                    <button onClick={handlePrint}>הורדה</button>
+                    <div style={{textAlign:'center'}}>
+                        <button onClick={handlePrint}>הורדה</button>
+
+                    </div>
                 <div>
                     <button id="go-back" className="btn btn-info" onClick={()=>{this.BackPage()}}>חזור</button>
 
@@ -1351,6 +1364,8 @@ class mngRequestPurchase extends Component {
             data: this.state.user // your data array of objects
         })
     }
+
+
 
     notfound()
     {
