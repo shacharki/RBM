@@ -1,8 +1,9 @@
 import React from "react";
-import {auth, getUser, signOut} from '../../../../firebase/firebase'
+import {auth,GetFormDownload, getUser, signOut} from '../../../../firebase/firebase'
 import {NextPage} from "../UserPage";
 import ClipLoader from "react-spinners/ClipLoader";
 import './Researcher.css'
+import * as url from "url";
 
 
 class Researcher extends React.Component {
@@ -123,36 +124,44 @@ class Researcher extends React.Component {
                         </div>
                     }
                     <h2> שלום לחוקר {this.state.user.displayName}</h2>
-                    <form id="instructor_menu" className="form-design" name="student_form" method="POST">
-                        <button id="RequestPurchase" className="btn btn-info" onClick={() => {
-                             NextPage(this.props, "RequestPurchase", this.state.user)
-                        }}>בקשה לרכישה<span
-                            className="fa fa-arrow-right"></span></button>
+                    {/*<form id="instructor_menu" className="form-design" name="student_form" method="POST">*/}
+                    <button id="RequestPurchase" className="btn btn-info" onClick={() => {
+                        NextPage(this.props, "RequestPurchase", this.state.user)
+                    }}>בקשה לרכישה<span
+                        className="fa fa-arrow-right"></span></button>
 
-                        <button id="BalanceMode" className="btn btn-info" onClick={() => {
-                             // NextPage(this.props, "", this.state.user)
-                        }}>מצב הוצאות ויתרה<span
-                            className="fa fa-arrow-right"></span></button>
+                    <button id="BalanceMode" className="btn btn-info" onClick={ () => {
 
-                        <button id="ScientificReport" className="btn btn-info" onClick={() => {
-                            // NextPage(this.props, "", this.state.user)
-                        }}>דוח מדעי<span
-                            className="fa fa-arrow-right"></span></button>
+                        // NextPage(this.props, "", this.state.user)
+                    }}>מצב הוצאות ויתרה<span
+                        className="fa fa-arrow-right"></span></button>
 
-                        <button id="ChatManager" className="btn btn-info" onClick={() => {
-                            // NextPage(this.props, "", this.state.user)
-                        }}>צ'אט למנהל<span
-                            className="fa fa-arrow-right"></span></button>
+                    <button id="ScientificReport" className="btn btn-info" onClick={async ()=>{
+                        var file = await GetFormDownload()
+                        const link = document.createElement('a');
+                        link.href = file
+                        document.body.appendChild(link);
+                        link.click();
+                        document.body.removeChild(link);
 
-                        <button id="repor-button" className="btn btn-info" onClick={() => {
-                            NextPage(this.props, "Profile", this.state.user)
-                        }}>עדכון פרטים או סיסמא<span
-                            className="fa fa-arrow-right"></span></button>
-                        <button id="logout" className="btn btn-info" onClick={() => {
-                            signOut()
-                        }}>התנתק
-                        </button>
-                    </form>
+
+                    }}>הורדת טופס דוח מדעי למילוי<span
+                        className="fa fa-arrow-right"></span></button>
+
+                    <button id="ChatManager" className="btn btn-info" onClick={() => {
+                        // NextPage(this.props, "", this.state.user)
+                    }}>צ'אט למנהל<span
+                        className="fa fa-arrow-right"></span></button>
+
+                    <button id="repor-button" className="btn btn-info" onClick={() => {
+                        NextPage(this.props, "Profile", this.state.user)
+                    }}>עדכון פרטים או סיסמא<span
+                        className="fa fa-arrow-right"></span></button>
+                    <button id="logout" className="btn btn-info" onClick={() => {
+                        signOut()
+                    }}>התנתק
+                    </button>
+                    {/*</form>*/}
                 </div>
             )
         }
