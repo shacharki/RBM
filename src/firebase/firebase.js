@@ -1,6 +1,8 @@
 import firebase from 'firebase/app'
 import 'firebase/auth'
 import 'firebase/firebase-firestore'
+import 'firebase/firebase-storage';
+
 // import * as admin from 'firebase-admin';
 import 'firebase/firestore';
 
@@ -20,9 +22,19 @@ firebase.initializeApp(firebaseConfig);
 
 export const auth = firebase.auth();
 export const db = firebase.firestore();
+export const storage=firebase.storage();
 export default firebase;
 //export {storage};
 
+
+
+export async function GetFormDownload()
+{
+    const file =  await firebase.storage().refFromURL("gs://rbms-b759b.appspot.com/דוח מדעי.docx").getDownloadURL()
+    return file;
+
+
+}
 
 export async function CreateNewUser(email,phone) {
 
