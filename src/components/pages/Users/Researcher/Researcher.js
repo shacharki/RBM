@@ -2,8 +2,13 @@ import React from "react";
 import {auth,GetFormDownload, getUser, signOut} from '../../../../firebase/firebase'
 import {NextPage} from "../UserPage";
 import ClipLoader from "react-spinners/ClipLoader";
+import {useDropzone} from 'react-dropzone'
 import './Researcher.css'
 import * as url from "url";
+import MyDropzone from "./DropzoneFiles.js";
+import AcceptMaxFiles from "./DropzoneFiles.js";
+import DropzoneFiles  from "./DropzoneFiles.js";
+import Grid from "@material-ui/core/Grid";
 
 
 class Researcher extends React.Component {
@@ -136,17 +141,23 @@ class Researcher extends React.Component {
                     }}>מצב הוצאות ויתרה<span
                         className="fa fa-arrow-right"></span></button>
 
-                    <button id="ScientificReport" className="btn btn-info" onClick={async ()=>{
-                        var file = await GetFormDownload()
-                        const link = document.createElement('a');
-                        link.href = file
-                        document.body.appendChild(link);
-                        link.click();
-                        document.body.removeChild(link);
-
-
-                    }}>הורדת טופס דוח מדעי למילוי<span
+                    <button id="repor-button" className="btn btn-info" onClick={() => {
+                        NextPage(this.props, "ScientificReport", this.state.user)
+                    }}>דוח מדעי<span
                         className="fa fa-arrow-right"></span></button>
+
+
+                    {/*<button id="ScientificReport" className="btn btn-info" onClick={async ()=>{*/}
+                    {/*    var file = await GetFormDownload()*/}
+                    {/*    const link = document.createElement('a');*/}
+                    {/*    link.href = file*/}
+                    {/*    document.body.appendChild(link);*/}
+                    {/*    link.click();*/}
+                    {/*    document.body.removeChild(link);*/}
+
+
+                    {/*}}>הורדת טופס דוח מדעי למילוי<span*/}
+                    {/*    className="fa fa-arrow-right"></span></button>*/}
 
                     <button id="ChatManager" className="btn btn-info" onClick={() => {
                         // NextPage(this.props, "", this.state.user)
@@ -161,6 +172,15 @@ class Researcher extends React.Component {
                         signOut()
                     }}>התנתק
                     </button>
+
+                    {/*<Grid item xs={5}*/}
+                    {/*      container*/}
+                    {/*      direction="column"*/}
+                    {/*      justify="flex-start"*/}
+                    {/*      alignItems="flex-start"*/}
+                    {/*>*/}
+                    {/*    <DropzoneFiles/>*/}
+                    {/*</Grid>*/}
                     {/*</form>*/}
                 </div>
             )

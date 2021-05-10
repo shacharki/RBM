@@ -70,17 +70,17 @@ class PageHome extends React.Component {
                             </div>
                         </Grid>
                         <Grid item xs={12}>
-                            <div>
-                                <Button
-                                    type="submit"
-                                    fullWidth
-                                    variant="contained"
-                                    onClick={() => {
-                                      this.generate()
-                                    }}>
-                                    הורדת קובץ
-                                </Button>
-                            </div>
+                            {/*<div>*/}
+                            {/*    <Button*/}
+                            {/*        type="submit"*/}
+                            {/*        fullWidth*/}
+                            {/*        variant="contained"*/}
+                            {/*        onClick={() => {*/}
+                            {/*          this.generate()*/}
+                            {/*        }}>*/}
+                            {/*        הורדת קובץ*/}
+                            {/*    </Button>*/}
+                            {/*</div>*/}
                         </Grid>
                     </Grid>
                 </div>
@@ -90,57 +90,57 @@ class PageHome extends React.Component {
     }
 
 
-    generate() {
-        const doc = new docx.Document();
-
-
-        doc.addSection({
-            properties: {},
-            headers: {
-                default: new Header({
-                    // children: [new Paragraph("Header text")],
-                    children: [ new Paragraph("image1")],
-                }),
-            },
-            footers: {
-                default: new Footer({
-                    children: [new Paragraph("Footer text")],
-                }),
-            },
-            children: [
-                new Paragraph({
-                    children: [
-                        new docx.TextRun("Hello World"),
-                        new docx.TextRun({
-                            text: "Foo Bar",
-                            bold: true,
-                        }),
-
-                    ],
-
-                }),
-                new Paragraph({
-                    children: [
-                        new docx.TextRun({
-                            text: "\tGithub is the best",
-                            bold: true,
-                        }),
-
-                    ],
-
-                }),
-
-            ],
-        });
-
-        docx.Packer.toBlob(doc).then(blob => {
-            console.log(blob);
-            saveAs(blob, "example.doc");
-            console.log("Document created successfully");
-
-
-        });
-    }
+    // generate() {
+    //     const doc = new docx.Document();
+    //
+    //
+    //     doc.addSection({
+    //         properties: {},
+    //         headers: {
+    //             default: new Header({
+    //                 // children: [new Paragraph("Header text")],
+    //                 children: [ new Paragraph("image1")],
+    //             }),
+    //         },
+    //         footers: {
+    //             default: new Footer({
+    //                 children: [new Paragraph("Footer text")],
+    //             }),
+    //         },
+    //         children: [
+    //             new Paragraph({
+    //                 children: [
+    //                     new docx.TextRun("Hello World"),
+    //                     new docx.TextRun({
+    //                         text: "Foo Bar",
+    //                         bold: true,
+    //                     }),
+    //
+    //                 ],
+    //
+    //             }),
+    //             new Paragraph({
+    //                 children: [
+    //                     new docx.TextRun({
+    //                         text: "\tGithub is the best",
+    //                         bold: true,
+    //                     }),
+    //
+    //                 ],
+    //
+    //             }),
+    //
+    //         ],
+    //     });
+    //
+    //     docx.Packer.toBlob(doc).then(blob => {
+    //         console.log(blob);
+    //         saveAs(blob, "example.doc");
+    //         console.log("Document created successfully");
+    //
+    //
+    //     });
+    // }
 }
 
 export  default  PageHome;

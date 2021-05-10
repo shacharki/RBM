@@ -11,6 +11,8 @@ import App2 from "./App2";
 
 import Researcher from './components/pages/Users/Researcher/Researcher';
  import RequestPurchase from "./components/pages/Users/Researcher/RequestPurchase";
+import ScientificReport from "./components/pages/Users/Researcher/ScientificReport";
+// import DropzoneFiles from "./components/pages/Users/Researcher/DropzoneFiles";
 
 
 import Managers from './components/pages/Users/Manager/Manager';
@@ -54,6 +56,9 @@ function LoadPage() {
                     <Route exact path="/Researcher/:id" component={Researcher} />
                     <Route exact path="/Researcher/:id/profile" component={Profile} />
                     <Route exact path="/Researcher/:id/RequestPurchase" component={RequestPurchase} />
+                    <Route exact path="/Researcher/:id/ScientificReport" component={ScientificReport} />
+                    {/*<Route exact path="/Researcher/:id/DropzoneFiles" component={DropzoneFiles} />*/}
+
 
 
                     <Route exact path="/Manager/:id" component={Managers} />
