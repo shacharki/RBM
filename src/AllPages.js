@@ -18,6 +18,7 @@ import ScientificReport from "./components/pages/Users/Researcher/ScientificRepo
 import Managers from './components/pages/Users/Manager/Manager';
 import mngRequestPurchase from "./components/pages/Users/Manager/mngRequestPurchase";
 import UpdatesFirebase from "./components/pages/Users/Manager/UpdatesFirebase";
+import financialReports from "./components/pages/Users/Manager/financialReports";
 
 
 import UserApproval from "./components/pages/Users/Manager/UserApproval";
@@ -67,6 +68,7 @@ function LoadPage() {
                     <Route exact path="/Manager/:id/profile" component={Profile} />
                     <Route exact path="/Manager/:id/mngRequestPurchase" component={mngRequestPurchase} />
                     <Route exact path="/Manager/:id/UpdatesFirebase" component={UpdatesFirebase} />
+                    <Route exact path="/Manager/:id/financialReports" component={financialReports} />
 
 
 

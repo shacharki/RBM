@@ -143,7 +143,7 @@ class Researcher extends React.Component {
 
                     <button id="repor-button" className="btn btn-info" onClick={() => {
                         NextPage(this.props, "ScientificReport", this.state.user)
-                    }}>דוח מדעי<span
+                    }}>דוחות מדעים<span
                         className="fa fa-arrow-right"></span></button>
 
 

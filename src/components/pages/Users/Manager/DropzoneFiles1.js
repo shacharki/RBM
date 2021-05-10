@@ -2,7 +2,7 @@ import React, {Component} from 'react';
 import firebase, {auth, db, storage} from "../../../../firebase/firebase";
 import Dropzone from 'react-dropzone';
 
-class DropzoneFiles extends Component {
+class DropzoneFiles1 extends Component {
     constructor() {
         super();
         this.onDrop = (files) => {
@@ -80,9 +80,9 @@ class DropzoneFiles extends Component {
             },
             () => {
                 // Upload completed successfully, now we can get the download URL
-                uploadTask.snapshot.ref.getDownloadURL().then((downloadURL) => {
+                uploadTask.snapshot.ref.GetFormDownload().then((downloadURL) => {
                     // console.log('File available at', downloadURL);
-                    db.collection("researcher").doc(user.uid).collection("files").add({
+                    db.collection("managers").doc(user.uid).collection("files").add({
                         name: file.key,
                         time: new Date().toLocaleString(),
                         link:downloadURL,
@@ -162,4 +162,4 @@ class DropzoneFiles extends Component {
 }
 
 
-export default  DropzoneFiles ;
+export default  DropzoneFiles1 ;
