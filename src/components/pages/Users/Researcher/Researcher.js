@@ -159,8 +159,8 @@ class Researcher extends React.Component {
                     {/*}}>הורדת טופס דוח מדעי למילוי<span*/}
                     {/*    className="fa fa-arrow-right"></span></button>*/}
 
-                    <button id="ChatManager" className="btn btn-info" onClick={() => {
-                        // NextPage(this.props, "", this.state.user)
+                    <button id="ChatR" className="btn btn-info" onClick={() => {
+                         NextPage(this.props, "ChatR", this.state.user)
                     }}>צ'אט למנהל<span
                         className="fa fa-arrow-right"></span></button>
 

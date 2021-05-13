@@ -1,9 +1,9 @@
-//העלאת דוח כספי של המנהל
+//העלאת קבצי בקשה לרכישה
 import React, {Component} from 'react';
 import firebase, {auth, db, storage} from "../../../../firebase/firebase";
 import Dropzone from 'react-dropzone';
 
-class DropzoneFiles1 extends Component {
+class DropzoneFiles2 extends Component {
     constructor() {
         super();
         this.onDrop = (files) => {
@@ -83,7 +83,7 @@ class DropzoneFiles1 extends Component {
                 // Upload completed successfully, now we can get the download URL
                 uploadTask.snapshot.ref.getDownloadURL().then((downloadURL) => {
                     // console.log('File available at', downloadURL);
-                    db.collection("managers").doc(user.uid).collection("FinancialReport").add({
+                    db.collection("researcher").doc(user.uid).collection("RequestPurchase").add({
                         name: file.key,
                         time: new Date().toLocaleString(),
                         link:downloadURL,
@@ -163,4 +163,4 @@ class DropzoneFiles1 extends Component {
 }
 
 
-export default  DropzoneFiles1 ;
+export default  DropzoneFiles2 ;

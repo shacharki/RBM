@@ -10,6 +10,7 @@ import firebase from "firebase";
 
 import ReactDOM from 'react-dom'
 import SignatureCanvas from 'react-signature-canvas'
+import DropzoneFiles2 from "../Researcher/DropzoneFiles2";
 
 class RequestPurchase extends React.Component {
     constructor(props) {
@@ -788,7 +789,7 @@ class RequestPurchase extends React.Component {
 
                         <Fragment>
                             <div className="main">
-                                <p>חתימה</p>
+                                <p>חתימת החוקר</p>
                                 <div style={{backgroundColor: "#a0a0a0", width: 400,
                                     height: 200,}}>
                                     <SignatureCanvas
@@ -834,64 +835,22 @@ class RequestPurchase extends React.Component {
                         </Fragment>
 
 
-
-
-                        {/*<Grid item xs={6}>*/}
-                        {/*    <SignatureCanvas penColor='green'*/}
-                        {/*      canvasProps={{width: 200, height: 200, className: 'sigCanvas'}}*/}
-                        {/*      id="q16i"*/}
-                        {/*      name="q16"*/}
-                        {/*      autoComplete="off"*/}
-                        {/*      value={this.state.q16}*/}
-                        {/*      onChange={(e) => {*/}
-                        {/*      this.handleChange(e)*/}
-                        {/*      }}*/}
-                        {/*      variant="standard"*/}
-                        {/*      fullWidth*/}
-                        {/*      label="חתימת החוקר"*/}
-                        {/*    />*/}
-
-                        {/*</Grid>*/}
-                        {/*<br/>*/}
-
-                        {/*<Grid item xs={6}>*/}
-                        {/*    <TextField*/}
-                        {/*        inputProps={{style: {textAlign: 'center'}}}*/}
-                        {/*        id="q17i"*/}
-                        {/*        name="q17"*/}
-                        {/*        type="tel"*/}
-                        {/*        autoComplete="off"*/}
-                        {/*        value={this.state.q17}*/}
-                        {/*        onChange={(e) => {*/}
-                        {/*            this.handleChange(e)*/}
-                        {/*        }}*/}
-                        {/*        variant="standard"*/}
-                        {/*        fullWidth*/}
-                        {/*        label="תאריך החשבונית"*/}
-                        {/*    />*/}
-                        {/*</Grid>*/}
-                        {/*<br/>*/}
-
-
-                        {/*<Grid item xs={6}>*/}
-                        {/*    <TextField*/}
-                        {/*        inputProps={{style: {textAlign: 'center'}}}*/}
-                        {/*        id="q18i"*/}
-                        {/*        name="q18"*/}
-                        {/*        type="tel"*/}
-                        {/*        autoComplete="off"*/}
-                        {/*        value={this.state.q18}*/}
-                        {/*        onChange={(e) => {*/}
-                        {/*            this.handleChange(e)*/}
-                        {/*        }}*/}
-                        {/*        variant="standard"*/}
-                        {/*        fullWidth*/}
-                        {/*        label="מס' חשבונית"*/}
-                        {/*    />*/}
-                        {/*</Grid>*/}
                         <br/>
 
                     </div>
+                    <div>
+                    <p>העלאת נספחי הבקשה</p>
+
+                    <Grid item xs={5}
+                          container
+                          direction="column"
+                          justify="flex-start"
+                          alignItems="flex-start"
+                    >
+                        <DropzoneFiles2/>
+                    </Grid>
+                    </div>
+
 
                     <button id="sendData" className="btn btn-info" onClick={() => {
                         this.save();
