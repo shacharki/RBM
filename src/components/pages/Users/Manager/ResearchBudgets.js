@@ -563,6 +563,8 @@ class ResearchBudgets extends React.Component {
 
 
                         <h4>פירוט ההוצאות:</h4>
+                        <h4>שנה 1:</h4>
+
                         <table border="1">
 
                             <tr>
@@ -578,6 +580,8 @@ class ResearchBudgets extends React.Component {
                                 <th>מיקור חוץ</th>
                                 <th>דיווח</th>
                                 <th>שונות</th>
+                                <th>אסמכתא</th>
+                                <th>פירוט</th>
 
                             </tr>
                             <tr>
@@ -648,6 +652,18 @@ class ResearchBudgets extends React.Component {
                                 <td><div id="name-group">
                                     <input type="text" name="q16" id="q16i" placeholder={''}
                                            value={this.state.form.q16 ? (this.state.form.q16) : ('')} onChange={(e) => {
+                                        this.handleChange(e)
+                                    }} required/>
+                                </div></td>
+                                <td><div id="name-group">
+                                    <input type="text" name="q17" id="q17i" placeholder={''}
+                                           value={this.state.form.q17 ? (this.state.form.q17) : ('')} onChange={(e) => {
+                                        this.handleChange(e)
+                                    }} required/>
+                                </div></td>
+                                <td><div id="name-group">
+                                    <input type="text" name="q17" id="q17i" placeholder={''}
+                                           value={this.state.form.q17 ? (this.state.form.q17) : ('')} onChange={(e) => {
                                         this.handleChange(e)
                                     }} required/>
                                 </div></td>
@@ -736,6 +752,18 @@ class ResearchBudgets extends React.Component {
                                         this.handleChange(e)
                                     }} required/>
                                 </div></td>
+                                <td><div id="name-group">
+                                    <input type="text" name="q17" id="q17i" placeholder={''}
+                                           value={this.state.form.q17 ? (this.state.form.q17) : ('')} onChange={(e) => {
+                                        this.handleChange(e)
+                                    }} required/>
+                                </div></td>
+                                <td><div id="name-group">
+                                    <input type="text" name="q17" id="q17i" placeholder={''}
+                                           value={this.state.form.q17 ? (this.state.form.q17) : ('')} onChange={(e) => {
+                                        this.handleChange(e)
+                                    }} required/>
+                                </div></td>
 
                             </tr>
                             <tr>
@@ -815,6 +843,389 @@ class ResearchBudgets extends React.Component {
                                         this.handleChange(e)
                                     }} required/>
                                 </div></td>
+                                <td><div id="name-group">
+                                    <input type="text" name="q17" id="q17i" placeholder={''}
+                                           value={this.state.form.q17 ? (this.state.form.q17) : ('')} onChange={(e) => {
+                                        this.handleChange(e)
+                                    }} required/>
+                                </div></td>
+                                <td><div id="name-group">
+                                    <input type="text" name="q17" id="q17i" placeholder={''}
+                                           value={this.state.form.q17 ? (this.state.form.q17) : ('')} onChange={(e) => {
+                                        this.handleChange(e)
+                                    }} required/>
+                                </div></td>
+
+                            </tr>
+                        </table>
+
+                        <br/>
+                        <Grid item xs={6}>
+                            <TextField
+                                inputProps={{style: {textAlign: 'center'}}}
+                                id="q18i"
+                                name="q18"
+                                type="tel"
+                                autoComplete="off"
+                                value={this.state.q18}
+                                onChange={(e) => {
+                                    this.handleChange(e)
+                                }}
+                                variant="standard"
+                                fullWidth
+                                label="תנועות"
+                            />
+                        </Grid>
+
+                        <br/>
+                        <Grid item xs={6}>
+                            <TextField
+                                inputProps={{style: {textAlign: 'center'}}}
+                                id="q19i"
+                                name="q19"
+                                type="tel"
+                                autoComplete="off"
+                                value={this.state.q19}
+                                onChange={(e) => {
+                                    this.handleChange(e)
+                                }}
+                                variant="standard"
+                                fullWidth
+                                label="תקציב שנתי"
+                            />
+                        </Grid>
+
+                        <br/>
+                        <Grid item xs={6}>
+                            <TextField
+                                inputProps={{style: {textAlign: 'center'}}}
+                                id="q20i"
+                                name="q20"
+                                type="tel"
+                                autoComplete="off"
+                                value={this.state.q20}
+                                onChange={(e) => {
+                                    this.handleChange(e)
+                                }}
+                                variant="standard"
+                                fullWidth
+                                label="יתרה נוכחית"
+                            />
+                        </Grid>
+                        <br/>
+                        <Grid item xs={6}>
+                            <TextField
+                                inputProps={{style: {textAlign: 'center'}}}
+                                id="q20i"
+                                name="q20"
+                                type="tel"
+                                autoComplete="off"
+                                value={this.state.q20}
+                                onChange={(e) => {
+                                    this.handleChange(e)
+                                }}
+                                variant="standard"
+                                fullWidth
+                                label="סה'כ יתרה"
+                            />
+                        </Grid>
+
+
+                        <br/>
+
+                        <h4>שנה 2:</h4>
+
+                        <table border="2">
+
+                            <tr>
+                                <th>תאריך</th>
+                                <th>כ"א/משכורת</th>
+                                <th>נסיעות</th>
+                                <th>ציוד אזיל</th>
+                                <th>ציוד</th>
+                                <th>מחשבים</th>
+                                <th>ייעוץ</th>
+                                <th>עריכה לשונית</th>
+                                <th>סקרים</th>
+                                <th>מיקור חוץ</th>
+                                <th>דיווח</th>
+                                <th>שונות</th>
+                                <th>אסמכתא</th>
+                                <th>פירוט</th>
+
+
+                            </tr>
+                            <tr>
+                                <td>
+                                    <div id="name-group">
+                                        <input type="text" name="q77" id="q77i" placeholder={''}
+                                               value={this.state.form.q77 ? (this.state.form.q77) : ('')} onChange={(e) => {
+                                            this.handleChange(e)
+                                        }} required/>
+                                    </div>
+                                </td>
+                                <td>
+                                    <div id="name-group">
+                                        <input type="text" name="q7" id="q7i" placeholder={''}
+                                               value={this.state.form.q7 ? (this.state.form.q7) : ('')} onChange={(e) => {
+                                            this.handleChange(e)
+                                        }} required/>
+                                    </div>
+                                </td>
+                                <td>    <div id="name-group">
+                                    <input type="text" name="q8" id="q8i" placeholder={''}
+                                           value={this.state.form.q8 ? (this.state.form.q8) : ('')} onChange={(e) => {
+                                        this.handleChange(e)
+                                    }} required/>
+                                </div></td>
+                                <td><div id="name-group">
+                                    <input type="text" name="q9" id="q9i" placeholder={''}
+                                           value={this.state.form.q9 ? (this.state.form.q9) : ('')} onChange={(e) => {
+                                        this.handleChange(e)
+                                    }} required/>
+                                </div></td>
+                                <td><div id="name-group">
+                                    <input type="text" name="q10" id="q10i" placeholder={''}
+                                           value={this.state.form.q10 ? (this.state.form.q10) : ('')} onChange={(e) => {
+                                        this.handleChange(e)
+                                    }} required/>
+                                </div></td>
+                                <td><div id="name-group">
+                                    <input type="text" name="q11" id="q11i" placeholder={''}
+                                           value={this.state.form.q11 ? (this.state.form.q11) : ('')} onChange={(e) => {
+                                        this.handleChange(e)
+                                    }} required/>
+                                </div></td>
+                                <td><div id="name-group">
+                                    <input type="text" name="q12" id="q12i" placeholder={''}
+                                           value={this.state.form.q12 ? (this.state.form.q12) : ('')} onChange={(e) => {
+                                        this.handleChange(e)
+                                    }} required/>
+                                </div></td>
+                                <td><div id="name-group">
+                                    <input type="text" name="q13" id="q13i" placeholder={''}
+                                           value={this.state.form.q13 ? (this.state.form.q13) : ('')} onChange={(e) => {
+                                        this.handleChange(e)
+                                    }} required/>
+                                </div></td>
+                                <td><div id="name-group">
+                                    <input type="text" name="q14" id="q14i" placeholder={''}
+                                           value={this.state.form.q14 ? (this.state.form.q14) : ('')} onChange={(e) => {
+                                        this.handleChange(e)
+                                    }} required/>
+                                </div></td>
+                                <td><div id="name-group">
+                                    <input type="text" name="q15" id="q15i" placeholder={''}
+                                           value={this.state.form.q15 ? (this.state.form.q15) : ('')} onChange={(e) => {
+                                        this.handleChange(e)
+                                    }} required/>
+                                </div></td>
+                                <td><div id="name-group">
+                                    <input type="text" name="q16" id="q16i" placeholder={''}
+                                           value={this.state.form.q16 ? (this.state.form.q16) : ('')} onChange={(e) => {
+                                        this.handleChange(e)
+                                    }} required/>
+                                </div></td>
+                                <td><div id="name-group">
+                                    <input type="text" name="q17" id="q17i" placeholder={''}
+                                           value={this.state.form.q17 ? (this.state.form.q17) : ('')} onChange={(e) => {
+                                        this.handleChange(e)
+                                    }} required/>
+                                </div></td>
+                                <td><div id="name-group">
+                                    <input type="text" name="q17" id="q17i" placeholder={''}
+                                           value={this.state.form.q17 ? (this.state.form.q17) : ('')} onChange={(e) => {
+                                        this.handleChange(e)
+                                    }} required/>
+                                </div></td>
+                                <td><div id="name-group">
+                                    <input type="text" name="q17" id="q17i" placeholder={''}
+                                           value={this.state.form.q17 ? (this.state.form.q17) : ('')} onChange={(e) => {
+                                        this.handleChange(e)
+                                    }} required/>
+                                </div></td>
+
+                            </tr>
+                            <tr>
+                                <td>
+                                    <div id="name-group">
+                                        <input type="text" name="q707" id="q707i" placeholder={''}
+                                               value={this.state.form.q707 ? (this.state.form.q707) : ('')} onChange={(e) => {
+                                            this.handleChange(e)
+                                        }} required/>
+                                    </div>
+                                </td>
+                                <td>
+                                    <div id="name-group">
+                                        <input type="text" name="q70" id="q70i" placeholder={''}
+                                               value={this.state.form.q70 ? (this.state.form.q70) : ('')} onChange={(e) => {
+                                            this.handleChange(e)
+                                        }} required/>
+                                    </div>
+                                </td>
+                                <td>    <div id="name-group">
+                                    <input type="text" name="q80" id="q80i" placeholder={''}
+                                           value={this.state.form.q80 ? (this.state.form.q80) : ('')} onChange={(e) => {
+                                        this.handleChange(e)
+                                    }} required/>
+                                </div></td>
+                                <td><div id="name-group">
+                                    <input type="text" name="q90" id="q90i" placeholder={''}
+                                           value={this.state.form.q90 ? (this.state.form.q90) : ('')} onChange={(e) => {
+                                        this.handleChange(e)
+                                    }} required/>
+                                </div></td>
+                                <td><div id="name-group">
+                                    <input type="text" name="q100" id="q100i" placeholder={''}
+                                           value={this.state.form.q100 ? (this.state.form.q100) : ('')} onChange={(e) => {
+                                        this.handleChange(e)
+                                    }} required/>
+                                </div></td>
+                                <td><div id="name-group">
+                                    <input type="text" name="q110" id="q110i" placeholder={''}
+                                           value={this.state.form.q110 ? (this.state.form.q110) : ('')} onChange={(e) => {
+                                        this.handleChange(e)
+                                    }} required/>
+                                </div></td>
+                                <td><div id="name-group">
+                                    <input type="text" name="q120" id="q120i" placeholder={''}
+                                           value={this.state.form.q120 ? (this.state.form.q120) : ('')} onChange={(e) => {
+                                        this.handleChange(e)
+                                    }} required/>
+                                </div></td>
+                                <td><div id="name-group">
+                                    <input type="text" name="q130" id="q130i" placeholder={''}
+                                           value={this.state.form.q130 ? (this.state.form.q130) : ('')} onChange={(e) => {
+                                        this.handleChange(e)
+                                    }} required/>
+                                </div></td>
+                                <td><div id="name-group">
+                                    <input type="text" name="q140" id="q140i" placeholder={''}
+                                           value={this.state.form.q140 ? (this.state.form.q140) : ('')} onChange={(e) => {
+                                        this.handleChange(e)
+                                    }} required/>
+                                </div></td>
+                                <td><div id="name-group">
+                                    <input type="text" name="q150" id="q150i" placeholder={''}
+                                           value={this.state.form.q150 ? (this.state.form.q150) : ('')} onChange={(e) => {
+                                        this.handleChange(e)
+                                    }} required/>
+                                </div></td>
+                                <td><div id="name-group">
+                                    <input type="text" name="q160" id="q160i" placeholder={''}
+                                           value={this.state.form.q160 ? (this.state.form.q160) : ('')} onChange={(e) => {
+                                        this.handleChange(e)
+                                    }} required/>
+                                </div></td>
+                                <td><div id="name-group">
+                                    <input type="text" name="q170" id="q170i" placeholder={''}
+                                           value={this.state.form.q170 ? (this.state.form.q170) : ('')} onChange={(e) => {
+                                        this.handleChange(e)
+                                    }} required/>
+                                </div></td>
+                                <td><div id="name-group">
+                                    <input type="text" name="q17" id="q17i" placeholder={''}
+                                           value={this.state.form.q17 ? (this.state.form.q17) : ('')} onChange={(e) => {
+                                        this.handleChange(e)
+                                    }} required/>
+                                </div></td>
+                                <td><div id="name-group">
+                                    <input type="text" name="q17" id="q17i" placeholder={''}
+                                           value={this.state.form.q17 ? (this.state.form.q17) : ('')} onChange={(e) => {
+                                        this.handleChange(e)
+                                    }} required/>
+                                </div></td>
+
+                            </tr>
+                            <tr>
+                                <td>
+                                    <div id="name-group">
+                                        <input type="text" name="q717" id="q717i" placeholder={''}
+                                               value={this.state.form.q717 ? (this.state.form.q717) : ('')} onChange={(e) => {
+                                            this.handleChange(e)
+                                        }} required/>
+                                    </div>
+                                </td>
+                                <td>
+                                    <div id="name-group">
+                                        <input type="text" name="q71" id="q71i" placeholder={''}
+                                               value={this.state.form.q71 ? (this.state.form.q71) : ('')} onChange={(e) => {
+                                            this.handleChange(e)
+                                        }} required/>
+                                    </div>
+                                </td>
+                                <td>    <div id="name-group">
+                                    <input type="text" name="q81" id="q81i" placeholder={''}
+                                           value={this.state.form.q81 ? (this.state.form.q81) : ('')} onChange={(e) => {
+                                        this.handleChange(e)
+                                    }} required/>
+                                </div></td>
+                                <td><div id="name-group">
+                                    <input type="text" name="q91" id="q91i" placeholder={''}
+                                           value={this.state.form.q91 ? (this.state.form.q91) : ('')} onChange={(e) => {
+                                        this.handleChange(e)
+                                    }} required/>
+                                </div></td>
+                                <td><div id="name-group">
+                                    <input type="text" name="q101" id="q101i" placeholder={''}
+                                           value={this.state.form.q101 ? (this.state.form.q101) : ('')} onChange={(e) => {
+                                        this.handleChange(e)
+                                    }} required/>
+                                </div></td>
+                                <td><div id="name-group">
+                                    <input type="text" name="q111" id="q111i" placeholder={''}
+                                           value={this.state.form.q111 ? (this.state.form.q111) : ('')} onChange={(e) => {
+                                        this.handleChange(e)
+                                    }} required/>
+                                </div></td>
+                                <td><div id="name-group">
+                                    <input type="text" name="q121" id="q121i" placeholder={''}
+                                           value={this.state.form.q121 ? (this.state.form.q121) : ('')} onChange={(e) => {
+                                        this.handleChange(e)
+                                    }} required/>
+                                </div></td>
+                                <td><div id="name-group">
+                                    <input type="text" name="q131" id="q131i" placeholder={''}
+                                           value={this.state.form.q131 ? (this.state.form.q131) : ('')} onChange={(e) => {
+                                        this.handleChange(e)
+                                    }} required/>
+                                </div></td>
+                                <td><div id="name-group">
+                                    <input type="text" name="q141" id="q141i" placeholder={''}
+                                           value={this.state.form.q141 ? (this.state.form.q141) : ('')} onChange={(e) => {
+                                        this.handleChange(e)
+                                    }} required/>
+                                </div></td>
+                                <td><div id="name-group">
+                                    <input type="text" name="q151" id="q151i" placeholder={''}
+                                           value={this.state.form.q151 ? (this.state.form.q151) : ('')} onChange={(e) => {
+                                        this.handleChange(e)
+                                    }} required/>
+                                </div></td>
+                                <td><div id="name-group">
+                                    <input type="text" name="q161" id="q161i" placeholder={''}
+                                           value={this.state.form.q161 ? (this.state.form.q161) : ('')} onChange={(e) => {
+                                        this.handleChange(e)
+                                    }} required/>
+                                </div></td>
+                                <td><div id="name-group">
+                                    <input type="text" name="q171" id="q171i" placeholder={''}
+                                           value={this.state.form.q171 ? (this.state.form.q171) : ('')} onChange={(e) => {
+                                        this.handleChange(e)
+                                    }} required/>
+                                </div></td>
+                                <td><div id="name-group">
+                                    <input type="text" name="q17" id="q17i" placeholder={''}
+                                           value={this.state.form.q17 ? (this.state.form.q17) : ('')} onChange={(e) => {
+                                        this.handleChange(e)
+                                    }} required/>
+                                </div></td>
+                                <td><div id="name-group">
+                                    <input type="text" name="q17" id="q17i" placeholder={''}
+                                           value={this.state.form.q17 ? (this.state.form.q17) : ('')} onChange={(e) => {
+                                        this.handleChange(e)
+                                    }} required/>
+                                </div></td>
 
                             </tr>
                         </table>
@@ -873,54 +1284,1127 @@ class ResearchBudgets extends React.Component {
                             />
                         </Grid>
 
-                        <Fragment>
-                            <div className="main">
-                                <p>חתימה</p>
-                                <div style={{backgroundColor: "#a0a0a0", width: 400,
-                                    height: 200,}}>
-                                    <SignatureCanvas
-
-                                        penColor="green"
-                                        canvasProps={{
-                                            width: 400,
-                                            height: 200,
-                                            className: "write-name-canvas",
-                                        }}
-                                        ref={(ref) => {
-                                            this.canvas = ref;
-                                        }}
-                                        id="q16i"
-                                        name="q16"
-                                        autoComplete="off"
-                                        value={this.state.q16}
-                                        onChange={(e) => {
-                                            this.handleChange(e)
-                                        }}
-                                        variant="standard"
-                                        fullWidth
-                                        label="חתימה"
-                                    />
-                                </div>
-                                <div>
-                                    <img
-                                        className="write-name-img"
-                                        src={
-                                            this.state.imgUrl === ""
-                                                ? (this.state.imgUrl = "")
-                                                : this.state.imgUrl
-                                        }
-                                    />
-
-                                </div>
-
-                                <div className="write-name-operation">
-                                    <button onClick={() => this.reset()}>Reset</button>
-                                    <button onClick={() => this.save()}>Save</button>
-                                </div>
-                            </div>
-                        </Fragment>
+                        <br/>
+                        <Grid item xs={6}>
+                            <TextField
+                                inputProps={{style: {textAlign: 'center'}}}
+                                id="q20i"
+                                name="q20"
+                                type="tel"
+                                autoComplete="off"
+                                value={this.state.q20}
+                                onChange={(e) => {
+                                    this.handleChange(e)
+                                }}
+                                variant="standard"
+                                fullWidth
+                                label="סה'כ יתרה"
+                            />
+                        </Grid>
 
                         <br/>
+
+                        <h4>שנה 3:</h4>
+
+                        <table border="3">
+
+                            <tr>
+                                <th>תאריך</th>
+                                <th>כ"א/משכורת</th>
+                                <th>נסיעות</th>
+                                <th>ציוד אזיל</th>
+                                <th>ציוד</th>
+                                <th>מחשבים</th>
+                                <th>ייעוץ</th>
+                                <th>עריכה לשונית</th>
+                                <th>סקרים</th>
+                                <th>מיקור חוץ</th>
+                                <th>דיווח</th>
+                                <th>שונות</th>
+                                <th>אסמכתא</th>
+                                <th>פירוט</th>
+
+                            </tr>
+                            <tr>
+                                <td>
+                                    <div id="name-group">
+                                        <input type="text" name="q77" id="q77i" placeholder={''}
+                                               value={this.state.form.q77 ? (this.state.form.q77) : ('')} onChange={(e) => {
+                                            this.handleChange(e)
+                                        }} required/>
+                                    </div>
+                                </td>
+                                <td>
+                                    <div id="name-group">
+                                        <input type="text" name="q7" id="q7i" placeholder={''}
+                                               value={this.state.form.q7 ? (this.state.form.q7) : ('')} onChange={(e) => {
+                                            this.handleChange(e)
+                                        }} required/>
+                                    </div>
+                                </td>
+                                <td>    <div id="name-group">
+                                    <input type="text" name="q8" id="q8i" placeholder={''}
+                                           value={this.state.form.q8 ? (this.state.form.q8) : ('')} onChange={(e) => {
+                                        this.handleChange(e)
+                                    }} required/>
+                                </div></td>
+                                <td><div id="name-group">
+                                    <input type="text" name="q9" id="q9i" placeholder={''}
+                                           value={this.state.form.q9 ? (this.state.form.q9) : ('')} onChange={(e) => {
+                                        this.handleChange(e)
+                                    }} required/>
+                                </div></td>
+                                <td><div id="name-group">
+                                    <input type="text" name="q10" id="q10i" placeholder={''}
+                                           value={this.state.form.q10 ? (this.state.form.q10) : ('')} onChange={(e) => {
+                                        this.handleChange(e)
+                                    }} required/>
+                                </div></td>
+                                <td><div id="name-group">
+                                    <input type="text" name="q11" id="q11i" placeholder={''}
+                                           value={this.state.form.q11 ? (this.state.form.q11) : ('')} onChange={(e) => {
+                                        this.handleChange(e)
+                                    }} required/>
+                                </div></td>
+                                <td><div id="name-group">
+                                    <input type="text" name="q12" id="q12i" placeholder={''}
+                                           value={this.state.form.q12 ? (this.state.form.q12) : ('')} onChange={(e) => {
+                                        this.handleChange(e)
+                                    }} required/>
+                                </div></td>
+                                <td><div id="name-group">
+                                    <input type="text" name="q13" id="q13i" placeholder={''}
+                                           value={this.state.form.q13 ? (this.state.form.q13) : ('')} onChange={(e) => {
+                                        this.handleChange(e)
+                                    }} required/>
+                                </div></td>
+                                <td><div id="name-group">
+                                    <input type="text" name="q14" id="q14i" placeholder={''}
+                                           value={this.state.form.q14 ? (this.state.form.q14) : ('')} onChange={(e) => {
+                                        this.handleChange(e)
+                                    }} required/>
+                                </div></td>
+                                <td><div id="name-group">
+                                    <input type="text" name="q15" id="q15i" placeholder={''}
+                                           value={this.state.form.q15 ? (this.state.form.q15) : ('')} onChange={(e) => {
+                                        this.handleChange(e)
+                                    }} required/>
+                                </div></td>
+                                <td><div id="name-group">
+                                    <input type="text" name="q16" id="q16i" placeholder={''}
+                                           value={this.state.form.q16 ? (this.state.form.q16) : ('')} onChange={(e) => {
+                                        this.handleChange(e)
+                                    }} required/>
+                                </div></td>
+                                <td><div id="name-group">
+                                    <input type="text" name="q17" id="q17i" placeholder={''}
+                                           value={this.state.form.q17 ? (this.state.form.q17) : ('')} onChange={(e) => {
+                                        this.handleChange(e)
+                                    }} required/>
+                                </div></td>
+                                <td><div id="name-group">
+                                    <input type="text" name="q17" id="q17i" placeholder={''}
+                                           value={this.state.form.q17 ? (this.state.form.q17) : ('')} onChange={(e) => {
+                                        this.handleChange(e)
+                                    }} required/>
+                                </div></td>
+                                <td><div id="name-group">
+                                    <input type="text" name="q17" id="q17i" placeholder={''}
+                                           value={this.state.form.q17 ? (this.state.form.q17) : ('')} onChange={(e) => {
+                                        this.handleChange(e)
+                                    }} required/>
+                                </div></td>
+
+                            </tr>
+                            <tr>
+                                <td>
+                                    <div id="name-group">
+                                        <input type="text" name="q707" id="q707i" placeholder={''}
+                                               value={this.state.form.q707 ? (this.state.form.q707) : ('')} onChange={(e) => {
+                                            this.handleChange(e)
+                                        }} required/>
+                                    </div>
+                                </td>
+                                <td>
+                                    <div id="name-group">
+                                        <input type="text" name="q70" id="q70i" placeholder={''}
+                                               value={this.state.form.q70 ? (this.state.form.q70) : ('')} onChange={(e) => {
+                                            this.handleChange(e)
+                                        }} required/>
+                                    </div>
+                                </td>
+                                <td>    <div id="name-group">
+                                    <input type="text" name="q80" id="q80i" placeholder={''}
+                                           value={this.state.form.q80 ? (this.state.form.q80) : ('')} onChange={(e) => {
+                                        this.handleChange(e)
+                                    }} required/>
+                                </div></td>
+                                <td><div id="name-group">
+                                    <input type="text" name="q90" id="q90i" placeholder={''}
+                                           value={this.state.form.q90 ? (this.state.form.q90) : ('')} onChange={(e) => {
+                                        this.handleChange(e)
+                                    }} required/>
+                                </div></td>
+                                <td><div id="name-group">
+                                    <input type="text" name="q100" id="q100i" placeholder={''}
+                                           value={this.state.form.q100 ? (this.state.form.q100) : ('')} onChange={(e) => {
+                                        this.handleChange(e)
+                                    }} required/>
+                                </div></td>
+                                <td><div id="name-group">
+                                    <input type="text" name="q110" id="q110i" placeholder={''}
+                                           value={this.state.form.q110 ? (this.state.form.q110) : ('')} onChange={(e) => {
+                                        this.handleChange(e)
+                                    }} required/>
+                                </div></td>
+                                <td><div id="name-group">
+                                    <input type="text" name="q120" id="q120i" placeholder={''}
+                                           value={this.state.form.q120 ? (this.state.form.q120) : ('')} onChange={(e) => {
+                                        this.handleChange(e)
+                                    }} required/>
+                                </div></td>
+                                <td><div id="name-group">
+                                    <input type="text" name="q130" id="q130i" placeholder={''}
+                                           value={this.state.form.q130 ? (this.state.form.q130) : ('')} onChange={(e) => {
+                                        this.handleChange(e)
+                                    }} required/>
+                                </div></td>
+                                <td><div id="name-group">
+                                    <input type="text" name="q140" id="q140i" placeholder={''}
+                                           value={this.state.form.q140 ? (this.state.form.q140) : ('')} onChange={(e) => {
+                                        this.handleChange(e)
+                                    }} required/>
+                                </div></td>
+                                <td><div id="name-group">
+                                    <input type="text" name="q150" id="q150i" placeholder={''}
+                                           value={this.state.form.q150 ? (this.state.form.q150) : ('')} onChange={(e) => {
+                                        this.handleChange(e)
+                                    }} required/>
+                                </div></td>
+                                <td><div id="name-group">
+                                    <input type="text" name="q160" id="q160i" placeholder={''}
+                                           value={this.state.form.q160 ? (this.state.form.q160) : ('')} onChange={(e) => {
+                                        this.handleChange(e)
+                                    }} required/>
+                                </div></td>
+                                <td><div id="name-group">
+                                    <input type="text" name="q170" id="q170i" placeholder={''}
+                                           value={this.state.form.q170 ? (this.state.form.q170) : ('')} onChange={(e) => {
+                                        this.handleChange(e)
+                                    }} required/>
+                                </div></td>
+                                <td><div id="name-group">
+                                    <input type="text" name="q17" id="q17i" placeholder={''}
+                                           value={this.state.form.q17 ? (this.state.form.q17) : ('')} onChange={(e) => {
+                                        this.handleChange(e)
+                                    }} required/>
+                                </div></td>
+                                <td><div id="name-group">
+                                    <input type="text" name="q17" id="q17i" placeholder={''}
+                                           value={this.state.form.q17 ? (this.state.form.q17) : ('')} onChange={(e) => {
+                                        this.handleChange(e)
+                                    }} required/>
+                                </div></td>
+
+                            </tr>
+                            <tr>
+                                <td>
+                                    <div id="name-group">
+                                        <input type="text" name="q717" id="q717i" placeholder={''}
+                                               value={this.state.form.q717 ? (this.state.form.q717) : ('')} onChange={(e) => {
+                                            this.handleChange(e)
+                                        }} required/>
+                                    </div>
+                                </td>
+                                <td>
+                                    <div id="name-group">
+                                        <input type="text" name="q71" id="q71i" placeholder={''}
+                                               value={this.state.form.q71 ? (this.state.form.q71) : ('')} onChange={(e) => {
+                                            this.handleChange(e)
+                                        }} required/>
+                                    </div>
+                                </td>
+                                <td>    <div id="name-group">
+                                    <input type="text" name="q81" id="q81i" placeholder={''}
+                                           value={this.state.form.q81 ? (this.state.form.q81) : ('')} onChange={(e) => {
+                                        this.handleChange(e)
+                                    }} required/>
+                                </div></td>
+                                <td><div id="name-group">
+                                    <input type="text" name="q91" id="q91i" placeholder={''}
+                                           value={this.state.form.q91 ? (this.state.form.q91) : ('')} onChange={(e) => {
+                                        this.handleChange(e)
+                                    }} required/>
+                                </div></td>
+                                <td><div id="name-group">
+                                    <input type="text" name="q101" id="q101i" placeholder={''}
+                                           value={this.state.form.q101 ? (this.state.form.q101) : ('')} onChange={(e) => {
+                                        this.handleChange(e)
+                                    }} required/>
+                                </div></td>
+                                <td><div id="name-group">
+                                    <input type="text" name="q111" id="q111i" placeholder={''}
+                                           value={this.state.form.q111 ? (this.state.form.q111) : ('')} onChange={(e) => {
+                                        this.handleChange(e)
+                                    }} required/>
+                                </div></td>
+                                <td><div id="name-group">
+                                    <input type="text" name="q121" id="q121i" placeholder={''}
+                                           value={this.state.form.q121 ? (this.state.form.q121) : ('')} onChange={(e) => {
+                                        this.handleChange(e)
+                                    }} required/>
+                                </div></td>
+                                <td><div id="name-group">
+                                    <input type="text" name="q131" id="q131i" placeholder={''}
+                                           value={this.state.form.q131 ? (this.state.form.q131) : ('')} onChange={(e) => {
+                                        this.handleChange(e)
+                                    }} required/>
+                                </div></td>
+                                <td><div id="name-group">
+                                    <input type="text" name="q141" id="q141i" placeholder={''}
+                                           value={this.state.form.q141 ? (this.state.form.q141) : ('')} onChange={(e) => {
+                                        this.handleChange(e)
+                                    }} required/>
+                                </div></td>
+                                <td><div id="name-group">
+                                    <input type="text" name="q151" id="q151i" placeholder={''}
+                                           value={this.state.form.q151 ? (this.state.form.q151) : ('')} onChange={(e) => {
+                                        this.handleChange(e)
+                                    }} required/>
+                                </div></td>
+                                <td><div id="name-group">
+                                    <input type="text" name="q161" id="q161i" placeholder={''}
+                                           value={this.state.form.q161 ? (this.state.form.q161) : ('')} onChange={(e) => {
+                                        this.handleChange(e)
+                                    }} required/>
+                                </div></td>
+                                <td><div id="name-group">
+                                    <input type="text" name="q171" id="q171i" placeholder={''}
+                                           value={this.state.form.q171 ? (this.state.form.q171) : ('')} onChange={(e) => {
+                                        this.handleChange(e)
+                                    }} required/>
+                                </div></td>
+                                <td><div id="name-group">
+                                    <input type="text" name="q17" id="q17i" placeholder={''}
+                                           value={this.state.form.q17 ? (this.state.form.q17) : ('')} onChange={(e) => {
+                                        this.handleChange(e)
+                                    }} required/>
+                                </div></td>
+                                <td><div id="name-group">
+                                    <input type="text" name="q17" id="q17i" placeholder={''}
+                                           value={this.state.form.q17 ? (this.state.form.q17) : ('')} onChange={(e) => {
+                                        this.handleChange(e)
+                                    }} required/>
+                                </div></td>
+
+                            </tr>
+                        </table>
+
+                        <br/>
+                        <Grid item xs={6}>
+                            <TextField
+                                inputProps={{style: {textAlign: 'center'}}}
+                                id="q18i"
+                                name="q18"
+                                type="tel"
+                                autoComplete="off"
+                                value={this.state.q18}
+                                onChange={(e) => {
+                                    this.handleChange(e)
+                                }}
+                                variant="standard"
+                                fullWidth
+                                label="תנועות"
+                            />
+                        </Grid>
+
+                        <br/>
+                        <Grid item xs={6}>
+                            <TextField
+                                inputProps={{style: {textAlign: 'center'}}}
+                                id="q19i"
+                                name="q19"
+                                type="tel"
+                                autoComplete="off"
+                                value={this.state.q19}
+                                onChange={(e) => {
+                                    this.handleChange(e)
+                                }}
+                                variant="standard"
+                                fullWidth
+                                label="תקציב שנתי"
+                            />
+                        </Grid>
+
+                        <br/>
+                        <Grid item xs={6}>
+                            <TextField
+                                inputProps={{style: {textAlign: 'center'}}}
+                                id="q20i"
+                                name="q20"
+                                type="tel"
+                                autoComplete="off"
+                                value={this.state.q20}
+                                onChange={(e) => {
+                                    this.handleChange(e)
+                                }}
+                                variant="standard"
+                                fullWidth
+                                label="יתרה נוכחית"
+                            />
+                        </Grid>
+
+                        <br/>
+                        <Grid item xs={6}>
+                            <TextField
+                                inputProps={{style: {textAlign: 'center'}}}
+                                id="q20i"
+                                name="q20"
+                                type="tel"
+                                autoComplete="off"
+                                value={this.state.q20}
+                                onChange={(e) => {
+                                    this.handleChange(e)
+                                }}
+                                variant="standard"
+                                fullWidth
+                                label="סה'כ יתרה"
+                            />
+                        </Grid>
+
+                        <br/>
+
+                        <h4>אבני דרך:</h4>
+
+                        <table border="2">
+
+                            <tr>
+                                <th>שנה</th>
+                                <th>תיאור</th>
+                                <th>תאריך</th>
+                                <th>.ה. ח</th>
+                                <th>סכום כולל תקורה 100%</th>
+                                <th>תקורה 15%</th>
+                                <th>בכום ללא תקורה 85%</th>
+                                <th>סטטוס</th>
+
+
+
+                            </tr>
+                            <tr>
+                                <td>
+                                    <div id="name-group">
+                                        <input type="text" name="q77" id="q77i" placeholder={''}
+                                               value={this.state.form.q77 ? (this.state.form.q77) : ('')} onChange={(e) => {
+                                            this.handleChange(e)
+                                        }} required/>
+                                    </div>
+                                </td>
+                                <td>
+                                    <div id="name-group">
+                                        <input type="text" name="q7" id="q7i" placeholder={''}
+                                               value={this.state.form.q7 ? (this.state.form.q7) : ('')} onChange={(e) => {
+                                            this.handleChange(e)
+                                        }} required/>
+                                    </div>
+                                </td>
+                                <td>    <div id="name-group">
+                                    <input type="text" name="q8" id="q8i" placeholder={''}
+                                           value={this.state.form.q8 ? (this.state.form.q8) : ('')} onChange={(e) => {
+                                        this.handleChange(e)
+                                    }} required/>
+                                </div></td>
+                                <td><div id="name-group">
+                                    <input type="text" name="q9" id="q9i" placeholder={''}
+                                           value={this.state.form.q9 ? (this.state.form.q9) : ('')} onChange={(e) => {
+                                        this.handleChange(e)
+                                    }} required/>
+                                </div></td>
+                                <td><div id="name-group">
+                                    <input type="text" name="q10" id="q10i" placeholder={''}
+                                           value={this.state.form.q10 ? (this.state.form.q10) : ('')} onChange={(e) => {
+                                        this.handleChange(e)
+                                    }} required/>
+                                </div></td>
+                                <td><div id="name-group">
+                                    <input type="text" name="q11" id="q11i" placeholder={''}
+                                           value={this.state.form.q11 ? (this.state.form.q11) : ('')} onChange={(e) => {
+                                        this.handleChange(e)
+                                    }} required/>
+                                </div></td>
+                                <td><div id="name-group">
+                                    <input type="text" name="q12" id="q12i" placeholder={''}
+                                           value={this.state.form.q12 ? (this.state.form.q12) : ('')} onChange={(e) => {
+                                        this.handleChange(e)
+                                    }} required/>
+                                </div></td>
+                                <td><div id="name-group">
+                                    <input type="text" name="q13" id="q13i" placeholder={''}
+                                           value={this.state.form.q13 ? (this.state.form.q13) : ('')} onChange={(e) => {
+                                        this.handleChange(e)
+                                    }} required/>
+                                </div></td>
+
+                            </tr>
+                            <tr>
+                                <td>
+                                    <div id="name-group">
+                                        <input type="text" name="q707" id="q707i" placeholder={''}
+                                               value={this.state.form.q707 ? (this.state.form.q707) : ('')} onChange={(e) => {
+                                            this.handleChange(e)
+                                        }} required/>
+                                    </div>
+                                </td>
+                                <td>
+                                    <div id="name-group">
+                                        <input type="text" name="q70" id="q70i" placeholder={''}
+                                               value={this.state.form.q70 ? (this.state.form.q70) : ('')} onChange={(e) => {
+                                            this.handleChange(e)
+                                        }} required/>
+                                    </div>
+                                </td>
+                                <td>    <div id="name-group">
+                                    <input type="text" name="q80" id="q80i" placeholder={''}
+                                           value={this.state.form.q80 ? (this.state.form.q80) : ('')} onChange={(e) => {
+                                        this.handleChange(e)
+                                    }} required/>
+                                </div></td>
+                                <td><div id="name-group">
+                                    <input type="text" name="q90" id="q90i" placeholder={''}
+                                           value={this.state.form.q90 ? (this.state.form.q90) : ('')} onChange={(e) => {
+                                        this.handleChange(e)
+                                    }} required/>
+                                </div></td>
+                                <td><div id="name-group">
+                                    <input type="text" name="q100" id="q100i" placeholder={''}
+                                           value={this.state.form.q100 ? (this.state.form.q100) : ('')} onChange={(e) => {
+                                        this.handleChange(e)
+                                    }} required/>
+                                </div></td>
+                                <td><div id="name-group">
+                                    <input type="text" name="q110" id="q110i" placeholder={''}
+                                           value={this.state.form.q110 ? (this.state.form.q110) : ('')} onChange={(e) => {
+                                        this.handleChange(e)
+                                    }} required/>
+                                </div></td>
+                                <td><div id="name-group">
+                                    <input type="text" name="q120" id="q120i" placeholder={''}
+                                           value={this.state.form.q120 ? (this.state.form.q120) : ('')} onChange={(e) => {
+                                        this.handleChange(e)
+                                    }} required/>
+                                </div></td>
+                                <td><div id="name-group">
+                                    <input type="text" name="q130" id="q130i" placeholder={''}
+                                           value={this.state.form.q130 ? (this.state.form.q130) : ('')} onChange={(e) => {
+                                        this.handleChange(e)
+                                    }} required/>
+                                </div></td>
+
+                            </tr>
+                            <tr>
+                                <td>
+                                    <div id="name-group">
+                                        <input type="text" name="q717" id="q717i" placeholder={''}
+                                               value={this.state.form.q717 ? (this.state.form.q717) : ('')} onChange={(e) => {
+                                            this.handleChange(e)
+                                        }} required/>
+                                    </div>
+                                </td>
+                                <td>
+                                    <div id="name-group">
+                                        <input type="text" name="q71" id="q71i" placeholder={''}
+                                               value={this.state.form.q71 ? (this.state.form.q71) : ('')} onChange={(e) => {
+                                            this.handleChange(e)
+                                        }} required/>
+                                    </div>
+                                </td>
+                                <td>    <div id="name-group">
+                                    <input type="text" name="q81" id="q81i" placeholder={''}
+                                           value={this.state.form.q81 ? (this.state.form.q81) : ('')} onChange={(e) => {
+                                        this.handleChange(e)
+                                    }} required/>
+                                </div></td>
+                                <td><div id="name-group">
+                                    <input type="text" name="q91" id="q91i" placeholder={''}
+                                           value={this.state.form.q91 ? (this.state.form.q91) : ('')} onChange={(e) => {
+                                        this.handleChange(e)
+                                    }} required/>
+                                </div></td>
+                                <td><div id="name-group">
+                                    <input type="text" name="q101" id="q101i" placeholder={''}
+                                           value={this.state.form.q101 ? (this.state.form.q101) : ('')} onChange={(e) => {
+                                        this.handleChange(e)
+                                    }} required/>
+                                </div></td>
+                                <td><div id="name-group">
+                                    <input type="text" name="q111" id="q111i" placeholder={''}
+                                           value={this.state.form.q111 ? (this.state.form.q111) : ('')} onChange={(e) => {
+                                        this.handleChange(e)
+                                    }} required/>
+                                </div></td>
+                                <td><div id="name-group">
+                                    <input type="text" name="q121" id="q121i" placeholder={''}
+                                           value={this.state.form.q121 ? (this.state.form.q121) : ('')} onChange={(e) => {
+                                        this.handleChange(e)
+                                    }} required/>
+                                </div></td>
+                                <td><div id="name-group">
+                                    <input type="text" name="q131" id="q131i" placeholder={''}
+                                           value={this.state.form.q131 ? (this.state.form.q131) : ('')} onChange={(e) => {
+                                        this.handleChange(e)
+                                    }} required/>
+                                </div></td>
+
+                            </tr>
+                            <tr>
+                                <td>
+                                    <div id="name-group">
+                                        <input type="text" name="q717" id="q717i" placeholder={''}
+                                               value={this.state.form.q717 ? (this.state.form.q717) : ('')} onChange={(e) => {
+                                            this.handleChange(e)
+                                        }} required/>
+                                    </div>
+                                </td>
+                                <td>
+                                    <div id="name-group">
+                                        <input type="text" name="q71" id="q71i" placeholder={''}
+                                               value={this.state.form.q71 ? (this.state.form.q71) : ('')} onChange={(e) => {
+                                            this.handleChange(e)
+                                        }} required/>
+                                    </div>
+                                </td>
+                                <td>    <div id="name-group">
+                                    <input type="text" name="q81" id="q81i" placeholder={''}
+                                           value={this.state.form.q81 ? (this.state.form.q81) : ('')} onChange={(e) => {
+                                        this.handleChange(e)
+                                    }} required/>
+                                </div></td>
+                                <td><div id="name-group">
+                                    <input type="text" name="q91" id="q91i" placeholder={''}
+                                           value={this.state.form.q91 ? (this.state.form.q91) : ('')} onChange={(e) => {
+                                        this.handleChange(e)
+                                    }} required/>
+                                </div></td>
+                                <td><div id="name-group">
+                                    <input type="text" name="q101" id="q101i" placeholder={''}
+                                           value={this.state.form.q101 ? (this.state.form.q101) : ('')} onChange={(e) => {
+                                        this.handleChange(e)
+                                    }} required/>
+                                </div></td>
+                                <td><div id="name-group">
+                                    <input type="text" name="q111" id="q111i" placeholder={''}
+                                           value={this.state.form.q111 ? (this.state.form.q111) : ('')} onChange={(e) => {
+                                        this.handleChange(e)
+                                    }} required/>
+                                </div></td>
+                                <td><div id="name-group">
+                                    <input type="text" name="q121" id="q121i" placeholder={''}
+                                           value={this.state.form.q121 ? (this.state.form.q121) : ('')} onChange={(e) => {
+                                        this.handleChange(e)
+                                    }} required/>
+                                </div></td>
+                                <td><div id="name-group">
+                                    <input type="text" name="q131" id="q131i" placeholder={''}
+                                           value={this.state.form.q131 ? (this.state.form.q131) : ('')} onChange={(e) => {
+                                        this.handleChange(e)
+                                    }} required/>
+                                </div></td>
+
+                            </tr>
+                            <tr>
+                                <td>
+                                    <div id="name-group">
+                                        <input type="text" name="q717" id="q717i" placeholder={''}
+                                               value={this.state.form.q717 ? (this.state.form.q717) : ('')} onChange={(e) => {
+                                            this.handleChange(e)
+                                        }} required/>
+                                    </div>
+                                </td>
+                                <td>
+                                    <div id="name-group">
+                                        <input type="text" name="q71" id="q71i" placeholder={''}
+                                               value={this.state.form.q71 ? (this.state.form.q71) : ('')} onChange={(e) => {
+                                            this.handleChange(e)
+                                        }} required/>
+                                    </div>
+                                </td>
+                                <td>    <div id="name-group">
+                                    <input type="text" name="q81" id="q81i" placeholder={''}
+                                           value={this.state.form.q81 ? (this.state.form.q81) : ('')} onChange={(e) => {
+                                        this.handleChange(e)
+                                    }} required/>
+                                </div></td>
+                                <td><div id="name-group">
+                                    <input type="text" name="q91" id="q91i" placeholder={''}
+                                           value={this.state.form.q91 ? (this.state.form.q91) : ('')} onChange={(e) => {
+                                        this.handleChange(e)
+                                    }} required/>
+                                </div></td>
+                                <td><div id="name-group">
+                                    <input type="text" name="q101" id="q101i" placeholder={''}
+                                           value={this.state.form.q101 ? (this.state.form.q101) : ('')} onChange={(e) => {
+                                        this.handleChange(e)
+                                    }} required/>
+                                </div></td>
+                                <td><div id="name-group">
+                                    <input type="text" name="q111" id="q111i" placeholder={''}
+                                           value={this.state.form.q111 ? (this.state.form.q111) : ('')} onChange={(e) => {
+                                        this.handleChange(e)
+                                    }} required/>
+                                </div></td>
+                                <td><div id="name-group">
+                                    <input type="text" name="q121" id="q121i" placeholder={''}
+                                           value={this.state.form.q121 ? (this.state.form.q121) : ('')} onChange={(e) => {
+                                        this.handleChange(e)
+                                    }} required/>
+                                </div></td>
+                                <td><div id="name-group">
+                                    <input type="text" name="q131" id="q131i" placeholder={''}
+                                           value={this.state.form.q131 ? (this.state.form.q131) : ('')} onChange={(e) => {
+                                        this.handleChange(e)
+                                    }} required/>
+                                </div></td>
+
+                            </tr>
+                            <tr>
+                                <td>
+                                    <div id="name-group">
+                                        <input type="text" name="q717" id="q717i" placeholder={''}
+                                               value={this.state.form.q717 ? (this.state.form.q717) : ('')} onChange={(e) => {
+                                            this.handleChange(e)
+                                        }} required/>
+                                    </div>
+                                </td>
+                                <td>
+                                    <div id="name-group">
+                                        <input type="text" name="q71" id="q71i" placeholder={''}
+                                               value={this.state.form.q71 ? (this.state.form.q71) : ('')} onChange={(e) => {
+                                            this.handleChange(e)
+                                        }} required/>
+                                    </div>
+                                </td>
+                                <td>    <div id="name-group">
+                                    <input type="text" name="q81" id="q81i" placeholder={''}
+                                           value={this.state.form.q81 ? (this.state.form.q81) : ('')} onChange={(e) => {
+                                        this.handleChange(e)
+                                    }} required/>
+                                </div></td>
+                                <td><div id="name-group">
+                                    <input type="text" name="q91" id="q91i" placeholder={''}
+                                           value={this.state.form.q91 ? (this.state.form.q91) : ('')} onChange={(e) => {
+                                        this.handleChange(e)
+                                    }} required/>
+                                </div></td>
+                                <td><div id="name-group">
+                                    <input type="text" name="q101" id="q101i" placeholder={''}
+                                           value={this.state.form.q101 ? (this.state.form.q101) : ('')} onChange={(e) => {
+                                        this.handleChange(e)
+                                    }} required/>
+                                </div></td>
+                                <td><div id="name-group">
+                                    <input type="text" name="q111" id="q111i" placeholder={''}
+                                           value={this.state.form.q111 ? (this.state.form.q111) : ('')} onChange={(e) => {
+                                        this.handleChange(e)
+                                    }} required/>
+                                </div></td>
+                                <td><div id="name-group">
+                                    <input type="text" name="q121" id="q121i" placeholder={''}
+                                           value={this.state.form.q121 ? (this.state.form.q121) : ('')} onChange={(e) => {
+                                        this.handleChange(e)
+                                    }} required/>
+                                </div></td>
+                                <td><div id="name-group">
+                                    <input type="text" name="q131" id="q131i" placeholder={''}
+                                           value={this.state.form.q131 ? (this.state.form.q131) : ('')} onChange={(e) => {
+                                        this.handleChange(e)
+                                    }} required/>
+                                </div></td>
+
+                            </tr>
+                            <tr>
+                                <td>
+                                    <div id="name-group">
+                                        <input type="text" name="q717" id="q717i" placeholder={''}
+                                               value={this.state.form.q717 ? (this.state.form.q717) : ('')} onChange={(e) => {
+                                            this.handleChange(e)
+                                        }} required/>
+                                    </div>
+                                </td>
+                                <td>
+                                    <div id="name-group">
+                                        <input type="text" name="q71" id="q71i" placeholder={''}
+                                               value={this.state.form.q71 ? (this.state.form.q71) : ('')} onChange={(e) => {
+                                            this.handleChange(e)
+                                        }} required/>
+                                    </div>
+                                </td>
+                                <td>    <div id="name-group">
+                                    <input type="text" name="q81" id="q81i" placeholder={''}
+                                           value={this.state.form.q81 ? (this.state.form.q81) : ('')} onChange={(e) => {
+                                        this.handleChange(e)
+                                    }} required/>
+                                </div></td>
+                                <td><div id="name-group">
+                                    <input type="text" name="q91" id="q91i" placeholder={''}
+                                           value={this.state.form.q91 ? (this.state.form.q91) : ('')} onChange={(e) => {
+                                        this.handleChange(e)
+                                    }} required/>
+                                </div></td>
+                                <td><div id="name-group">
+                                    <input type="text" name="q101" id="q101i" placeholder={''}
+                                           value={this.state.form.q101 ? (this.state.form.q101) : ('')} onChange={(e) => {
+                                        this.handleChange(e)
+                                    }} required/>
+                                </div></td>
+                                <td><div id="name-group">
+                                    <input type="text" name="q111" id="q111i" placeholder={''}
+                                           value={this.state.form.q111 ? (this.state.form.q111) : ('')} onChange={(e) => {
+                                        this.handleChange(e)
+                                    }} required/>
+                                </div></td>
+                                <td><div id="name-group">
+                                    <input type="text" name="q121" id="q121i" placeholder={''}
+                                           value={this.state.form.q121 ? (this.state.form.q121) : ('')} onChange={(e) => {
+                                        this.handleChange(e)
+                                    }} required/>
+                                </div></td>
+                                <td><div id="name-group">
+                                    <input type="text" name="q131" id="q131i" placeholder={''}
+                                           value={this.state.form.q131 ? (this.state.form.q131) : ('')} onChange={(e) => {
+                                        this.handleChange(e)
+                                    }} required/>
+                                </div></td>
+
+                            </tr>
+                            <tr>
+                                <td>
+                                    <div id="name-group">
+                                        <input type="text" name="q717" id="q717i" placeholder={''}
+                                               value={this.state.form.q717 ? (this.state.form.q717) : ('')} onChange={(e) => {
+                                            this.handleChange(e)
+                                        }} required/>
+                                    </div>
+                                </td>
+                                <td>
+                                    <div id="name-group">
+                                        <input type="text" name="q71" id="q71i" placeholder={''}
+                                               value={this.state.form.q71 ? (this.state.form.q71) : ('')} onChange={(e) => {
+                                            this.handleChange(e)
+                                        }} required/>
+                                    </div>
+                                </td>
+                                <td>    <div id="name-group">
+                                    <input type="text" name="q81" id="q81i" placeholder={''}
+                                           value={this.state.form.q81 ? (this.state.form.q81) : ('')} onChange={(e) => {
+                                        this.handleChange(e)
+                                    }} required/>
+                                </div></td>
+                                <td><div id="name-group">
+                                    <input type="text" name="q91" id="q91i" placeholder={''}
+                                           value={this.state.form.q91 ? (this.state.form.q91) : ('')} onChange={(e) => {
+                                        this.handleChange(e)
+                                    }} required/>
+                                </div></td>
+                                <td><div id="name-group">
+                                    <input type="text" name="q101" id="q101i" placeholder={''}
+                                           value={this.state.form.q101 ? (this.state.form.q101) : ('')} onChange={(e) => {
+                                        this.handleChange(e)
+                                    }} required/>
+                                </div></td>
+                                <td><div id="name-group">
+                                    <input type="text" name="q111" id="q111i" placeholder={''}
+                                           value={this.state.form.q111 ? (this.state.form.q111) : ('')} onChange={(e) => {
+                                        this.handleChange(e)
+                                    }} required/>
+                                </div></td>
+                                <td><div id="name-group">
+                                    <input type="text" name="q121" id="q121i" placeholder={''}
+                                           value={this.state.form.q121 ? (this.state.form.q121) : ('')} onChange={(e) => {
+                                        this.handleChange(e)
+                                    }} required/>
+                                </div></td>
+                                <td><div id="name-group">
+                                    <input type="text" name="q131" id="q131i" placeholder={''}
+                                           value={this.state.form.q131 ? (this.state.form.q131) : ('')} onChange={(e) => {
+                                        this.handleChange(e)
+                                    }} required/>
+                                </div></td>
+
+                            </tr>
+                            <tr>
+                                <td>
+                                    <div id="name-group">
+                                        <input type="text" name="q717" id="q717i" placeholder={''}
+                                               value={this.state.form.q717 ? (this.state.form.q717) : ('')} onChange={(e) => {
+                                            this.handleChange(e)
+                                        }} required/>
+                                    </div>
+                                </td>
+                                <td>
+                                    <div id="name-group">
+                                        <input type="text" name="q71" id="q71i" placeholder={''}
+                                               value={this.state.form.q71 ? (this.state.form.q71) : ('')} onChange={(e) => {
+                                            this.handleChange(e)
+                                        }} required/>
+                                    </div>
+                                </td>
+                                <td>    <div id="name-group">
+                                    <input type="text" name="q81" id="q81i" placeholder={''}
+                                           value={this.state.form.q81 ? (this.state.form.q81) : ('')} onChange={(e) => {
+                                        this.handleChange(e)
+                                    }} required/>
+                                </div></td>
+                                <td><div id="name-group">
+                                    <input type="text" name="q91" id="q91i" placeholder={''}
+                                           value={this.state.form.q91 ? (this.state.form.q91) : ('')} onChange={(e) => {
+                                        this.handleChange(e)
+                                    }} required/>
+                                </div></td>
+                                <td><div id="name-group">
+                                    <input type="text" name="q101" id="q101i" placeholder={''}
+                                           value={this.state.form.q101 ? (this.state.form.q101) : ('')} onChange={(e) => {
+                                        this.handleChange(e)
+                                    }} required/>
+                                </div></td>
+                                <td><div id="name-group">
+                                    <input type="text" name="q111" id="q111i" placeholder={''}
+                                           value={this.state.form.q111 ? (this.state.form.q111) : ('')} onChange={(e) => {
+                                        this.handleChange(e)
+                                    }} required/>
+                                </div></td>
+                                <td><div id="name-group">
+                                    <input type="text" name="q121" id="q121i" placeholder={''}
+                                           value={this.state.form.q121 ? (this.state.form.q121) : ('')} onChange={(e) => {
+                                        this.handleChange(e)
+                                    }} required/>
+                                </div></td>
+                                <td><div id="name-group">
+                                    <input type="text" name="q131" id="q131i" placeholder={''}
+                                           value={this.state.form.q131 ? (this.state.form.q131) : ('')} onChange={(e) => {
+                                        this.handleChange(e)
+                                    }} required/>
+                                </div></td>
+
+                            </tr>
+                            <tr>
+                                <td>
+                                    <div id="name-group">
+                                        <input type="text" name="q717" id="q717i" placeholder={''}
+                                               value={this.state.form.q717 ? (this.state.form.q717) : ('')} onChange={(e) => {
+                                            this.handleChange(e)
+                                        }} required/>
+                                    </div>
+                                </td>
+                                <td>
+                                    <div id="name-group">
+                                        <input type="text" name="q71" id="q71i" placeholder={''}
+                                               value={this.state.form.q71 ? (this.state.form.q71) : ('')} onChange={(e) => {
+                                            this.handleChange(e)
+                                        }} required/>
+                                    </div>
+                                </td>
+                                <td>    <div id="name-group">
+                                    <input type="text" name="q81" id="q81i" placeholder={''}
+                                           value={this.state.form.q81 ? (this.state.form.q81) : ('')} onChange={(e) => {
+                                        this.handleChange(e)
+                                    }} required/>
+                                </div></td>
+                                <td><div id="name-group">
+                                    <input type="text" name="q91" id="q91i" placeholder={''}
+                                           value={this.state.form.q91 ? (this.state.form.q91) : ('')} onChange={(e) => {
+                                        this.handleChange(e)
+                                    }} required/>
+                                </div></td>
+                                <td><div id="name-group">
+                                    <input type="text" name="q101" id="q101i" placeholder={''}
+                                           value={this.state.form.q101 ? (this.state.form.q101) : ('')} onChange={(e) => {
+                                        this.handleChange(e)
+                                    }} required/>
+                                </div></td>
+                                <td><div id="name-group">
+                                    <input type="text" name="q111" id="q111i" placeholder={''}
+                                           value={this.state.form.q111 ? (this.state.form.q111) : ('')} onChange={(e) => {
+                                        this.handleChange(e)
+                                    }} required/>
+                                </div></td>
+                                <td><div id="name-group">
+                                    <input type="text" name="q121" id="q121i" placeholder={''}
+                                           value={this.state.form.q121 ? (this.state.form.q121) : ('')} onChange={(e) => {
+                                        this.handleChange(e)
+                                    }} required/>
+                                </div></td>
+                                <td><div id="name-group">
+                                    <input type="text" name="q131" id="q131i" placeholder={''}
+                                           value={this.state.form.q131 ? (this.state.form.q131) : ('')} onChange={(e) => {
+                                        this.handleChange(e)
+                                    }} required/>
+                                </div></td>
+
+                            </tr>
+                            <tr>
+                                <td>
+                                    <div id="name-group">
+                                        <input type="text" name="q717" id="q717i" placeholder={''}
+                                               value={this.state.form.q717 ? (this.state.form.q717) : ('')} onChange={(e) => {
+                                            this.handleChange(e)
+                                        }} required/>
+                                    </div>
+                                </td>
+                                <td>
+                                    <div id="name-group">
+                                        <input type="text" name="q71" id="q71i" placeholder={''}
+                                               value={this.state.form.q71 ? (this.state.form.q71) : ('')} onChange={(e) => {
+                                            this.handleChange(e)
+                                        }} required/>
+                                    </div>
+                                </td>
+                                <td>    <div id="name-group">
+                                    <input type="text" name="q81" id="q81i" placeholder={''}
+                                           value={this.state.form.q81 ? (this.state.form.q81) : ('')} onChange={(e) => {
+                                        this.handleChange(e)
+                                    }} required/>
+                                </div></td>
+                                <td><div id="name-group">
+                                    <input type="text" name="q91" id="q91i" placeholder={''}
+                                           value={this.state.form.q91 ? (this.state.form.q91) : ('')} onChange={(e) => {
+                                        this.handleChange(e)
+                                    }} required/>
+                                </div></td>
+                                <td><div id="name-group">
+                                    <input type="text" name="q101" id="q101i" placeholder={''}
+                                           value={this.state.form.q101 ? (this.state.form.q101) : ('')} onChange={(e) => {
+                                        this.handleChange(e)
+                                    }} required/>
+                                </div></td>
+                                <td><div id="name-group">
+                                    <input type="text" name="q111" id="q111i" placeholder={''}
+                                           value={this.state.form.q111 ? (this.state.form.q111) : ('')} onChange={(e) => {
+                                        this.handleChange(e)
+                                    }} required/>
+                                </div></td>
+                                <td><div id="name-group">
+                                    <input type="text" name="q121" id="q121i" placeholder={''}
+                                           value={this.state.form.q121 ? (this.state.form.q121) : ('')} onChange={(e) => {
+                                        this.handleChange(e)
+                                    }} required/>
+                                </div></td>
+                                <td><div id="name-group">
+                                    <input type="text" name="q131" id="q131i" placeholder={''}
+                                           value={this.state.form.q131 ? (this.state.form.q131) : ('')} onChange={(e) => {
+                                        this.handleChange(e)
+                                    }} required/>
+                                </div></td>
+
+                            </tr>
+                            <tr>
+                                <td>
+                                    <div id="name-group">
+                                        <input type="text" name="q717" id="q717i" placeholder={''}
+                                               value={this.state.form.q717 ? (this.state.form.q717) : ('')} onChange={(e) => {
+                                            this.handleChange(e)
+                                        }} required/>
+                                    </div>
+                                </td>
+                                <td>
+                                    <div id="name-group">
+                                        <input type="text" name="q71" id="q71i" placeholder={''}
+                                               value={this.state.form.q71 ? (this.state.form.q71) : ('')} onChange={(e) => {
+                                            this.handleChange(e)
+                                        }} required/>
+                                    </div>
+                                </td>
+                                <td>    <div id="name-group">
+                                    <input type="text" name="q81" id="q81i" placeholder={''}
+                                           value={this.state.form.q81 ? (this.state.form.q81) : ('')} onChange={(e) => {
+                                        this.handleChange(e)
+                                    }} required/>
+                                </div></td>
+                                <td><div id="name-group">
+                                    <input type="text" name="q91" id="q91i" placeholder={''}
+                                           value={this.state.form.q91 ? (this.state.form.q91) : ('')} onChange={(e) => {
+                                        this.handleChange(e)
+                                    }} required/>
+                                </div></td>
+                                <td><div id="name-group">
+                                    <input type="text" name="q101" id="q101i" placeholder={''}
+                                           value={this.state.form.q101 ? (this.state.form.q101) : ('')} onChange={(e) => {
+                                        this.handleChange(e)
+                                    }} required/>
+                                </div></td>
+                                <td><div id="name-group">
+                                    <input type="text" name="q111" id="q111i" placeholder={''}
+                                           value={this.state.form.q111 ? (this.state.form.q111) : ('')} onChange={(e) => {
+                                        this.handleChange(e)
+                                    }} required/>
+                                </div></td>
+                                <td><div id="name-group">
+                                    <input type="text" name="q121" id="q121i" placeholder={''}
+                                           value={this.state.form.q121 ? (this.state.form.q121) : ('')} onChange={(e) => {
+                                        this.handleChange(e)
+                                    }} required/>
+                                </div></td>
+                                <td><div id="name-group">
+                                    <input type="text" name="q131" id="q131i" placeholder={''}
+                                           value={this.state.form.q131 ? (this.state.form.q131) : ('')} onChange={(e) => {
+                                        this.handleChange(e)
+                                    }} required/>
+                                </div></td>
+
+                            </tr>
+                            <tr>
+                                <td>
+                                    <h4>סה'כ:</h4>
+
+                                </td>
+                                <td>
+                                    <div id="name-group">
+                                        <input type="text" name="q71" id="q71i" placeholder={''}
+                                               value={this.state.form.q71 ? (this.state.form.q71) : ('')} onChange={(e) => {
+                                            this.handleChange(e)
+                                        }} required/>
+                                    </div>
+                                </td>
+                                <td>    <div id="name-group">
+                                    <input type="text" name="q81" id="q81i" placeholder={''}
+                                           value={this.state.form.q81 ? (this.state.form.q81) : ('')} onChange={(e) => {
+                                        this.handleChange(e)
+                                    }} required/>
+                                </div></td>
+                                <td><div id="name-group">
+                                    <input type="text" name="q91" id="q91i" placeholder={''}
+                                           value={this.state.form.q91 ? (this.state.form.q91) : ('')} onChange={(e) => {
+                                        this.handleChange(e)
+                                    }} required/>
+                                </div></td>
+                                <td><div id="name-group">
+                                    <input type="text" name="q101" id="q101i" placeholder={''}
+                                           value={this.state.form.q101 ? (this.state.form.q101) : ('')} onChange={(e) => {
+                                        this.handleChange(e)
+                                    }} required/>
+                                </div></td>
+                                <td><div id="name-group">
+                                    <input type="text" name="q111" id="q111i" placeholder={''}
+                                           value={this.state.form.q111 ? (this.state.form.q111) : ('')} onChange={(e) => {
+                                        this.handleChange(e)
+                                    }} required/>
+                                </div></td>
+                                <td><div id="name-group">
+                                    <input type="text" name="q121" id="q121i" placeholder={''}
+                                           value={this.state.form.q121 ? (this.state.form.q121) : ('')} onChange={(e) => {
+                                        this.handleChange(e)
+                                    }} required/>
+                                </div></td>
+                                <td><div id="name-group">
+                                    <input type="text" name="q131" id="q131i" placeholder={''}
+                                           value={this.state.form.q131 ? (this.state.form.q131) : ('')} onChange={(e) => {
+                                        this.handleChange(e)
+                                    }} required/>
+                                </div></td>
+
+                            </tr>
+
+                        </table>
+
 
                     </div>
 
