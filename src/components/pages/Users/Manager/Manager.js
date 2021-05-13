@@ -122,16 +122,16 @@ class Manager extends React.Component {
                         className="fa fa-arrow-right"></span></button>
 
                     <button id="ResearchBudgets" className="btn btn-info" onClick={() => {
-                        // this.ChangePage("")
+                         this.ChangePage("ResearchBudgets")
                         return
                     }}>תקציבי מחקר<span
                         className="fa fa-arrow-right"></span></button>
 
-                    <button id="ExpenseReporting" className="btn btn-info" onClick={() => {
-                         // this.ChangePage("")
-                        return
-                    }}>דיווח הוצאות<span
-                        className="fa fa-arrow-right"></span></button>
+                    {/*<button id="ExpenseReporting" className="btn btn-info" onClick={() => {*/}
+                    {/*     // this.ChangePage("")*/}
+                    {/*    return*/}
+                    {/*}}>דיווח הוצאות<span*/}
+                    {/*    className="fa fa-arrow-right"></span></button>*/}
 
                     <button id="financialReports" className="btn btn-info" onClick={() => {
                          this.ChangePage("financialReports")
@@ -139,16 +139,18 @@ class Manager extends React.Component {
                     }}>דוחות כספיים<span
                             className="fa fa-arrow-right"></span></button>
 
+                    <button id="ChatResearcher" className="btn btn-info" onClick={() => {
+                        // NextPage(this.props, "", this.state.user)
+                    }}>צ'אט לחוקר<span
+                        className="fa fa-arrow-right"></span></button>
+
                     <button id="ExpenseReporting1" className="btn btn-info" onClick={() => {
                         this.ChangePage("UpdatesFirebase")
                         return
                     }}>פעולות ועדכון<span
                         className="fa fa-arrow-right"></span></button>
 
-                    <button id="ChatResearcher" className="btn btn-info" onClick={() => {
-                        // NextPage(this.props, "", this.state.user)
-                    }}>צ'אט לחוקר<span
-                        className="fa fa-arrow-right"></span></button>
+
 
                     <button id="UpdateDetails" className="btn btn-info" onClick={() => {
                         NextPage(this.props, "Profile", this.state.user)
