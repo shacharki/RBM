@@ -160,7 +160,7 @@ class Researcher extends React.Component {
                     {/*    className="fa fa-arrow-right"></span></button>*/}
 
                     <button id="ChatR" className="btn btn-info" onClick={() => {
-                         NextPage(this.props, "ChatR", this.state.user)
+                         NextPage(this.props, "ChatResearcher", this.state.user)
                     }}>צ'אט למנהל<span
                         className="fa fa-arrow-right"></span></button>
 
