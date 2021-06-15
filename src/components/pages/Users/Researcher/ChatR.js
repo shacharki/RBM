@@ -1,121 +1,157 @@
-// import {ChatEngine} from "react-chat-engine";
-// import './Researcher.css'
-// import firebase from "firebase";
-// import 'firebase/auth';
-// import 'firebase/firestore';
-//
-//
-// import React, { useEffect, useRef, useState } from 'react';
-//
-// import 'firebase/firestore';
-// import 'firebase/auth';
-//
-// import { useAuthState } from 'react-firebase-hooks/auth';
-// import { useCollectionData } from 'react-firebase-hooks/firestore';
-//
-// firebase.initializeApp({}
-//
-// )
-// const auth = firebase.auth();
-// const firestore = firebase.firestore();
-//
-// function ChatR() {
-//     const [user] = useAuthState(auth);
-//
-//     return (
-//         <div>
-//             <SignOut />
-//             <section>
-//                 {/* Shows chatroom if user is logged in
-//         else show signin page */}
-//                 {user ? <ChatRoom /> : <SignIn />}
-//             </section>
-//         </div>
-//     );
-// }
-//
-// function SignIn() {
-//     const signInWithGoogle = () => {
-//         const provider = new firebase.auth.GoogleAuthProvider();
-//         auth.signInWithPopup(provider);
-//     }
-//     return (
-//         <div>
-//             <button onClick={signInWithGoogle}>Sign In With Google</button>
-//         </div>
-//     )
-// }
-//
-// function SignOut() {
-//     return auth.currentUser && (
-//         <div>
-//             <button onClick={() => auth.signOut()}>Sign Out</button>
-//         </div>
-//     )
-// }
-//
-// function ChatRoom() {
-//     // we will use this to scroll to bottom of chat on page-reload and after sending a message
-//     const dummy = useRef();
-//     const scrollToBottom = () => {
-//         dummy.current.scrollIntoView({ behavior: 'smooth' });
-//     }
-//
-//     // getting the message and sorting them by time of creation
-//     const messagesRef = firestore.collection('messages');
-//     const query = messagesRef.orderBy('createdAt', 'asc').limitToLast(25);
-//
-//     const [messages] = useCollectionData(query, {idField: 'id'});
-//
-//     return (
-//         <div>
-//             <div>
-//                 {/* we will loop over the message and return a
-//         ChatMessage component for each message */}
-//                 {messages && messages.map(msg => <ChatMessage key={msg.id} message={msg} />)}
-//                 <span ref={dummy}></span>
-//             </div>
-//
-//             {/* Form to type and submit messages */}
-//             <form onSubmit={sendMessage}>
-//                 <input value={formValue} onChange={(e) => setFormValue(e.target.value)} placeholder="Say something" />
-//                 <button type="submit" disabled={!formValue}>send</button>
-//             </form>
-//         </div>
-//     )
-// }
-//
-// const sendMessage = async (e) => {
-//     e.preventDefault();
-//     // gets name, userID and pfp of logged in user
-//     const { displayName, uid, photoURL } = auth.currentUser;
-//
-//     await messagesRef.add({
-//         user: displayName,
-//         body: formValue,
-//         createdAt: firebase.firestore.FieldValue.serverTimestamp(),
-//         uid: uid,
-//         photoURL: photoURL
-//     })
-//
-//     // resetting form value and scrolling to bottom
-//     setFormValue('');
-//     dummy.current.scrollIntoView({ behavior: 'smooth' });
-// }
-//
-//
-// function ChatMessage(props) {
-//     const { user, body, uid, photoURL, createdAt } = props.message;
-//
-//     return (
-//         <div>
-//             <img src={photoURL || 'https://i.imgur.com/rFbS5ms.png'} alt="{user}'s pfp" />
-//         </div>
-//     <div>
-//         <p>{user}</p>
-//         <p>{body}</p>
-//     </div>
-// )
-// }
-//
-// export default ChatR;
+import React from "react";
+import {auth, db, GetFormDownload, getPathData, getUser, signOut} from '../../../../firebase/firebase';
+import './Researcher.css'
+import Grid from "@material-ui/core/Grid";
+import ClipLoader from "react-spinners/ClipLoader";
+import firebase from "firebase";
+import {NextPage} from "../UserPage";
+import ChatResearcher from "./ChatResearcher";
+import MyDropzone from "./DropzoneFiles.js";
+import AcceptMaxFiles from "./DropzoneFiles.js";
+import {Button} from "@material-ui/core";
+import {Link} from "react-router-dom";
+import Select from "react-select";
+
+
+const options = [
+]
+
+
+class ChatR extends React.Component {
+    constructor(props) {
+        super(props);
+        this.state = {
+            loadPage:false,
+            spinner: [true,'נא להמתין הדף נטען'],
+
+        };
+
+    }
+
+    loadSpinner(event,massage){
+        var spinner = []
+        spinner.push(event)
+        spinner.push(massage)
+        this.setState({spinner:spinner})
+    }
+
+    loadPage(event){
+        this.setState({loading:event})
+    }
+
+
+    async componentDidMount() {
+        var href =  window.location.href.split("/",5)
+        // console.log(href)
+        auth.onAuthStateChanged(async user=>{
+            if(user)
+            {
+
+                // console.log("in1")
+                var type = await getUser(user)
+                // console.log(type)
+                if(href[4] === user.uid && (href[3] === type||type==='Tester'))
+                {
+                    // console.log("in2")
+                    this.setState({
+                        isLoad: true,
+                        user: user,
+                        type: type
+                    })
+
+                }
+                else
+                {
+                    // console.log("in3")
+                    this.notfound()
+                    return
+                }
+
+            }
+            else {
+                this.setState({
+                    isLoad: true,
+                })
+                window.location.href = '/Login';
+                return;
+
+            }
+            // console.log("in4")
+            var teamName = await db.collection("researcher").doc(auth.currentUser.uid).get()
+            // if(!teamName.data().teamName)
+            // {
+            //     alert("אינך משוייכ/ת לקבוצה יש לפנות למנהל")
+            //     this.loadSpinner(false)
+            //     this.BackPage()
+            // }
+            this.loadSpinner(false,"")
+            this.setState({loadPage:true})
+            this.render()
+
+        })
+
+    }
+
+    render() {
+        return (
+            <div id="ReportScientific" className="sec-design">
+
+                {!this.state.spinner[0] ? "" :
+                    <div id='fr'>
+                        {this.state.spinner[1]}
+                        <div className="sweet-loading">
+                            <ClipLoader style={{
+                                backgroundColor: "rgba(255,255,255,0.85)",
+                                borderRadius: "25px"
+                            }}
+                                //   css={override}
+                                        size={120}
+                                        color={"#123abc"}
+
+                            />
+                        </div>
+                    </div>
+                }
+
+                <Grid container spacing={2}>
+
+                    <Grid item xs={5}
+                          // container
+                          // direction="column"
+                          // justify="flex-start"
+                          // alignItems="flex-start"
+                    >
+                        <ChatResearcher/>
+                    </Grid>
+
+
+
+
+                    <button id="go-back" className="btn btn-info" onClick={() => {
+                        this.loadPage()
+                        this.BackPage()
+                    }}>חזור לתפריט
+                    </button>
+                </Grid>
+
+
+            </div>
+        )
+    }
+
+
+
+
+
+
+    BackPage()
+    {
+        this.props.history.push({
+            pathname: `/Researcher/${this.state.user.uid}`,
+            data: this.state.user // your data array of objects
+        })
+    }
+
+}
+
+export  default  ChatR;

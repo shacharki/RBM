@@ -2,6 +2,8 @@
 import React, {Component} from 'react';
 import firebase, {auth, db, storage} from "../../../../firebase/firebase";
 import Dropzone from 'react-dropzone';
+import Grid from "@material-ui/core/Grid";
+import Select from "react-select";
 
 class DropzoneFiles extends Component {
     constructor() {
@@ -12,6 +14,7 @@ class DropzoneFiles extends Component {
         this.state = {
             files: [],
             maxFile:5,
+            date:"",
         };
     }
     async componentDidMount() {
@@ -23,15 +26,16 @@ class DropzoneFiles extends Component {
     }
 
 
-
     async upload(files)
     {
+
 
         if(files!==null && files!==undefined&& files.length<=0)
             return;
 
         var file = files[files.length-1]
         var user =  this.state.user
+        var date = this.state.date
         var metadata = {
             customMetadata: {
                 'user': user.uid,
@@ -83,9 +87,11 @@ class DropzoneFiles extends Component {
                 // Upload completed successfully, now we can get the download URL
                 uploadTask.snapshot.ref.getDownloadURL().then((downloadURL) => {
                     // console.log('File available at', downloadURL);
+
                     db.collection("researcher").doc(user.uid).collection("ScientificReport").add({
                         name: file.key,
                         time: new Date().toLocaleString(),
+                        date:this.state.date,
                         link:downloadURL,
                     }).then(()=>{
                         var newFiles = files.slice(0, files.length-1);
@@ -105,7 +111,55 @@ class DropzoneFiles extends Component {
 
     }
 
+    async handleChange(event)
+    {
+        var form=''
 
+        var name = event.target.name;
+        var value = event.target.value;
+        var e = event.target
+        if(name === 'date' && event.target.value!=='' )
+        {
+            this.loadSpinner(true,"טוען נתונים")
+
+            var formGuide = await db.collection("researcher").doc(auth.currentUser.uid).collection("ScientificReport").doc(event.target.value).get()
+
+            if(formGuide.data() && formGuide.data().locked) {
+                alert("הדוח לתאריך קיים נא לבחור תאריך אחר")
+                document.getElementById(e.id).value=''
+                form = this.state.form;
+                // console.log(name);
+
+                form[name] = '';
+                this.setState({form:form})
+
+            }
+            else if(formGuide.data())
+            {
+                this.setState({form:formGuide.data().form})
+
+            }
+            // else
+            // {
+            //     var guideData= await db.collection("researcher").doc(auth.currentUser.uid).get()
+            //     form ={}
+            //     form[name] = value;
+            //     form['name']=guideData.data().fname+' '+guideData.data().lname;
+            //     form['team']=guideData.data().teamName
+            //     this.setState({form:form})
+            // }
+        }
+        else
+        {
+            form = this.state.form
+            form[name] = value;
+            this.setState({form:form})
+        }
+        this.loadSpinner(false)
+
+
+
+    }
 
 
     render() {
@@ -117,9 +171,12 @@ class DropzoneFiles extends Component {
         ));
 
         return (
+
             <Dropzone onDrop={this.onDrop}>
                 {({getRootProps, getInputProps}) => (
+
                     <section className="container">
+
                         <div {...getRootProps({className: 'dropzone'})}>
 
                             <div style={{backgroundColor: "#a0a0a0", width: 400, height: 170,textAlign: 'center', padding: '100px 0px 0px 0px'}}>
@@ -144,6 +201,9 @@ class DropzoneFiles extends Component {
                                                 <div>
                                                     <h4> מספר הקבצים להעלאה - {files.length}</h4>
                                                     <ul>{files}</ul>
+                                                    {/*<label id="date" className="title-input">הכנס את תאריך הדוח:</label>*/}
+                                                    {/*<input type="date" id="insert-date" name="date" onChange={(e) => this.handleChange(e)}*/}
+                                                    {/*       required/>*/}
                                                     <button onClick={()=>{
                                                         this.upload(files)
                                                     }}>העלה קבצים</button>
@@ -158,6 +218,7 @@ class DropzoneFiles extends Component {
                     </section>
                 )}
             </Dropzone>
+
         );
     }
 }

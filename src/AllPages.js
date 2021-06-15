@@ -10,10 +10,11 @@ import UserPage from "./components/pages/Users/UserPage";
 import App2 from "./App2";
 
 import Researcher from './components/pages/Users/Researcher/Researcher';
- import RequestPurchase from "./components/pages/Users/Researcher/RequestPurchase";
+import RequestPurchase from "./components/pages/Users/Researcher/RequestPurchase";
 import ScientificReport from "./components/pages/Users/Researcher/ScientificReport";
 import ChatResearcher from "./components/pages/Users/Researcher/ChatResearcher";
 import ChatR from "./components/pages/Users/Researcher/ChatR";
+// import SearchReports from "./components/pages/Users/Researcher/ScientificReport/SearchReports";
 
 
 import Managers from './components/pages/Users/Manager/Manager';
@@ -62,6 +63,7 @@ function LoadPage() {
                     <Route exact path="/Researcher/:id/ScientificReport" component={ScientificReport} />
                     <Route exact path="/Researcher/:id/ChatResearcher" component={ChatResearcher} />
                     <Route exact path="/Researcher/:id/ChatR" component={ChatR} />
+                    {/*<Route exact path="/Researcher/:id/ScientificReport/SearchReports" component={SearchReports} />*/}
 
 
 

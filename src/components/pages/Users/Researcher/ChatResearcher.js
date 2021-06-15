@@ -1,5 +1,6 @@
 import {ChatEngine} from "react-chat-engine";
 import './Researcher.css'
+import {auth, db, GetFormDownload, getUser, signOut} from '../../../../firebase/firebase';
 
 import React from 'react';
 // Firebase deps
@@ -12,37 +13,44 @@ import Channel from '../Researcher/Channel';
 import Loader from '../Researcher/Loader';
 
 import { useAuthState, useDarkMode } from '../Researcher/hooks';
+import {NextPage} from "../UserPage";
+import Dropzone from 'react-dropzone';
 
 
-const MoonIcon = props => (
-    <svg
-        xmlns="http://www.w3.org/2000/svg"
-        viewBox="0 0 20 20"
-        fill="currentColor"
-        {...props}
-    >
-        <path
-            fillRule="evenodd"
-            d="M10 2a1 1 0 011 1v1a1 1 0 11-2 0V3a1 1 0 011-1zm4 8a4 4 0 11-8 0 4 4 0 018 0zm-.464 4.95l.707.707a1 1 0 001.414-1.414l-.707-.707a1 1 0 00-1.414 1.414zm2.12-10.607a1 1 0 010 1.414l-.706.707a1 1 0 11-1.414-1.414l.707-.707a1 1 0 011.414 0zM17 11a1 1 0 100-2h-1a1 1 0 100 2h1zm-7 4a1 1 0 011 1v1a1 1 0 11-2 0v-1a1 1 0 011-1zM5.05 6.464A1 1 0 106.465 5.05l-.708-.707a1 1 0 00-1.414 1.414l.707.707zm1.414 8.486l-.707.707a1 1 0 01-1.414-1.414l.707-.707a1 1 0 011.414 1.414zM4 11a1 1 0 100-2H3a1 1 0 000 2h1z"
-            clipRule="evenodd"
-        />
-    </svg>
-);
 
-const SunIcon = props => (
-    <svg
-        xmlns="http://www.w3.org/2000/svg"
-        viewBox="0 0 20 20"
-        fill="currentColor"
-        {...props}
-    >
-        <path d="M17.293 13.293A8 8 0 016.707 2.707a8.001 8.001 0 1010.586 10.586z" />
-    </svg>
-);
 
 function ChatResearcher() {
+
+
+
     const { user, initializing } = useAuthState(firebase.auth());
     const [darkMode, setDarkMode] = useDarkMode();
+
+    const MoonIcon = props => (
+        <svg
+            xmlns="http://www.w3.org/2000/svg"
+            viewBox="0 0 20 20"
+            fill="currentColor"
+            {...props}
+        >
+            <path
+                fillRule="evenodd"
+                d="M10 2a1 1 0 011 1v1a1 1 0 11-2 0V3a1 1 0 011-1zm4 8a4 4 0 11-8 0 4 4 0 018 0zm-.464 4.95l.707.707a1 1 0 001.414-1.414l-.707-.707a1 1 0 00-1.414 1.414zm2.12-10.607a1 1 0 010 1.414l-.706.707a1 1 0 11-1.414-1.414l.707-.707a1 1 0 011.414 0zM17 11a1 1 0 100-2h-1a1 1 0 100 2h1zm-7 4a1 1 0 011 1v1a1 1 0 11-2 0v-1a1 1 0 011-1zM5.05 6.464A1 1 0 106.465 5.05l-.708-.707a1 1 0 00-1.414 1.414l.707.707zm1.414 8.486l-.707.707a1 1 0 01-1.414-1.414l.707-.707a1 1 0 011.414 1.414zM4 11a1 1 0 100-2H3a1 1 0 000 2h1z"
+                clipRule="evenodd"
+            />
+        </svg>
+    );
+
+    const SunIcon = props => (
+        <svg
+            xmlns="http://www.w3.org/2000/svg"
+            viewBox="0 0 20 20"
+            fill="currentColor"
+            {...props}
+        >
+            <path d="M17.293 13.293A8 8 0 016.707 2.707a8.001 8.001 0 1010.586 10.586z" />
+        </svg>
+    );
 
     const brandLogo = darkMode
         ? `${process.env.PUBLIC_URL}/logo_white.svg`
@@ -71,6 +79,8 @@ function ChatResearcher() {
         }
     };
 
+
+
     const renderContent = () => {
         if (initializing) {
             return (
@@ -83,7 +93,7 @@ function ChatResearcher() {
         if (user) return <Channel user={user} />;
 
         return (
-            <div className="flex items-center justify-center shadow-md h-full">
+            <div className="sec-design">
                 <div className="flex flex-col items-center justify-center max-w-xl w-full mx-4 p-8 rounded-md shadow-card bg-white dark:bg-coolDark-600 transition-all">
                     <h2 className="mb-2 text-3xl flex items-center">
                         <svg
@@ -98,11 +108,9 @@ function ChatResearcher() {
                                 clipRule="evenodd"
                             />
                         </svg>
-                        React FireChat
+
                     </h2>
-                    <p className="mb-8 text-lg text-center">
-                        The easiest way to chat with people all around the world.
-                    </p>
+
                     <button
                         onClick={signInWithGoogle}
                         //className="rounded shadow-button pl-6 pr-8 py-3 bg-white hover:bg-gray-50 text-gray-600 font-medium flex items-center justify-center overflow-y-hidden focus:outline-none focus:ring focus:ring-primary-500 focus:ring-opacity-75"
@@ -147,18 +155,18 @@ function ChatResearcher() {
                 className="flex-shrink-0 flex items-center justify-between px-4 sm:px-8 shadow-md"
                 style={{ height: 'var(--topbar-height)' }}
             >
-                <a href="https://alterclass.io/courses/react">
-                    <img src={brandLogo} alt="AlterClass" width={150} />
-                </a>
+                {/*<a href="https://alterclass.io/courses/react">*/}
+                {/*    <img src={brandLogo} alt="AlterClass" width={150} />*/}
+                {/*</a>*/}
                 <div className="flex items-center">
-                    {user ? (
-                        <button
-                            onClick={signOut}
-                            className="uppercase text-sm font-medium text-primary-500 hover:text-white tracking-wide hover:bg-primary-500 bg-transparent rounded py-2 px-4 mr-4 focus:outline-none focus:ring focus:ring-primary-500 focus:ring-opacity-75 transition-all"
-                        >
-                            Sign out
-                        </button>
-                    ) : null}
+                    {/*{user ? (*/}
+                    {/*    <button*/}
+                    {/*        onClick={signOut}*/}
+                    {/*        className="uppercase text-sm font-medium text-primary-500 hover:text-white tracking-wide hover:bg-primary-500 bg-transparent rounded py-2 px-4 mr-4 focus:outline-none focus:ring focus:ring-primary-500 focus:ring-opacity-75 transition-all"*/}
+                    {/*    >*/}
+                    {/*        Sign out*/}
+                    {/*    </button>*/}
+                    {/*) : null}*/}
                     {/*<ThemeIcon*/}
                     {/*    className="h-8 w-8 cursor-pointer"*/}
                     {/*    onClick={() => setDarkMode(prev => !prev)}*/}
@@ -171,9 +179,16 @@ function ChatResearcher() {
             >
                 {renderContent()}
             </main>
+
+
         </div>
     );
+
+
+
+
 }
+
 
 export default ChatResearcher;
 
