@@ -2,8 +2,8 @@
 import React, {Component} from 'react';
 import firebase, {auth, db, storage} from "../../../../firebase/firebase";
 import Dropzone from 'react-dropzone';
-import Grid from "@material-ui/core/Grid";
-import Select from "react-select";
+
+
 
 class DropzoneFiles extends Component {
     constructor() {
@@ -12,11 +12,15 @@ class DropzoneFiles extends Component {
             this.setState({files})
         };
         this.state = {
+            teamPath:"",
+            report:false,
             files: [],
             maxFile:5,
             date:"",
         };
+        this.handleChangeDate = this.handleChangeDate.bind(this)
     }
+
     async componentDidMount() {
         auth.onAuthStateChanged(async user => {
             if (user) {
@@ -28,7 +32,6 @@ class DropzoneFiles extends Component {
 
     async upload(files)
     {
-
 
         if(files!==null && files!==undefined&& files.length<=0)
             return;
@@ -43,10 +46,6 @@ class DropzoneFiles extends Component {
         };
 
         var storageRef = storage.ref()
-
-
-
-
         var uploadTask = storageRef.child('forms/' + file.key).put(file,metadata);
 
 
@@ -87,24 +86,49 @@ class DropzoneFiles extends Component {
                 // Upload completed successfully, now we can get the download URL
                 uploadTask.snapshot.ref.getDownloadURL().then((downloadURL) => {
                     // console.log('File available at', downloadURL);
+                     var formGuide = db.collection("researcher").doc(user.uid).collection("ScientificReport").doc(this.state.date).set({
+                         name: file.key,
+                         time: new Date().toLocaleString(),
+                         date:this.state.date,
+                         link:downloadURL,
 
-                    db.collection("researcher").doc(user.uid).collection("ScientificReport").add({
-                        name: file.key,
-                        time: new Date().toLocaleString(),
-                        date:this.state.date,
-                        link:downloadURL,
-                    }).then(()=>{
-                        var newFiles = files.slice(0, files.length-1);
-                        console.log("upload end")
-                        this.upload(newFiles)
-                    }).catch((err)=>{
-                        storage.refFromURL(downloadURL).delete()
-                        var newFiles = files.slice(0, files.length-1);
-                        this.upload(newFiles)
-                    })
+                     }).then(()=>{
+                         var newFiles = files.slice(0, files.length-1);
+                         console.log("upload end")
+                         this.upload(newFiles)
+                     }).catch((err)=>{
+                         storage.refFromURL(downloadURL).delete()
+                         var newFiles = files.slice(0, files.length-1);
+                         this.upload(newFiles)
+                     })
+
 
 
                 });
+
+
+                //         db.collection("researcher").doc(user.uid).collection("ScientificReport").add({
+                //         name: file.key,
+                //         time: new Date().toLocaleString(),
+                //         date:this.state.date,
+                //         link:downloadURL,
+                //
+                //     }).then(()=>{
+                //         var newFiles = files.slice(0, files.length-1);
+                //         console.log("upload end")
+                //         this.upload(newFiles)
+                //     }).catch((err)=>{
+                //         storage.refFromURL(downloadURL).delete()
+                //         var newFiles = files.slice(0, files.length-1);
+                //         this.upload(newFiles)
+                //     })
+                //     console.log('file.key ' ,file.key);
+                //     console.log('new Date().toLocaleString() ' ,new Date().toLocaleString());
+                //     console.log('this.state.date ' ,this.state.date);
+                //     console.log('downloadURL ' ,downloadURL);
+                //
+                //
+                // });
             }
 
         );
@@ -115,52 +139,28 @@ class DropzoneFiles extends Component {
     {
         var form=''
 
-        var name = event.target.name;
+       // var name = event.target.name;
         var value = event.target.value;
-        var e = event.target
-        if(name === 'date' && event.target.value!=='' )
-        {
-            this.loadSpinner(true,"טוען נתונים")
+        //var e = event.target
 
-            var formGuide = await db.collection("researcher").doc(auth.currentUser.uid).collection("ScientificReport").doc(event.target.value).get()
+        console.log('form ' ,form);
+        console.log('value ' ,value);
 
-            if(formGuide.data() && formGuide.data().locked) {
-                alert("הדוח לתאריך קיים נא לבחור תאריך אחר")
-                document.getElementById(e.id).value=''
-                form = this.state.form;
-                // console.log(name);
-
-                form[name] = '';
-                this.setState({form:form})
-
-            }
-            else if(formGuide.data())
-            {
-                this.setState({form:formGuide.data().form})
-
-            }
-            // else
-            // {
-            //     var guideData= await db.collection("researcher").doc(auth.currentUser.uid).get()
-            //     form ={}
-            //     form[name] = value;
-            //     form['name']=guideData.data().fname+' '+guideData.data().lname;
-            //     form['team']=guideData.data().teamName
-            //     this.setState({form:form})
-            // }
-        }
-        else
-        {
-            form = this.state.form
-            form[name] = value;
-            this.setState({form:form})
-        }
-        this.loadSpinner(false)
-
-
+        return value
 
     }
-
+    async handleChangeDate(event)
+    {
+        var name = event.target.name;
+        var value = event.target.value;
+        if(name === 'date')
+        {
+            this.setState({date:value});
+            this.state.date=value
+        }
+        console.log('name ' ,name);
+        console.log('value ' ,value);
+    }
 
     render() {
         const files = this.state.files.map(file => (
@@ -201,9 +201,9 @@ class DropzoneFiles extends Component {
                                                 <div>
                                                     <h4> מספר הקבצים להעלאה - {files.length}</h4>
                                                     <ul>{files}</ul>
-                                                    {/*<label id="date" className="title-input">הכנס את תאריך הדוח:</label>*/}
-                                                    {/*<input type="date" id="insert-date" name="date" onChange={(e) => this.handleChange(e)}*/}
-                                                    {/*       required/>*/}
+                                                    <label id="date" className="title-input">הכנס את תאריך הדוח:</label>
+                                                    <input type="date" className="form-control" id="insert-date" name="date" onChange={this.handleChangeDate} required/>
+
                                                     <button onClick={()=>{
                                                         this.upload(files)
                                                     }}>העלה קבצים</button>

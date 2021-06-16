@@ -140,7 +140,7 @@ class Manager extends React.Component {
                             className="fa fa-arrow-right"></span></button>
 
                     <button id="ChatResearcher" className="btn btn-info" onClick={() => {
-                        // NextPage(this.props, "", this.state.user)
+                         NextPage(this.props, "ChatM", this.state.user)
                     }}>צ'אט לחוקר<span
                         className="fa fa-arrow-right"></span></button>
 

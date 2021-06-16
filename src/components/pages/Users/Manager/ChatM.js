@@ -1,16 +1,14 @@
 import React from "react";
 import {auth, db, GetFormDownload, getPathData, getUser, signOut} from '../../../../firebase/firebase';
-import './Researcher.css'
+import './Manager.css'
 import Grid from "@material-ui/core/Grid";
 import ClipLoader from "react-spinners/ClipLoader";
 import firebase from "firebase";
 import {NextPage} from "../UserPage";
-import ChatResearcher from "./ChatResearcher";
-import MyDropzone from "./DropzoneFiles.js";
-import AcceptMaxFiles from "./DropzoneFiles.js";
 import {Button} from "@material-ui/core";
 import {Link} from "react-router-dom";
 import Select from "react-select";
+import ChatManager from "./ChatManager";
 
 
 const options = [
@@ -77,7 +75,7 @@ class ChatR extends React.Component {
 
             }
             // console.log("in4")
-            var teamName = await db.collection("researcher").doc(auth.currentUser.uid).get()
+            var teamName = await db.collection("Manager").doc(auth.currentUser.uid).get()
             // if(!teamName.data().teamName)
             // {
             //     alert("אינך משוייכ/ת לקבוצה יש לפנות למנהל")
@@ -121,12 +119,12 @@ class ChatR extends React.Component {
                         }} required/>
                     </Grid>
                     <Grid item xs={5}
-                          // container
-                          // direction="column"
-                          // justify="flex-start"
-                          // alignItems="flex-start"
+                        // container
+                        // direction="column"
+                        // justify="flex-start"
+                        // alignItems="flex-start"
                     >
-                        <ChatResearcher/>
+                        <ChatManager/>
                     </Grid>
 
 
@@ -152,7 +150,7 @@ class ChatR extends React.Component {
     BackPage()
     {
         this.props.history.push({
-            pathname: `/Researcher/${this.state.user.uid}`,
+            pathname: `/Manager/${this.state.user.uid}`,
             data: this.state.user // your data array of objects
         })
     }

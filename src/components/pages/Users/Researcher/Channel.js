@@ -71,7 +71,7 @@ const Channel = ({ user = null }) => {
                             )
                             ?.map(message => (
                                 <li key={message.id}>
-                                    <Message {...message} />
+                                    <h4><Message {...message} /></h4>
                                 </li>
                             ))}
                     </ul>
@@ -88,7 +88,7 @@ const Channel = ({ user = null }) => {
                         type="text"
                         value={newMessage}
                         onChange={handleOnChange}
-                        placeholder="Type your message here..."
+                        placeholder=" הקלד כאן את תשובתך"
                         className="flex-1 bg-transparent outline-none"
                     />
                     <button
@@ -96,7 +96,7 @@ const Channel = ({ user = null }) => {
                         disabled={!newMessage}
                         className="uppercase font-semibold text-sm tracking-wider text-gray-500 hover:text-gray-900 dark:hover:text-white transition-colors"
                     >
-                        Send
+                        שלח
                     </button>
                 </form>
             </div>

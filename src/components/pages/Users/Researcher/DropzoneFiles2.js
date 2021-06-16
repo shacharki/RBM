@@ -10,9 +10,13 @@ class DropzoneFiles2 extends Component {
             this.setState({files})
         };
         this.state = {
+            teamPath:"",
             files: [],
             maxFile:5,
+            date:"",
         };
+        this.handleChangeDate = this.handleChangeDate.bind(this)
+
     }
     async componentDidMount() {
         auth.onAuthStateChanged(async user => {
@@ -83,7 +87,7 @@ class DropzoneFiles2 extends Component {
                 // Upload completed successfully, now we can get the download URL
                 uploadTask.snapshot.ref.getDownloadURL().then((downloadURL) => {
                     // console.log('File available at', downloadURL);
-                    db.collection("researcher").doc(user.uid).collection("RequestPurchase").add({
+                    var formGuide = db.collection("researcher").doc(user.uid).collection("RequestPurchase").doc(this.state.date).set({
                         name: file.key,
                         time: new Date().toLocaleString(),
                         link:downloadURL,
@@ -105,7 +109,32 @@ class DropzoneFiles2 extends Component {
 
     }
 
+    async handleChange(event)
+    {
+        var form=''
 
+        // var name = event.target.name;
+        var value = event.target.value;
+        //var e = event.target
+
+        console.log('form ' ,form);
+        console.log('value ' ,value);
+
+        return value
+
+    }
+    async handleChangeDate(event)
+    {
+        var name = event.target.name;
+        var value = event.target.value;
+        if(name === 'date')
+        {
+            this.setState({date:value});
+            this.state.date=value
+        }
+        console.log('name ' ,name);
+        console.log('value ' ,value);
+    }
 
 
     render() {
@@ -144,6 +173,10 @@ class DropzoneFiles2 extends Component {
                                                 <div>
                                                     <h4> מספר הקבצים להעלאה - {files.length}</h4>
                                                     <ul>{files}</ul>
+                                                    <label id="date" className="title-input">הכנס את תאריך הנספח:</label>
+                                                    <input type="date" className="form-control" id="insert-date" name="date" onChange={this.handleChangeDate} required/>
+
+
                                                     <button onClick={()=>{
                                                         this.upload(files)
                                                     }}>העלה קבצים</button>

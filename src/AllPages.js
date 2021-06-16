@@ -22,6 +22,8 @@ import mngRequestPurchase from "./components/pages/Users/Manager/mngRequestPurch
 import UpdatesFirebase from "./components/pages/Users/Manager/UpdatesFirebase";
 import financialReports from "./components/pages/Users/Manager/financialReports";
 import ResearchBudgets from "./components/pages/Users/Manager/ResearchBudgets";
+import ChatManager from "./components/pages/Users/Manager/ChatManager";
+import ChatM from "./components/pages/Users/Manager/ChatM";
 
 
 import UserApproval from "./components/pages/Users/Manager/UserApproval";
@@ -75,6 +77,8 @@ function LoadPage() {
                     <Route exact path="/Manager/:id/UpdatesFirebase" component={UpdatesFirebase} />
                     <Route exact path="/Manager/:id/financialReports" component={financialReports} />
                     <Route exact path="/Manager/:id/ResearchBudgets" component={ResearchBudgets} />
+                    <Route exact path="/Manager/:id/ChatManager" component={ChatManager} />
+                    <Route exact path="/Manager/:id/ChatM" component={ChatM} />
 
 
 
