@@ -42,17 +42,13 @@ class ChatR extends React.Component {
 
     async componentDidMount() {
         var href =  window.location.href.split("/",5)
-        // console.log(href)
         auth.onAuthStateChanged(async user=>{
             if(user)
             {
 
-                // console.log("in1")
                 var type = await getUser(user)
-                // console.log(type)
                 if(href[4] === user.uid && (href[3] === type||type==='Tester'))
                 {
-                    // console.log("in2")
                     this.setState({
                         isLoad: true,
                         user: user,
@@ -62,7 +58,6 @@ class ChatR extends React.Component {
                 }
                 else
                 {
-                    // console.log("in3")
                     this.notfound()
                     return
                 }
@@ -76,14 +71,8 @@ class ChatR extends React.Component {
                 return;
 
             }
-            // console.log("in4")
             var teamName = await db.collection("researcher").doc(auth.currentUser.uid).get()
-            // if(!teamName.data().teamName)
-            // {
-            //     alert("אינך משוייכ/ת לקבוצה יש לפנות למנהל")
-            //     this.loadSpinner(false)
-            //     this.BackPage()
-            // }
+
             this.loadSpinner(false,"")
             this.setState({loadPage:true})
             this.render()
@@ -104,7 +93,6 @@ class ChatR extends React.Component {
                                 backgroundColor: "rgba(255,255,255,0.85)",
                                 borderRadius: "25px"
                             }}
-                                //   css={override}
                                         size={120}
                                         color={"#123abc"}
 
@@ -116,15 +104,11 @@ class ChatR extends React.Component {
                 <Grid container spacing={2}>
                     <Grid item xs={8} >
                         <Select  placeholder={" בחר משתמש "} options={options} onChange={(e)=>{
-                            // console.log(e.label,e.value);
                             this.setState({teamPath:(e.value).path,teamName:e.label})
                         }} required/>
                     </Grid>
                     <Grid item xs={5}
-                          // container
-                          // direction="column"
-                          // justify="flex-start"
-                          // alignItems="flex-start"
+
                     >
                         <ChatResearcher/>
                     </Grid>

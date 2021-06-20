@@ -284,7 +284,8 @@ class mngRequestPurchase extends Component {
         ];
 
         RequestResearcher.map(report=>{
-            // console.log(RequestResearcher)
+             console.log("report.form.signature",report.form.signature)
+
             csvData.push([
                 // report.form.team,
                 // report.form.name,
@@ -340,11 +341,14 @@ class mngRequestPurchase extends Component {
                 "שם החוקר: ",
                 report.form.q15,
                 "חתימת החוקר: ",
-                report.form.q16,
+                report.form.signature,
+                // report.form.q16,
                 "תאריך החשבונית: ",
                 report.form.q17,
                 "מס' חשבונית: ",
                 report.form.q18,
+                "נספחים: ",
+                // report.form.RequestPurchase.link,
 
 
 
@@ -479,12 +483,6 @@ class mngRequestPurchase extends Component {
 
 
 
-                                    {/*<Grid item xs={6} hidden={!this.state.optionsAll}>*/}
-                                    {/*    <button id="select" className="btn btn-info" onClick={()=>{*/}
-                                    {/*        this.GetAllData()*/}
-                                    {/*    }}>הצג הכל<span*/}
-                                    {/*        className="fa fa-arrow-right"></span></button>*/}
-                                    {/*</Grid>*/}
 
 
                                     <Grid item xs={6} hidden={!this.state.options}>

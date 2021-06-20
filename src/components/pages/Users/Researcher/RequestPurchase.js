@@ -244,19 +244,27 @@ class RequestPurchase extends React.Component {
     }
     async addDataToTeam(researcher,date)
     {
-        console.log("researcher2",researcher)
-        console.log("date2",date)
+        console.log("researcher",researcher)
+        console.log("date",date)
 
         var user = firebase.auth().currentUser;
+        console.log("user",user)
 
         var formResearcher = (await researcher.collection('request').doc(date).get()).ref;
+        console.log("formResearcher",formResearcher)
+
         try{
+
+
             var team = (await researcher.get()).data();
             var name =(team.fname + " "+team.lname);
             // console.log("name2",name)
             // console.log("team2",team)
 
             var teamCollection = await db.collection("Data").doc(team.team.id)
+            console.log("team",team)
+
+            console.log("team.team.id",team.team.id)
             // var Collection = await teamCollection.collection("Requests").doc(name)
             var newDate = await teamCollection.collection("Requests").doc(date)
             // var newDate = Collection.collection(date).doc();
@@ -266,28 +274,7 @@ class RequestPurchase extends React.Component {
             fullDate.setTime(0)
             fullDate.setFullYear(year,month-1,day)
 
-            // console.log("team.team.id",team.team.id)
-            // console.log("teamCollection",teamCollection)
-            // console.log("newDate",newDate)
-            // console.log("fullDate",fullDate)
-            // console.log("formResearcher",formResearcher)
 
-            // var temp = newDate.set({
-            //     date:fullDate,
-            //     RequestResearcher: formResearcher,
-            //     nameResearcher: team.fname + " "+team.lname,
-            //
-            // })
-            //
-            // // db.collection("Data").doc().set({name})
-            // await db.collection("Data").doc().collection(name).set(temp).then(()=>{
-            //         alert("הדוח נוסף")
-            //         return true;
-            //     }
-            // ).catch((e)=>{
-            //     alert("הדוח לא הוסף")
-            //     return false;
-            // })
 
 
             if(!doc.exists){

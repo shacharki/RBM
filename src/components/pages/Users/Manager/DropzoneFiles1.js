@@ -2,6 +2,8 @@
 import React, {Component} from 'react';
 import firebase, {auth, db, storage} from "../../../../firebase/firebase";
 import Dropzone from 'react-dropzone';
+import Grid from "@material-ui/core/Grid";
+import TextField from "@material-ui/core/TextField";
 
 class DropzoneFiles1 extends Component {
     constructor() {
@@ -17,6 +19,7 @@ class DropzoneFiles1 extends Component {
             date:"",
         };
         this.handleChangeDate = this.handleChangeDate.bind(this)
+        this.handleChangeNameR = this.handleChangeNameR.bind(this)
 
     }
     async componentDidMount() {
@@ -34,9 +37,12 @@ class DropzoneFiles1 extends Component {
 
         if(files!==null && files!==undefined&& files.length<=0)
             return;
+        var nameR = this.state.nameR
 
         var file = files[files.length-1]
         var user =  this.state.user
+        var date = this.state.date
+
         var metadata = {
             customMetadata: {
                 'user': user.uid,
@@ -44,11 +50,8 @@ class DropzoneFiles1 extends Component {
         };
 
         var storageRef = storage.ref()
-
-
-
-
         var uploadTask = storageRef.child('forms/' + file.key).put(file,metadata);
+        var path = auth.currentUser.uid
 
 
 // Listen for state changes, errors, and completion of the upload.
@@ -91,7 +94,11 @@ class DropzoneFiles1 extends Component {
                     var formGuide = db.collection("managers").doc(user.uid).collection("FinancialReport").doc(this.state.date).set({
                         name: file.key,
                         time: new Date().toLocaleString(),
+                        date:this.state.date,
+
                         link:downloadURL,
+                        nameR:this.state.nameR,
+
                     }).then(()=>{
                         var newFiles = files.slice(0, files.length-1);
                         console.log("upload end")
@@ -137,7 +144,19 @@ class DropzoneFiles1 extends Component {
         console.log('value ' ,value);
     }
 
+    async handleChangeNameR(event)
+    {
+        var name = event.target.name;
+        var value = event.target.value;
 
+
+        if(name === 'q1')
+        {
+            this.setState({nameR:value});
+            this.state.nameR=value
+        }
+
+    }
 
     render() {
         const files = this.state.files.map(file => (
@@ -177,7 +196,21 @@ class DropzoneFiles1 extends Component {
                                                     <ul>{files}</ul>
                                                     <label id="date" className="title-input">הכנס את תאריך הדוח:</label>
                                                     <input type="date" className="form-control" id="insert-date" name="date" onChange={this.handleChangeDate} required/>
-
+                                                    <Grid item xs={12}>
+                                                        <TextField
+                                                            inputProps={{style: {textAlign: 'center'}}}
+                                                            id="q1i"
+                                                            name="q1"
+                                                            type="tel"
+                                                            autoComplete="off"
+                                                            onChange={(e) => {
+                                                                this.handleChangeNameR(e)
+                                                            }}
+                                                            variant="standard"
+                                                            fullWidth
+                                                            label="שם המחקר"
+                                                        />
+                                                    </Grid>
                                                     <button onClick={()=>{
                                                         this.upload(files)
                                                     }}>העלה קבצים</button>

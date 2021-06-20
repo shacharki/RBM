@@ -155,22 +155,9 @@ function ChatResearcher() {
                 className="flex-shrink-0 flex items-center justify-between px-4 sm:px-8 shadow-md"
                 style={{ height: 'var(--topbar-height)' }}
             >
-                {/*<a href="https://alterclass.io/courses/react">*/}
-                {/*    <img src={brandLogo} alt="AlterClass" width={150} />*/}
-                {/*</a>*/}
+
                 <div className="flex items-center">
-                    {/*{user ? (*/}
-                    {/*    <button*/}
-                    {/*        onClick={signOut}*/}
-                    {/*        className="uppercase text-sm font-medium text-primary-500 hover:text-white tracking-wide hover:bg-primary-500 bg-transparent rounded py-2 px-4 mr-4 focus:outline-none focus:ring focus:ring-primary-500 focus:ring-opacity-75 transition-all"*/}
-                    {/*    >*/}
-                    {/*        Sign out*/}
-                    {/*    </button>*/}
-                    {/*) : null}*/}
-                    {/*<ThemeIcon*/}
-                    {/*    className="h-8 w-8 cursor-pointer"*/}
-                    {/*    onClick={() => setDarkMode(prev => !prev)}*/}
-                    {/*/>*/}
+
                 </div>
             </header>
             <main

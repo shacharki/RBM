@@ -1,4 +1,4 @@
-import React from "react";
+import  React, {Component} from "react";
 import {auth, db, GetFormDownload, getPathData, getUser, signOut} from '../../../../firebase/firebase';
 import './Researcher.css'
 import Grid from "@material-ui/core/Grid";
@@ -15,22 +15,40 @@ import Select from "react-select";
 
 const options = [
 ]
-var csvData = [];
+let csvData = [];
 
 
 class ScientificReport extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
+            user: props.location,
             loadPage:false,
+            page:'menu',
+            error:false,
+            showreport:false,
+            loading: true,
+            rule:"Reasearcher",
+            viewResearcher: false,
+            reports: [],
             spinner: [true,'נא להמתין הדף נטען'],
+            date:"",
+            prevDate:'',
+            form : {
+                date:"",
+                team:"",
+                name:"",
+            }
 
         };
-
+        this.handleSubmit = this.handleSubmit.bind(this)
+        this.handleChange = this.handleChange.bind(this)
+        this.approvResearcher = this.approvResearcher.bind(this)
+        this.RequestPurchase = this.RequestPurchase.bind(this)
     }
 
     loadSpinner(event,massage){
-        var spinner = []
+        let spinner = []
         spinner.push(event)
         spinner.push(massage)
         this.setState({spinner:spinner})
@@ -42,14 +60,14 @@ class ScientificReport extends React.Component {
 
 
     async componentDidMount() {
-        var href =  window.location.href.split("/",5)
+        let href =  window.location.href.split("/",5)
         // console.log(href)
         auth.onAuthStateChanged(async user=>{
             if(user)
             {
 
                 // console.log("in1")
-                var type = await getUser(user)
+                let type = await getUser(user)
                 // console.log(type)
                 if(href[4] === user.uid && (href[3] === type||type==='Tester'))
                 {
@@ -78,7 +96,7 @@ class ScientificReport extends React.Component {
 
             }
             // console.log("in4")
-            var teamName = await db.collection("researcher").doc(auth.currentUser.uid).get()
+            let teamName = await db.collection("researcher").doc(auth.currentUser.uid).get()
             // if(!teamName.data().teamName)
             // {
             //     alert("אינך משוייכ/ת לקבוצה יש לפנות למנהל")
@@ -92,7 +110,94 @@ class ScientificReport extends React.Component {
         })
 
     }
+    async handleSubmit(event)
+    {
+        if(!this.state.date) {
+            return;
+        }
+        if(this.state.date === this.state.prevDate) {
+            this.setState({viewResearcher: !this.state.viewResearcher});
+            return ;
+        }
+        this.loadSpinner(true,"מעדכן נתונים חדשים")
+        this.setState({prevDate:this.state.date});
+        // console.log("in");
+        let request = (await db.collection("researcher").doc(auth.currentUser.uid).get()).data().type;
+        const collection = await db.collection('researcher').where("ScientificReport","==",request).get()
+        const researchers = [];
+        const date = this.state.date
+        const collectionPromisesTeam = collection.docs.map( async function(doc) {
+            let ref =await db.collection("researcher").doc(doc.id).collection("ScientificReport").doc(date).get()
+            let user = await db.collection("researcher").doc(doc.id).get()
+            return [ref,user]
 
+        })
+
+        Promise.all(collectionPromisesTeam).then(res => {
+            // console.log("end prommis");
+            res.forEach(doc=>{
+                let approv = false;
+                let Request = ''
+                if(doc[0].exists) {
+                    approv = true;
+                    Request = doc[0].data().RequestPurchase;
+                }
+                let data = doc[1].data();
+                let ref = doc[1].id;
+                researchers.push({data,approv,ref,Request})
+            })
+            let i;
+            // console.log(researchers.length)
+            this.setState({viewResearcher: !this.state.viewResearcher});
+            for (i=0;i<researchers.length;i++)
+            {
+                if(!this.state.researchers)
+                {
+                    this.setState({researchers: researchers});
+                    this.loadSpinner(false)
+                    return
+                }
+                else if(researchers[i].approv!==this.state.researchers[i].approv)
+                {
+                    this.setState({researchers: researchers});
+                    this.loadSpinner(false)
+                    return
+                }
+
+            }
+            this.loadSpinner(false)
+        });
+
+
+    }
+    RequestPurchase(event,researcher)
+    {
+        let researchers = this.state.researchers;
+        // console.log(event.target.value);
+        for(let i=0;i<researchers.length;i++)
+        {
+            if(researchers[i] === researcher)
+            {
+                researchers[i].Request = event.target.value
+                this.setState({researchers: researchers})
+                return
+            }
+        }
+    }
+    approvResearcher(researcher)
+    {
+
+        let researchers =  this.state.researchers;
+        for(let i=0;i<researchers.length;i++)
+        {
+            if(researchers[i] === researcher)
+            {
+                researchers[i].approv = !researchers[i].approv;
+                this.setState({researchers:researchers})
+                return
+            }
+        }
+    }
     render() {
         return (
             <div id="ReportScientific" className="sec-design">
@@ -112,11 +217,11 @@ class ScientificReport extends React.Component {
                         />
                     </div>
                 </div>
-    }
+                 }
 
                     <Grid container spacing={2}>
                         <button id="ReportScientific" className="btn btn-info" onClick={async ()=>{
-                            var file = await GetFormDownload()
+                            let file = await GetFormDownload()
                             const link = document.createElement('a');
                             link.href = file
                             document.body.appendChild(link);
@@ -128,9 +233,6 @@ class ScientificReport extends React.Component {
                             className="fa fa-arrow-right"></span></button>
 
                         <label id="insert-student" className="title-input" htmlFor="name">:העלאת דוח </label>
-                        {/*<label id="date" className="title-input">הכנס את תאריך הדוח:</label>*/}
-                        {/*<input type="date" id="insert-date" name="date" onChange={(e) => this.handleChange(e)}*/}
-                        {/*       required/>*/}
                         <Grid item xs={5}
                               container
                               direction="column"
@@ -140,17 +242,11 @@ class ScientificReport extends React.Component {
                             <DropzoneFiles/>
                         </Grid>
 
+                        <Grid item xs={12}>
+
                         <label id="insert-student" className="title-input" htmlFor="name">:חיפוש דוחות </label>
 
                         <Grid container spacing={2} >
-                            <Grid item xs={5}>
-                                <label id="insert-student" className="title-input" htmlFor="name">מתאריך </label>
-                                <input type="date" className="form-control"  name="date"
-                                       onChange={(e)=>{
-                                           this.setState({dateFrom:e.target.value,options:null,show:false,teamName:null})
-                                       }}
-                                       required/>
-                            </Grid>
                             <Grid item xs={5}>
                                 <label id="insert-student" className="title-input" htmlFor="name">עד תאריך </label>
                                 <input type="date" className="form-control" id="insert-date" name="date"
@@ -160,39 +256,37 @@ class ScientificReport extends React.Component {
                                        required/>
                             </Grid>
 
+                            <Grid item xs={5}>
+                                <label id="insert-student" className="title-input" htmlFor="name">מתאריך </label>
+                                <input type="date" className="form-control"  name="date"
+                                       onChange={(e)=>{
+                                           this.setState({dateFrom:e.target.value,options:null,show:false,teamName:null})
+                                       }}
+                                       required/>
+                            </Grid>
+
 
                             <Grid item xs={2} hidden={!this.state.dateTo || !this.state.dateFrom}>
-                                <label id="insert-student" className="title-input" htmlFor="name"> &nbsp;</label>
-                                <button id="viewReport" className="btn btn-info" onClick={()=>{
-                                    this.GetTeams()
-                                }}>מצא דוחות<span
+                                <label id="insert-student" className="btn btn-info" htmlFor="name"> &nbsp;</label>
+                                <button id="viewReport" className="btn btn-info" onClick={() => this.GetReport()}>מצא דוחות<span
                                     className="fa fa-arrow-right"></span></button>
                             </Grid>
 
-                            {/*<Grid item xs={6} hidden={!this.state.options}>*/}
-                            {/*    <Select id = 'select'  placeholder={" בחר קבוצה "} options={this.state.options} onChange={(e)=>{*/}
-                            {/*        // console.log(e.label,e.value);*/}
-                            {/*        this.setState({team:e.value,teamName:e.label})*/}
-                            {/*    }} required/>*/}
-                            {/*</Grid>*/}
-                            {/*<Grid item xs={3} hidden={!this.state.options}>*/}
-                            {/*    <label id="insert-student" className="title-input" htmlFor="name"> &nbsp;</label>*/}
-                            {/*    {*/}
-                            {/*        !this.state.teamName?"לא נבחרה קבוצה": this.state.teamName*/}
-                            {/*    }*/}
 
-                            {/*</Grid>*/}
-                            {/*<Grid item xs={3}  hidden={!this.state.options}>*/}
-                            {/*    <button id="viewReport" className="btn btn-info" onClick={()=>{*/}
-                            {/*        this.setState({show:!this.state.show, forms:this.state.team[1].docs, reportGuide:this.state.team[2]})*/}
-                            {/*        this.createCsvFile(this.state.team[1].docs, this.state.team[2])*/}
-                            {/*    }}>{!this.state.show?("הצג דוחות"):("הסתר דוחות")}<span*/}
-                            {/*        className="fa fa-arrow-right"></span></button>*/}
-                            {/*</Grid>*/}
 
                         </Grid>
 
 
+
+                        <Grid item xs={12} hidden={this.state.reports.length < 1}>
+                            <hr/>
+                            {
+                                this.state.reports.map(report => (
+                                    <a href={report.link}>{report.date+" " +report.nameR}<hr/></a>
+                                ))
+                            }
+                        </Grid>
+                        </Grid>
                         <button id="go-back" className="btn btn-info" onClick={() => {
                             this.loadPage()
                             this.BackPage()
@@ -207,16 +301,16 @@ class ScientificReport extends React.Component {
 
     async handleChange(event)
     {
-        var form=''
+        let form=''
 
-        var name = event.target.name;
-        var value = event.target.value;
-        var e = event.target
+        let name = event.target.name;
+        let value = event.target.value;
+        let e = event.target
         if(name === 'date' && event.target.value!=='' )
         {
             this.loadSpinner(true,"טוען נתונים")
 
-            var formGuide = await db.collection("researcher").doc(auth.currentUser.uid).collection("ScientificReport").doc(event.target.value).get()
+            let formGuide = await db.collection("researcher").doc(auth.currentUser.uid).collection("ScientificReport").doc(event.target.value).get()
 
             if(formGuide.data() && formGuide.data().locked) {
                 alert("הדוח לתאריך קיים נא לבחור תאריך אחר")
@@ -233,15 +327,7 @@ class ScientificReport extends React.Component {
                 this.setState({form:formGuide.data().form})
 
             }
-            // else
-            // {
-            //     var guideData= await db.collection("researcher").doc(auth.currentUser.uid).get()
-            //     form ={}
-            //     form[name] = value;
-            //     form['name']=guideData.data().fname+' '+guideData.data().lname;
-            //     form['team']=guideData.data().teamName
-            //     this.setState({form:form})
-            // }
+
         }
         else
         {
@@ -255,10 +341,11 @@ class ScientificReport extends React.Component {
 
     }
 
-    async  GetTeams() {
-        this.loadSpinner(true,"מיבא נתונים")
-        var from = this.GetDates(this.state.dateFrom)
-        var to = this.GetDates(this.state.dateTo)
+    async  GetReport() {
+        //this.loadSpinner(true,"מיבא נתונים")
+        let from = this.GetDates(this.state.dateFrom)
+        let to = this.GetDates(this.state.dateTo)
+
 
         if(!this.state.dateFrom || !this.state.dateTo )
         {
@@ -266,62 +353,26 @@ class ScientificReport extends React.Component {
             this.loadSpinner(false,'')
             return
         }
+        console.log("2 ")
 
-        var options=[]
-        this.setState({options:options,show:false})
+        let options=[]
+        this.setState({options ,show:false})
 
-        var nameTeams = await db.collection("researcher").doc(auth.currentUser.uid).collection("ScientificReport")
-            .orderBy('TeamName','asc')
-            .get()
-
-
-
-        // console.log("in 1")
-        var Teamcollection = nameTeams.docs.map( async function(doc) {
-            // console.log("in 2")
-            var dates = await db.collection("researcher").doc(doc.id).collection("ScientificReport")
-                .where('date','>=',from)
-                .where('date','<=',to)
-                .get()
-
-            if(!dates.empty)
-            {
-                var forms=[]
-                dates.forEach(async function(doc){
-                    console.log("doc.data() ",doc.data())
-                    console.log("doc.data().reportGuide.path ",doc.data().reportGuide.path)
-
-                    if(doc.data())
-                    {
-                        var FormsGuide = await getPathData(doc.data().reportGuide.path)
-                        forms.push(FormsGuide)
-                    }
-                })
-                return [doc,dates,forms]
-            }
-
-        })
-
-        Promise.all(Teamcollection).then(res => {
-            res.forEach(item=>{
-                // console.log("in 3")
-                if(item)
-                    options.push({ value: item, label:  item[0].data().name})
-            })
-            this.setState({options:options})
-            // console.log("in 4")
-            this.loadSpinner(false,"")
-        })
-
+        let researcherReports = await db.collection("researcher").doc(auth.currentUser.uid).collection("ScientificReport")
+            .where("date", "<=", to.toISOString().split('T')[0])
+            .where("date", ">=", from.toISOString().split('T')[0])
+            .get();
+        const reportDocs = await Promise.all(researcherReports.docs.map(doc => doc.data()));
+        this.setState({reports: reportDocs})
     }
 
     parser(date)
     {
-        var year=''
-        var month = ''
-        var day = ''
-        var j=0;
-        for(var i =0; i<date.length; i++)
+        let year=''
+        let month = ''
+        let day = ''
+        let j=0;
+        for(let i =0; i<date.length; i++)
         {
             if(j===0 && date[i]!=='-')
             {
@@ -351,37 +402,14 @@ class ScientificReport extends React.Component {
         //     return
 
         date = this.parser(date)
-        var parsDate = new Date()
+        let parsDate = new Date()
         parsDate.setTime(0)
         parsDate.setFullYear(date["year"],date["month"]-1,date["day"])
 
         return parsDate;
     }
 
-    createCsvFile(forms,reportGuide)
-    {
-        csvData = [
-            [
-                "שם קבוצה",
-                "שם המדריך",
-                "תאריך המפגש",
 
-            ],
-        ];
-
-        reportGuide.map(report=>{
-            // console.log(reportGuide)
-            csvData.push([
-                report.form.team,
-                report.form.name,
-                report.form.date,
-
-
-            ],)
-            return report
-        })
-
-    }
 
     BackPage()
     {
