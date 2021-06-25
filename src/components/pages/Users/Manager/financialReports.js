@@ -29,6 +29,8 @@ class financialReports extends React.Component {
             rule:"Manager",
             viewManagers: false,
             reports: [],
+            // reportsr: [],
+
             spinner: [true,'נא להמתין הדף נטען'],
             date:"",
             prevDate:'',
@@ -96,12 +98,7 @@ class financialReports extends React.Component {
             }
             // console.log("in4")
             var teamName = await db.collection("manager").doc(auth.currentUser.uid).get()
-            // if(!teamName.data().teamName)
-            // {
-            //     alert("אינך משוייכ/ת לקבוצה יש לפנות למנהל")
-            //     this.loadSpinner(false)
-            //     this.BackPage()
-            // }
+
             this.loadSpinner(false,"")
             this.setState({loadPage:true})
             this.render()
@@ -262,6 +259,30 @@ class financialReports extends React.Component {
         const reportDocs = await Promise.all(managerReports.docs.map(doc => doc.data()));
         this.setState({reports: reportDocs})
     }
+    // async  GetReport1() {
+    //     //this.loadSpinner(true,"מיבא נתונים")
+    //     let from = this.GetDates(this.state.dateFrom)
+    //     let to = this.GetDates(this.state.dateTo)
+    //
+    //
+    //     if(!this.state.dateFrom || !this.state.dateTo )
+    //     {
+    //         alert("נא למלא תאריך התחלה וסיום")
+    //         this.loadSpinner(false,'')
+    //         return
+    //     }
+    //     console.log("2 ")
+    //
+    //     let options=[]
+    //     this.setState({options ,show:false})
+    //
+    //     let researcherReports = await db.collection("researcher").doc(auth.currentUser.uid).collection("ScientificReport")
+    //         .where("date", "<=", to.toISOString().split('T')[0])
+    //         .where("date", ">=", from.toISOString().split('T')[0])
+    //         .get();
+    //     const reportDocs = await Promise.all(researcherReports.docs.map(doc => doc.data()));
+    //     this.setState({reportsr: reportDocs})
+    // }
     parser(date)
     {
         let year=''
@@ -368,26 +389,38 @@ class financialReports extends React.Component {
                             </Grid>
 
 
-                            <Grid item xs={2} hidden={!this.state.dateTo || !this.state.dateFrom}>
+                            <Grid item xs={10} hidden={!this.state.dateTo || !this.state.dateFrom}>
                                 <label id="insert-student" className="btn btn-info" htmlFor="name"> &nbsp;</label>
-                                <button id="viewReport" className="btn btn-info" onClick={() => this.GetReport()}>מצא דוחות<span
+                                <button id="viewReport" className="btn btn-info" onClick={() => this.GetReport()}>מצא דוחות כספיים<span
                                     className="fa fa-arrow-right"></span></button>
                             </Grid>
-
+                            <Grid item xs={12} hidden={this.state.reports.length < 1}>
+                                <hr/>
+                                {
+                                    this.state.reports.map(report => (
+                                        <a href={report.link}>{report.date+" " +report.nameR}<hr/></a>
+                                    ))
+                                }
+                            </Grid>
+                            {/*<Grid item xs={5} hidden={!this.state.dateTo || !this.state.dateFrom}>*/}
+                            {/*    <label id="insert-student" className="btn btn-info" htmlFor="name"> &nbsp;</label>*/}
+                            {/*    <button id="viewReport" className="btn btn-info" onClick={() => this.GetReport1()}>מצא דוחות מדעיים<span*/}
+                            {/*        className="fa fa-arrow-right"></span></button>*/}
+                            {/*</Grid>*/}
 
 
                         </Grid>
 
 
 
-                        <Grid item xs={12} hidden={this.state.reports.length < 1}>
-                            <hr/>
-                            {
-                                this.state.reports.map(report => (
-                                    <a href={report.link}>{report.date+" " +report.nameR}<hr/></a>
-                                ))
-                            }
-                        </Grid>
+                        {/*<Grid item xs={12} hidden={this.state.reports.length < 1}>*/}
+                        {/*    <hr/>*/}
+                        {/*    {*/}
+                        {/*        this.state.reports.map(report => (*/}
+                        {/*            <a href={report.link}>{report.date+" " +report.nameR}<hr/></a>*/}
+                        {/*        ))*/}
+                        {/*    }*/}
+                        {/*</Grid>*/}
                     </Grid>
 
 

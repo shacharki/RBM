@@ -122,7 +122,7 @@ class Manager extends React.Component {
                         className="fa fa-arrow-right"></span></button>
 
                     <button id="ResearchBudgets" className="btn btn-info" onClick={() => {
-                         this.ChangePage("ResearchBudgets")
+                         this.ChangePage("Budget")
                         return
                     }}>תקציבי מחקר<span
                         className="fa fa-arrow-right"></span></button>
@@ -133,7 +133,7 @@ class Manager extends React.Component {
                     {/*}}>דיווח הוצאות<span*/}
                     {/*    className="fa fa-arrow-right"></span></button>*/}
 
-                    <button id="financialReports" className="btn btn-info" onClick={() => {
+                    <button id="BudgetSpreadsheet" className="btn btn-info" onClick={() => {
                          this.ChangePage("financialReports")
                         return
                     }}>דוחות כספיים<span

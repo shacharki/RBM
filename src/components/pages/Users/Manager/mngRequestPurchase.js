@@ -30,6 +30,7 @@ class mngRequestPurchase extends Component {
             loading: true,
             rule:"Manager",
             prevDate:'',
+            reports: [],
             viewResearcher: false,
             date:"",
             form : {
@@ -429,7 +430,58 @@ class mngRequestPurchase extends Component {
         spinner.push(massage)
         this.setState({spinner:spinner})
     }
+    // async  GetReport() {
+    //     //this.loadSpinner(true,"מיבא נתונים")
+    //     let from = this.GetDates(this.state.dateFrom)
+    //     let to = this.GetDates(this.state.dateTo)
+    //
+    //
+    //     if(!this.state.dateFrom || !this.state.dateTo )
+    //     {
+    //         alert("נא למלא תאריך התחלה וסיום")
+    //         this.loadSpinner(false,'')
+    //         return
+    //     }
+    //     console.log("2 ")
+    //
+    //     let options=[]
+    //     this.setState({options ,show:false})
+    //     let managerReports = await db.collection("researcher").doc(this.state.teamName).collection("RequestPurchase")
+    //         .where("date", "<=", to.toISOString().split('T')[0])
+    //         .where("date", ">=", from.toISOString().split('T')[0])
+    //         .get();
+    //     const reportDocs = await Promise.all(managerReports.docs.map(doc => doc.data()));
+    //     this.setState({reports: reportDocs})
+    // }
+    async  GetReport(form,index) {
+        //this.loadSpinner(true,"מיבא נתונים")
+        var requests = this.state.RequestResearcher[index].form
+        var date1 =form.date.toDate()
 
+        let from = this.GetDates(this.state.dateFrom)
+        let to = this.GetDates(this.state.dateTo)
+        var user = form.uid
+         console.log("date1",date1)
+        console.log("from",from)
+        console.log("to",to)
+
+        if(!this.state.dateFrom || !this.state.dateTo )
+        {
+            alert("נא למלא תאריך התחלה וסיום")
+            this.loadSpinner(false,'')
+            return
+        }
+        console.log("2 ")
+
+        let options=[]
+        this.setState({options ,show:false})
+
+        let managerReports = await db.collection("researcher").doc(user).collection("RequestPurchase")
+            .where("date", "===", date1.toISOString().split('T')[0])
+            .get();
+        const reportDocs = await Promise.all(managerReports.docs.map(doc => doc.data()));
+        this.setState({reports: reportDocs})
+    }
     render() {
         if(this.state.loadPage){
             return(
@@ -472,7 +524,6 @@ class mngRequestPurchase extends Component {
                                                required/>
                                     </Grid>
 
-
                                     <Grid item xs={2} hidden={!this.state.dateTo || !this.state.dateFrom}>
                                         <label id="insert-student" className="title-input" htmlFor="name"> &nbsp;</label>
                                         <button id="viewReport" className="btn btn-info" onClick={()=>{
@@ -480,10 +531,11 @@ class mngRequestPurchase extends Component {
                                         }}>מצא בקשות<span
                                             className="fa fa-arrow-right"></span></button>
                                     </Grid>
+                                </Grid>
 
 
 
-
+                                <Grid container spacing={2}>
 
                                     <Grid item xs={6} hidden={!this.state.options}>
                                         <Select id = 'select'  placeholder={" בחר חוקר "} options={this.state.options} onChange={(e)=>{
@@ -505,7 +557,6 @@ class mngRequestPurchase extends Component {
                                         }}>{!this.state.show?("הצג בקשות לרכישה"):("הסתר בקשות לרכישה")}<span
                                             className="fa fa-arrow-right"></span></button>
                                     </Grid>
-
                                 </Grid>
                             </div>
                             {this.state.forms?(
@@ -530,6 +581,7 @@ class mngRequestPurchase extends Component {
                                         this.state.forms.map((Form,index) => (
                                             <Grid item xs={12} key={index}>
                                                 <hr/>
+
                                                 {this.Requests(Form.data(),index)}
                                                 <div>
                                                     <Button
@@ -547,6 +599,19 @@ class mngRequestPurchase extends Component {
                                                         הורדת הבקשה
                                                     </Button>
                                                 </div>
+                                                <Grid item xs={5} hidden={!this.state.teamName}>
+                                                    <label id="insert-student" className="btn btn-info" htmlFor="name"> &nbsp;</label>
+                                                    <button id="viewReport" className="btn btn-info" onClick={() => this.GetReport(Form.data(),index)}>הצג נספחים<span
+                                                        className="fa fa-arrow-right"></span></button>
+                                                </Grid>
+                                                <Grid item xs={12} hidden={this.state.reports.length < 1}>
+                                                    <hr/>
+                                                    {
+                                                        this.state.reports.map(report => (
+                                                            <a href={report.link}>{report.date+" " +report.nameR}<hr/></a>
+                                                        ))
+                                                    }
+                                                </Grid>
                                             </Grid>
 
 
@@ -816,7 +881,6 @@ class mngRequestPurchase extends Component {
         var user = form.uid
         // console.log("form",form)
         //
-        // console.log("this.state.RequestResearcher",this.state.RequestResearcher)
 
         if(index>=this.state.RequestResearcher.length)
         {
@@ -832,6 +896,8 @@ class mngRequestPurchase extends Component {
                 day='0'+day
             if (month<10)
                 month='0'+month
+
+            console.log("date",date)
 
             return (
                 <div id="name-group" className="form-group" dir="rtl">

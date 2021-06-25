@@ -356,11 +356,7 @@ class UpdatesFirebase extends Component {
 
     async getAllUsers(user) {
         this.loadSpinner(true,"מיבא נתוני משתמשים")
-        // console.log("this.state",this.state)
-        // console.log("this.state.researchers",this.state.researchers)
-        // console.log("this.state.researchersEmpty",this.state.researchersEmpty)
-        // console.log("this.state.Data",this.state.Data)
-        // console.log("this.state.TeamEmpty",this.state.TeamEmpty)
+
 
         if ((user === 'researcher' && this.state.researchers && this.state.researchers > 1) ||
             (user === 'researchersEmpty' && this.state.researchersEmpty && this.state.researchersEmpty > 1) ||
@@ -532,32 +528,7 @@ class UpdatesFirebase extends Component {
                         <h4> ת.ז: {user.ID}</h4>
                         <h4> חוקר: {user.teamName}</h4>
                         <Grid container spacing={2}>
-                            <Grid item xs={8}>
-                                {/*<Select  placeholder={" החלף חוקר "} options={options} onChange={(e)=>{*/}
-                                {/*    // console.log(e.label,e.value);*/}
-                                {/*    user.optionss = e.label*/}
-                                {/*    var teamPath = this.state.researcherTeamPath*/}
-                                {/*    var teamName = this.state.researcherTeamName*/}
-                                {/*    if(teamPath && teamName) {*/}
-                                {/*        if (index < teamPath.length) {*/}
-                                {/*            teamPath[index] = e.value*/}
-                                {/*            teamName[index] = e.label*/}
-                                {/*        }*/}
-                                {/*        else*/}
-                                {/*        {*/}
-                                {/*            teamPath.push(e.value)*/}
-                                {/*            teamName.push(e.label)*/}
-                                {/*        }*/}
-                                {/*    }*/}
-                                {/*    else*/}
-                                {/*    {*/}
-                                {/*        teamPath = [e.value]*/}
-                                {/*        teamName = [e.label]*/}
 
-                                {/*    }*/}
-                                {/*    this.setState({researcherTeamPath:teamPath,researcherTeamName:teamName})*/}
-                                {/*}} />*/}
-                            </Grid>
 
                         </Grid>
                     </div>

@@ -25,7 +25,9 @@ import ResearchBudgets from "./components/pages/Users/Manager/ResearchBudgets";
 import ChatManager from "./components/pages/Users/Manager/ChatManager";
 import ChatM from "./components/pages/Users/Manager/ChatM";
 
+import BudgetSpreadsheet from "./components/pages/Users/BudgetSpreadsheetComponent/BudgetSpreadsheet";
 
+import Budget from "./components/pages/Users/BudgetSpreadsheetComponent/Budget";
 import UserApproval from "./components/pages/Users/Manager/UserApproval";
 
 import Profile from "./components/pages/Users/profile";
@@ -80,6 +82,8 @@ function LoadPage() {
                     <Route exact path="/Manager/:id/ChatManager" component={ChatManager} />
                     <Route exact path="/Manager/:id/ChatM" component={ChatM} />
 
+                    <Route exact path="/Manager/:id/Budget" component={Budget} />
+                    <Route exact path="/Manager/:id/BudgetSpreadsheet" component={BudgetSpreadsheet} />
 
 
                 </Switch>
