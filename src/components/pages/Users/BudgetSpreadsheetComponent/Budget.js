@@ -92,7 +92,9 @@ class Budget extends React.Component {
 
     render() {
         return (
-            <div id="ReportScientific" className="sec-design">
+            <div id="ReportScientific" className="sec-design1">
+                {/*<div id="ReportScientific" className="sec-design">*/}
+
 
                 {!this.state.spinner[0] ? "" :
                     <div id='fr'>
@@ -100,7 +102,7 @@ class Budget extends React.Component {
                         <div className="sweet-loading">
                             <ClipLoader style={{
                                 backgroundColor: "rgba(255,255,255,0.85)",
-                                borderRadius: "40px"
+                               // borderRadius: "40px"
                             }}
                                 //   css={override}
                                         size={220}

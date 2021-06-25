@@ -91,6 +91,10 @@ const BudgetSpreadsheet = (props) => {
                 }
 
             </Tabs>
+            <input type="file" onChange={async (event) => {
+                const file = event.target.files[0];
+                await getXlsxFile(file)
+            }} placeholder="Load Excel File"></input>
             <button onClick={() => {
                 const [sheetState, setSheetState] = activeSheet;
                 var clone = Object.assign(Object.create(Object.getPrototypeOf(sheetState)), sheetState)
@@ -98,27 +102,24 @@ const BudgetSpreadsheet = (props) => {
                 clone.columns = [buildSingleColumn(clone.columns.length, true), ...clone.columns]
 
                 setSheetState(clone)
-            }}>Add Column</button>
+            }}>הוספת טור</button>
 
             <button onClick={() => {
                 // setRowsCount(rows + 1)
                 // setRows([...rows, buildSingleRow(columns)])
-            }}>Add Row</button>
+            }}>הוספת שורה</button>
 
-            <input type="file" onChange={async (event) => {
-                const file = event.target.files[0];
-                await getXlsxFile(file)
-            }} placeholder="Load Excel File"></input>
+
             <button onClick={() => {
                 setDialogOpenStatus(true)
-            }}>Load sheet from URL</button>
+            }}>טען גיליון מכתובת אתר</button>
 
             <Dialog open={dialogOpenStatus} onClose={() => setDialogOpenStatus(false)} >
-                <DialogTitle id="get-sheet-url-dialog">Download Excel File</DialogTitle>
+                <DialogTitle id="get-sheet-url-dialog">הורדה לאקסל</DialogTitle>
 
                 <DialogContent>
                     <DialogContentText>
-                        Enter the URL of the spreadsheet to download.
+                        הזן את כתובת האתר של הגיליון האלקטרוני להורדה
                     </DialogContentText>
                     <TextField
                         autoFocus
@@ -132,16 +133,17 @@ const BudgetSpreadsheet = (props) => {
                 </DialogContent>
                 <DialogActions>
                     <button onClick={() => setDialogOpenStatus(false)} color="primary">
-                        Cancel
+                        בטל
                     </button>
                     <button onClick={async () => {
                         const stream = (await (await fetch(dialogDownloadUrl)).blob()).stream()
                         await getXlsxFile(stream)
                     }} color="primary">
-                        Download
+                        הורד
                     </button>
                 </DialogActions>
             </Dialog>
+
         </div>
 
     );
