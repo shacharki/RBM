@@ -1,6 +1,9 @@
 import React from "react";
-import {auth, getUser, signOut} from '../../../../firebase/firebase'
-import {NextPage} from "../UserPage";
+import { auth, getUser, signOut, db } from '../../../../firebase/firebase'
+import listenForNewMessages from '../../../../firebase/listenForNewMessages'
+import { Badge } from '@material-ui/core'
+
+import { NextPage } from "../UserPage";
 import ClipLoader from "react-spinners/ClipLoader";
 import './Manager.css'
 
@@ -8,51 +11,56 @@ class Manager extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
-            loadPage:false,
-            spinner: [true,'נא להמתין הדף נטען'],
-            isLoad:false,
+            loadPage: false,
+            spinner: [true, 'נא להמתין הדף נטען'],
+            isLoad: false,
             user: props.location,
-            error:false,
+            error: false,
             loading: true,
-            rule:"Manager",
+            rule: "Manager",
+            waitingNewMessages: 0,
+            lastRecivedMessageDate: new Date()
         };
     }
 
 
-    loadPage(event){
-        this.setState({loading:event})
+    loadPage(event) {
+        this.setState({ loading: event })
     }
 
     async componentDidMount() {
-        var href =  window.location.href.split("/",5)
-        auth.onAuthStateChanged(async user=>{
-            if(user)
-            {
-
+        var href = window.location.href.split("/", 5)
+        auth.onAuthStateChanged(async user => {
+            if (user) {
 
                 var type = await getUser(user)
-                if(type === "wait")
-                {
+                if (type === "wait") {
                     alert('המנהל עדיין לא אישר את הבקשה')
                     window.location.href = '/Login';
                     return
                 }
 
 
-                if(href[4] === user.uid && (href[3] === type||type==='Tester'))
-                {
+                if (href[4] === user.uid && (href[3] === type || type === 'Tester')) {
                     await this.setState({
                         isLoad: true,
                         user: user,
                         type: type
                     })
                     this.render()
-                    this.setState({loadPage:true})
-                    this.loadSpinner(false,"")
+                    this.setState({ loadPage: true })
+                    this.loadSpinner(false, "")
+
+                    this.unsubNewMessages = db.collection("messages")
+                        .where('addresee', '==', auth.currentUser.uid) // Only messages adreesed to this user.
+                        .where('createdAt', '>', this.state.lastRecivedMessageDate) // Only messages that have been sent after the last message that was recived.
+                        .onSnapshot(snap => {
+                            this.setState({ waitingNewMessages: this.state.waitingNewMessages + 1, lastRecivedMessageDate: new Date() })
+                        })
+
                     return
                 }
-                else
-                {
+                else {
                     this.notfound()
                     return
                 }
@@ -68,29 +76,31 @@ class Manager extends React.Component {
             }
 
         })
-
     }
 
-    loadSpinner(event,massage = ""){
+    componentWillUnmount() {
+        if (this.unsubNewMessages) {
+            this.unsubNewMessages()
+        }
+    }
+
+    loadSpinner(event, massage = "") {
         var spinner = []
         spinner.push(event)
         spinner.push(massage)
-        this.setState({spinner:spinner})
+        this.setState({ spinner: spinner })
     }
 
 
-    async  logout() {
-        //מסך טעינה
+    async logout() {
         await auth.signOut();
         window.location.href = '/';
-        //סיום מסך טעינה
     }
 
 
 
     render() {
-        if (this.state.loadPage)
-        {
+        if (this.state.loadPage) {
             return (
                 <div id="instructor" className="sec-design" dir='rtl'>
                     {!this.state.spinner[0] ? "" :
@@ -103,7 +113,6 @@ class Manager extends React.Component {
                                 }}
                                             size={120}
                                             color={"#123abc"}
-
                                 />
                             </div>
                         </div>
@@ -116,33 +125,33 @@ class Manager extends React.Component {
                         className="fa fa-arrow-right"></span></button>
 
                     <button id="mngRequestPurchase" className="btn btn-info" onClick={() => {
-                         this.ChangePage("mngRequestPurchase")
+                        this.ChangePage("mngRequestPurchase")
                         return
                     }}>אישור דוחות ובקשות<span
                         className="fa fa-arrow-right"></span></button>
 
-                    <button id="ResearchBudgets" className="btn btn-info" onClick={() => {
-                         this.ChangePage("Budget")
+                    <button id="BudgetSpreadshee" className="btn btn-info" onClick={() => {
+                        this.ChangePage("Budget")
                         return
                     }}>תקציבי מחקר<span
                         className="fa fa-arrow-right"></span></button>
-
-                    <button id="BudgetSpreadsheet" className="btn btn-info" onClick={() => {
-                          this.ChangePage("BudgetSpreadsheet")
-                        return
-                    }}>דיווח הוצאות<span
-                        className="fa fa-arrow-right"></span></button>
-
-                    <button id="BudgetSpreadsheet" className="btn btn-info" onClick={() => {
-                         this.ChangePage("financialReports")
+                    {/*<button id="BudgetSpreadsheet" className="btn btn-info" onClick={() => {*/}
+                    {/*    this.ChangePage("BudgetSpreadsheet")*/}
+                    {/*    return*/}
+                    {/*}}>דיווח הוצאות<span*/}
+                    {/*    className="fa fa-arrow-right"></span></button>*/}
+                    <button id="financialReports" className="btn btn-info" onClick={() => {
+                        this.ChangePage("financialReports")
                         return
                     }}>דוחות כספיים<span
-                            className="fa fa-arrow-right"></span></button>
+                        className="fa fa-arrow-right"></span></button>
 
                     <button id="ChatResearcher" className="btn btn-info" onClick={() => {
-                         NextPage(this.props, "ChatM", this.state.user)
-                    }}>צ'אט לחוקר<span
-                        className="fa fa-arrow-right"></span></button>
+                        NextPage(this.props, "ChatM", this.state.user)
+                    }}>
+                        צ'אט לחוקר<span className="fa fa-arrow-right"></span>
+                    </button>
+
 
                     <button id="ExpenseReporting1" className="btn btn-info" onClick={() => {
                         this.ChangePage("UpdatesFirebase")
@@ -185,16 +194,14 @@ class Manager extends React.Component {
         }
     }
 
-    loadTempPage(path)
-    {
+    loadTempPage(path) {
         this.props.history.push({
             pathname: `/${path}`,
             data: this.state.user
         })
     }
 
-    ChangePage(path)
-    {
+    ChangePage(path) {
         this.props.history.push({
             pathname: `${this.props.location.pathname}/${path}`,
             data: this.state.user
@@ -202,22 +209,24 @@ class Manager extends React.Component {
 
     }
 
-    loadUser(page)
-    {
+    loadUser(page) {
         this.props.history.push({
             pathname: `/${page}/${this.state.user.id}`,
             data: this.state.user // your data array of objects
         })
     }
 
-    notfound()
-    {
+    notfound() {
         this.props.history.push({
             pathname: `/404`,
             data: this.state.user // your data array of objects
         })
     }
+
+    getNewMessagesString() {
+        return this.state.waitingNewMessages === 1 ? 'הודעה חדשה אחת' : `${this.state.waitingNewMessages} הודעות חדשות`
+    }
 }
 
 
-export  default  Manager;
+export default Manager;

@@ -2,6 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { formatRelative } from 'date-fns';
 import './Researcher.css'
+import { Card } from '@material-ui/core'
 
 const formatDate = date => {
     let formattedDate = '';
@@ -24,7 +25,7 @@ const Message = ({
     if (!text) return null;
 
     return (
-        <div className="px-4 py-4 rounded-md hover:bg-gray-50 dark:hover:bg-coolDark-600 overflow-hidden flex items-start">
+        <Card className="px-4 py-4 rounded-md hover:bg-gray-50 dark:hover:bg-coolDark-600 overflow-hidden flex items-start">
             {photoURL ? (
                 <img
                     src={photoURL}
@@ -41,13 +42,13 @@ const Message = ({
                     ) : null}
                     {createdAt?.seconds ? (
                         <span className="text-gray-500 text-xs">
-              {formatDate(new Date(createdAt.seconds * 1000))}
-            </span>
+                            {formatDate(new Date(createdAt.seconds * 1000))}
+                        </span>
                     ) : null}
                 </div>
                 <p>{text}</p>
             </div>
-        </div>
+        </Card>
     );
 };
 

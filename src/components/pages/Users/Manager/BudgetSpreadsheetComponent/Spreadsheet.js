@@ -1,16 +1,22 @@
-import React, { useEffect, useState } from "react";
-import DataGrid from 'react-data-grid'
+import React, { useEffect, useState, useRef } from "react";
+import DataGrid, { Cell } from 'react-data-grid'
 import { executeFormula } from "./ForumulaParser";
 import SpreadsheetState from "./SpreadsheetState";
 import "./spreadsheetStyles.css"
+import setStyleOfCell from "./util/gridCellStyling";
 
 function calculateRow(row, spreadsheet) {
     for (const column in row) {
         const cell = row[column];
 
-        if (typeof (cell) == "string") {
-            const newValue = executeFormula(row[column], spreadsheet)
-            row[column] = newValue == undefined ? row[column] : newValue;
+        if (typeof (cell.v) == "string") {
+            // Update the formula property if the cell is indeed a formula, before the new value is calculated.
+            row[column].f = cell.v.startsWith('=') ? cell.v.substr(1) : undefined;
+
+
+            const newValue = executeFormula(row[column].v, spreadsheet)
+            row[column].v = newValue == undefined ? row[column] : newValue;
+
         }
     }
 }
@@ -22,6 +28,7 @@ function calculateRow(row, spreadsheet) {
  */
 const Spreadsheet = (props) => {
     const [state, setSpreadsheetState] = useState(props.state)
+
 
     return <div style={state.style}>
         <DataGrid
@@ -45,7 +52,7 @@ const Spreadsheet = (props) => {
 
                 setSpreadsheetState(stateCopy)
             }}
-
+            enableVirtualization={true}
             onSelectedCellChange={(pos) => {
                 var copy = { ...state };
                 copy.activeCellPos = {
@@ -53,7 +60,6 @@ const Spreadsheet = (props) => {
                     rowNumber: pos.rowIdx
                 }
             }}
-
         />
     </div>
 }

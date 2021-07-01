@@ -1,6 +1,6 @@
-import {ChatEngine} from "react-chat-engine";
+import { ChatEngine } from "react-chat-engine";
 import './Manager.css'
-import {auth, db, GetFormDownload, getUser, signOut} from '../../../../firebase/firebase';
+import { auth, db, GetFormDownload, getUser, signOut } from '../../../../firebase/firebase';
 
 import React from 'react';
 // Firebase deps
@@ -13,15 +13,13 @@ import Channel from '../Researcher/Channel';
 import Loader from '../Researcher/Loader';
 
 import { useAuthState, useDarkMode } from '../Researcher/hooks';
-import {NextPage} from "../UserPage";
+import { NextPage } from "../UserPage";
 import Dropzone from 'react-dropzone';
 
 
 
 
-function ChatManager() {
-
-
+function ChatManager({ selectedUserUid }) {
 
     const { user, initializing } = useAuthState(firebase.auth());
     const [darkMode, setDarkMode] = useDarkMode();
@@ -90,7 +88,7 @@ function ChatManager() {
             );
         }
 
-        if (user) return <Channel user={user} />;
+        if (user) return <Channel user={user} selectedUserUid={selectedUserUid}/>;
 
         return (
             <div className="sec-design">
@@ -113,7 +111,6 @@ function ChatManager() {
 
                     <button
                         onClick={signInWithGoogle}
-                        //className="rounded shadow-button pl-6 pr-8 py-3 bg-white hover:bg-gray-50 text-gray-600 font-medium flex items-center justify-center overflow-y-hidden focus:outline-none focus:ring focus:ring-primary-500 focus:ring-opacity-75"
                     >
                         <svg
                             viewBox="5 -5 30 30"

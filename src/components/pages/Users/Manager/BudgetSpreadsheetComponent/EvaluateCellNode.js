@@ -1,6 +1,5 @@
 import { convertNumberToSpradsheetColumn, lettersToNumbers } from './SpreadsheetBuilders'
 import { evaluateNode } from "./ForumulaParser";
-import "./spreadsheetStyles.css"
 
 
 /**
@@ -36,7 +35,7 @@ function evaluateCellNode(node, spreadsheet) {
 
     const columnNumber = lettersToNumbers(column) + - 1
 
-    const cellValue = spreadsheet.rows[row - 1][convertNumberToSpradsheetColumn(columnNumber)]
+    const cellValue = spreadsheet.rows[row - 1][convertNumberToSpradsheetColumn(columnNumber)].v
     const asNumber = parseFloat(cellValue);
 
     return isNaN(asNumber) ? cellValue : asNumber;

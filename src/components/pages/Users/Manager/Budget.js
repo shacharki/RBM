@@ -1,6 +1,6 @@
 import React from "react";
 import {auth, db, GetFormDownload, getPathData, getUser, signOut} from '../../../../firebase/firebase';
-import "./spreadsheetStyles.css"
+import "./BudgetSpreadsheetComponent/spreadsheetStyles.css"
 import Grid from "@material-ui/core/Grid";
 import ClipLoader from "react-spinners/ClipLoader";
 import firebase from "firebase";
@@ -8,7 +8,7 @@ import {NextPage} from "../UserPage";
 import {Button} from "@material-ui/core";
 import {Link} from "react-router-dom";
 import Select from "react-select";
-import BudgetSpreadsheet from "./BudgetSpreadsheet";
+import BudgetSpreadsheet from "./BudgetSpreadsheetComponent/BudgetSpreadsheet";
 
 
 const options = [
@@ -102,7 +102,7 @@ class Budget extends React.Component {
                         <div className="sweet-loading">
                             <ClipLoader style={{
                                 backgroundColor: "rgba(255,255,255,0.85)",
-                               // borderRadius: "40px"
+                                // borderRadius: "40px"
                             }}
                                 //   css={override}
                                         size={220}
@@ -114,23 +114,23 @@ class Budget extends React.Component {
                 }
 
 
-                    {/*<Grid item xs={18}*/}
-                    {/*    // container*/}
-                    {/*    // direction="column"*/}
-                    {/*    // justify="flex-start"*/}
-                    {/*    // alignItems="flex-start"*/}
-                    {/*>*/}
-                        <BudgetSpreadsheet/>
-                    {/*</Grid>*/}
+                {/*<Grid item xs={18}*/}
+                {/*    // container*/}
+                {/*    // direction="column"*/}
+                {/*    // justify="flex-start"*/}
+                {/*    // alignItems="flex-start"*/}
+                {/*>*/}
+                <BudgetSpreadsheet/>
+                {/*</Grid>*/}
 
 
 
 
-                    <button id="go-back" className="btn btn-info" onClick={() => {
-                        this.loadPage()
-                        this.BackPage()
-                    }}>חזור לתפריט
-                    </button>
+                <button id="go-back" className="btn btn-info" onClick={() => {
+                    this.loadPage()
+                    this.BackPage()
+                }}>חזור לתפריט
+                </button>
 
 
             </div>

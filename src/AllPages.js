@@ -18,16 +18,16 @@ import ChatR from "./components/pages/Users/Researcher/ChatR";
 
 
 import Managers from './components/pages/Users/Manager/Manager';
-import mngRequestPurchase from "./components/pages/Users/Manager/mngRequestPurchase";
+import mngRequestPurchase from "./components/pages/Users/Manager/ManagerRequestPurchase/mngRequestPurchase";
 import UpdatesFirebase from "./components/pages/Users/Manager/UpdatesFirebase";
 import financialReports from "./components/pages/Users/Manager/financialReports";
 import ResearchBudgets from "./components/pages/Users/Manager/ResearchBudgets";
 import ChatManager from "./components/pages/Users/Manager/ChatManager";
 import ChatM from "./components/pages/Users/Manager/ChatM";
 
-import BudgetSpreadsheet from "./components/pages/Users/BudgetSpreadsheetComponent/BudgetSpreadsheet";
+import BudgetSpreadsheet from "./components/pages/Users/Manager/BudgetSpreadsheetComponent/BudgetSpreadsheet";
 
-import Budget from "./components/pages/Users/BudgetSpreadsheetComponent/Budget";
+import Budget from "./components/pages/Users/Manager/Budget";
 import UserApproval from "./components/pages/Users/Manager/UserApproval";
 
 import Profile from "./components/pages/Users/profile";

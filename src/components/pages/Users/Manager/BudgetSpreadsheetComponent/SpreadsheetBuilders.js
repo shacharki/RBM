@@ -1,5 +1,8 @@
-import { TextEditor } from "react-data-grid";
-import "./spreadsheetStyles.css"
+import { TextEditor, ValueFormatter } from "react-data-grid/";
+import SpreadsheetTextEditor from './SpreadsheetCellEditor'
+import { ReactDOM, useEffect, useRef, useState } from 'react'
+import './spreadsheetStyles.css'
+import DOMPurify from 'dompurify'
 
 /**
  * Convert the counting method from numbers to letters. e.g. 1 => A, 2 => B, 27 => AA.
@@ -27,6 +30,78 @@ export function lettersToNumbers(str) {
 
     return result;
 }
+
+/**
+ * Convert the app row that contains the style and other properties of every cell to just the text value.
+ */
+function transformRowToDataGridRow(row) {
+    const entries = Object.entries(row).map(([column, cellProps]) => {
+        return cellProps ? [column, cellProps.v] : [column, cellProps]
+    })
+
+    return Object.fromEntries(entries)
+}
+
+
+/**
+ * Convert the styles that was parsed by XLSX to the css used by react.
+ * @param { Object } style The style that XLSX has parsed.
+ * @param {{rgb?: string}} style.bgColor The background color of the cell.
+ * @param {{rgb?:string}} style.fgColor The forground color of the cell.
+ * @param {string} style.patternType The fill pattern. currently ignored.
+ * @returns { React.CSSProperties } The converted css.
+ */
+function convertXlsxStyleToCss({ bgColor, fgColor, patternType }) {
+    const firstOrUndefined = (val, second) => val ? second : undefined;
+
+    return {
+        backgroundColor: firstOrUndefined(bgColor?.rgb, `#${bgColor?.rgb}`),
+        color: firstOrUndefined(fgColor?.rgb, `#${fgColor?.rgb}`)
+    }
+}
+
+/**
+ * The cell renderer.
+ * @param { import("react-data-grid/").FormatterProps } props 
+ */
+function SpreadsheetCellFormatter(props) {
+
+    const getBackgroundColor = (style) => {
+        if (!style || !('bgColor' in style)) {
+            return ''
+        }
+
+        return `#${style.bgColor.rgb}`
+    }
+
+    const ref = useRef(null)
+
+    useEffect(() => {
+        if (ref !== null) {
+            const parent = ref.current.parentElement
+            // Allow the background color to fill the cell.
+            parent.style.padding = '0px 0px 0px 0px';
+        }
+    }, [ref])
+
+    const cell = props.row[props.column.key]
+
+    // HTML is disabled.
+    const getContent = () => cell.h == undefined || true ?
+        cell.v : <div dangerouslySetInnerHTML={{ __html: DOMPurify.sanitize(cell.h) }}></div>
+
+    return (
+        <div ref={ref} key={`key_${props.rowIdx}`}>
+            <div style={{ backgroundColor: getBackgroundColor(cell.s), position: 'relative', zIndex: 100 }}>
+                {
+                    getContent()
+                }
+
+            </div>
+        </div>
+    )
+}
+
 /**
  * Create a single column.
  * @param { number } index The index of the column. 
@@ -40,7 +115,10 @@ export function buildSingleColumn(index, editable) {
         key: "col_" + index,
         name: numberToLetters(index + 1),
         editable: editable,
-        editor: TextEditor
+        resizeable: true,
+        editor: SpreadsheetTextEditor,
+        formatter: SpreadsheetCellFormatter,
+
     };
 
     return item;
@@ -73,7 +151,10 @@ export function buildSingleRow(columns, row_number) {
     var obj = {}
 
     columns.forEach(col => {
-        obj[col.key] = ""
+        obj[col.key] = {
+            v: undefined,
+            s: {}
+        }
     })
 
     return obj;
@@ -87,7 +168,7 @@ export function buildSingleRow(columns, row_number) {
  */
 export function buildRows(length, columns) {
     var arr = new Array();
-    for (let i = 0; i <= length; i++) {
+    for (let i = 0; i < length; i++) {
         arr.push(buildSingleRow(columns, i))
     }
     return arr;

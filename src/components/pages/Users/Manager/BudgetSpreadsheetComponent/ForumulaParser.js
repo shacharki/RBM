@@ -5,7 +5,6 @@ import evaluateFunction from "./EvaluateFunction";
 import evaluateBinaryExpression from "./EvaluateBinaryExpression";
 import evaluateCellNode, { parseSpreadsheetCellPosition } from "./EvaluateCellNode";
 import { lettersToNumbers, numberToLetters } from "./SpreadsheetBuilders";
-import "./spreadsheetStyles.css"
 
 /**
  * 

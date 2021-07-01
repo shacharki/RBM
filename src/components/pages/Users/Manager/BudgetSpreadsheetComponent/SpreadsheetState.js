@@ -1,5 +1,4 @@
 import React from "react";
-import "./spreadsheetStyles.css"
 
 
 class SpreadsheetState {

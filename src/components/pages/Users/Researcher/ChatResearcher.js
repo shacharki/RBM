@@ -1,6 +1,6 @@
-import {ChatEngine} from "react-chat-engine";
+import { ChatEngine } from "react-chat-engine";
 import './Researcher.css'
-import {auth, db, GetFormDownload, getUser, signOut} from '../../../../firebase/firebase';
+import { auth, db, GetFormDownload, getUser, signOut } from '../../../../firebase/firebase';
 
 import React from 'react';
 // Firebase deps
@@ -13,16 +13,13 @@ import Channel from '../Researcher/Channel';
 import Loader from '../Researcher/Loader';
 
 import { useAuthState, useDarkMode } from '../Researcher/hooks';
-import {NextPage} from "../UserPage";
+import { NextPage } from "../UserPage";
 import Dropzone from 'react-dropzone';
 
 
 
 
-function ChatResearcher() {
-
-
-
+function ChatResearcher({ selectedUserUid }) {
     const { user, initializing } = useAuthState(firebase.auth());
     const [darkMode, setDarkMode] = useDarkMode();
 
@@ -90,7 +87,7 @@ function ChatResearcher() {
             );
         }
 
-        if (user) return <Channel user={user} />;
+        if (user) return <Channel user={user} selectedUserUid={selectedUserUid}/>;
 
         return (
             <div className="sec-design">
@@ -111,10 +108,7 @@ function ChatResearcher() {
 
                     </h2>
 
-                    <button
-                        onClick={signInWithGoogle}
-                        //className="rounded shadow-button pl-6 pr-8 py-3 bg-white hover:bg-gray-50 text-gray-600 font-medium flex items-center justify-center overflow-y-hidden focus:outline-none focus:ring focus:ring-primary-500 focus:ring-opacity-75"
-                    >
+                    <button onClick={signInWithGoogle}>
                         <svg
                             viewBox="5 -5 30 30"
                             enableBackground="new 5 -5 30 30"
@@ -153,17 +147,13 @@ function ChatResearcher() {
 
             <header
                 className="flex-shrink-0 flex items-center justify-between px-4 sm:px-8 shadow-md"
-                style={{ height: 'var(--topbar-height)' }}
-            >
-
+                style={{ height: 'var(--topbar-height)' }}>
                 <div className="flex items-center">
-
                 </div>
             </header>
             <main
                 className="flex-1"
-                style={{ maxHeight: 'calc(100% - var(--topbar-height))' }}
-            >
+                style={{ maxHeight: 'calc(100% - var(--topbar-height))' }}>
                 {renderContent()}
             </main>
 

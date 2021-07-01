@@ -1,5 +1,4 @@
 import { evaluateNode } from "./ForumulaParser";
-import "./spreadsheetStyles.css"
 
 
 /**

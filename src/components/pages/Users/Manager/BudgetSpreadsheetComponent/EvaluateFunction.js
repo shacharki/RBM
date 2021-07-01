@@ -1,7 +1,6 @@
 import { ro } from "date-fns/locale";
 import { evaluateNode } from "./ForumulaParser";
 import SpreadsheetState from "./SpreadsheetState";
-import "./spreadsheetStyles.css"
 
 
 const functionHandlers = {

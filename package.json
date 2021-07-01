@@ -15,6 +15,7 @@
     "classlist.js": "^1.1.20150312",
     "date-fns": "^2.22.1",
     "docx": "^5.5.0",
+    "dompurify": "^2.2.9",
     "excel-formula-ast": "^1.1.1",
     "excel-formula-tokenizer": "^2.3.1",
     "file-saver": "^2.0.5",
@@ -43,7 +44,8 @@
     "request": "^2.88.2",
     "runkit": "0.0.8",
     "tailwindcss": "^2.2.4",
-    "web-vitals": "^0.2.4"
+    "web-vitals": "^0.2.4",
+    "xlsx": "^0.17.0"
   },
   "scripts": {
     "deploy": "npm run build && firebase deploy --only hosting",
