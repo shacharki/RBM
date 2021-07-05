@@ -1,5 +1,5 @@
 import React from 'react'
-import {BrowserRouter as Router, Switch, Route} from 'react-router-dom';
+import { BrowserRouter as Router, Switch, Route } from 'react-router-dom';
 
 import PageHome from './components/pages/PageHome/PageHome';
 import SignUp from './components/pages/SignUp/SignUp';
@@ -42,10 +42,6 @@ function LoadPage() {
         <div>
             <Router>
                 <Switch>
-                    {/*<Route exact path="/">*/}
-                    {/*    <Login />*/}
-                    {/*</Route>*/}
-
                     <Route exact path="/" component={PageHome} />
                     <Route exact path="/wait/:id" component={Wait} />
                     <Route exact path="/Login" component={Login} />
@@ -67,12 +63,10 @@ function LoadPage() {
                     <Route exact path="/Researcher/:id/ScientificReport" component={ScientificReport} />
                     <Route exact path="/Researcher/:id/ChatResearcher" component={ChatResearcher} />
                     <Route exact path="/Researcher/:id/ChatR" component={ChatR} />
-                    {/*<Route exact path="/Researcher/:id/ScientificReport/SearchReports" component={SearchReports} />*/}
-
+                    <Route exact path="/Researcher/:id/Budget" component={Budget} />
 
 
                     <Route exact path="/Manager/:id" component={Managers} />
-                    {/*<Route exact path="/Manager/:id/:404" component={notFound} />*/}
                     <Route exact path="/Manager/:id/UserApproval" component={UserApproval} />
                     <Route exact path="/Manager/:id/profile" component={Profile} />
                     <Route exact path="/Manager/:id/mngRequestPurchase" component={mngRequestPurchase} />
@@ -95,5 +89,5 @@ function LoadPage() {
 export default LoadPage;
 
 
-{<Route exact path='/home' exact component={PageHome}/>}
+{ <Route exact path='/home' exact component={PageHome} /> }
 // {<Route exact path="/login/:id" component={Home} />}

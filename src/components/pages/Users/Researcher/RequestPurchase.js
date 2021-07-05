@@ -1,6 +1,6 @@
-import React,{ Fragment } from "react";
-import {auth, db, getUser} from '../../../../firebase/firebase';
-import { Radio, RadioGroup} from "@material-ui/core";
+import React, { Fragment } from "react";
+import { auth, db, getUser } from '../../../../firebase/firebase';
+import { Radio, RadioGroup } from "@material-ui/core";
 import './Researcher.css'
 import Grid from "@material-ui/core/Grid";
 import ClipLoader from "react-spinners/ClipLoader";
@@ -17,22 +17,22 @@ class RequestPurchase extends React.Component {
         super(props);
 
         this.state = {
-            loadPage:false,
-            spinner: [true,'נא להמתין הדף נטען'],
-            page:'menu',
+            loadPage: false,
+            spinner: [true, 'נא להמתין הדף נטען'],
+            page: 'menu',
             user: props.location,
-            error:false,
+            error: false,
             loading: true,
-            rule:"Manager",
-            prevDate:'',
+            rule: "Manager",
+            prevDate: '',
             imgUrl: "",
 
             viewResearcher: false,
-            date:"",
-            form : {
-                date:"",
-                team:"",
-                name:"",
+            date: "",
+            form: {
+                date: "",
+                team: "",
+                name: "",
             }
         };
 
@@ -47,48 +47,43 @@ class RequestPurchase extends React.Component {
 
     }
 
-    parser(date)
-    {
-        var year=''
+    parser(date) {
+        var year = ''
         var month = ''
         var day = ''
-        var j=0;
-        for(var i =0; i<date.length; i++)
-        {
-            if(j===0 && date[i]!=='-')
-            {
-                year+=date[i]
+        var j = 0;
+        for (var i = 0; i < date.length; i++) {
+            if (j === 0 && date[i] !== '-') {
+                year += date[i]
             }
-            else if(j===1 && date[i]!=='-')
-            {
-                month+=date[i]
+            else if (j === 1 && date[i] !== '-') {
+                month += date[i]
             }
-            else if(j===2 && date[i]!=='-')
-            {
-                day+=date[i]
+            else if (j === 2 && date[i] !== '-') {
+                day += date[i]
             }
             else
                 j++
 
         }
         year = parseInt(year)
-        month=parseInt(month)
-        day= parseInt(day)
-        return {year,month,day}
+        month = parseInt(month)
+        day = parseInt(day)
+        return { year, month, day }
     }
 
-    loadSpinner(event,massage = ""){
+    loadSpinner(event, massage = "") {
         var spinner = []
         spinner.push(event)
         spinner.push(massage)
-        this.setState({spinner:spinner})
+        this.setState({ spinner: spinner })
     }
     save() {
         const imgUrl = this.canvas.toDataURL("image/png");
         console.log(imgUrl)
         var form = this.state.form
         form["signature"] = imgUrl;
-        this.setState({form:form})
+        this.setState({ form: form })
         this.setState({ imgUrl: imgUrl });
 
     }
@@ -96,14 +91,13 @@ class RequestPurchase extends React.Component {
         this.canvas.clear();
     }
     canvas = {
-        clear: () => {},
+        clear: () => { },
         toDataURL: (param) => {
             return "";
         },
     };
-    async handleChange(event)
-    {
-        var form=''
+    async handleChange(event) {
+        var form = ''
 
         var name = event.target.name;
         var value = event.target.value;
@@ -112,91 +106,82 @@ class RequestPurchase extends React.Component {
         // console.log("value2",value)
         // console.log("e2",e)
 
-        if(name === 'date' && event.target.value!=='' )
-        {
+        if (name === 'date' && event.target.value !== '') {
             // console.log("1111111111111")
 
-            this.loadSpinner(true,"טוען נתוני חוקר")
+            this.loadSpinner(true, "טוען נתוני חוקר")
             var formResearcher = await db.collection("researcher").doc(auth.currentUser.uid).collection("request").doc(event.target.value).get()
 
-            if(formResearcher.data())
-            {
+            if (formResearcher.data()) {
                 // console.log("222222222222222")
-                this.setState({form:formResearcher.data().form})
+                this.setState({ form: formResearcher.data().form })
             }
-            else
-            {
+            else {
                 // console.log("33333333333333")
-                var researcherData= await db.collection("researcher").doc(auth.currentUser.uid).get()
-                form ={}
+                var researcherData = await db.collection("researcher").doc(auth.currentUser.uid).get()
+                form = {}
                 form[name] = value;
-                form['name']=researcherData.data().fname+' '+researcherData.data().lname;
+                form['name'] = researcherData.data().fname + ' ' + researcherData.data().lname;
                 // form['team']=researcherData.data().teamName
-                this.setState({form:form})
+                this.setState({ form: form })
             }
         }
-        else
-        {
+        else {
             // console.log("44444444444444")
             form = this.state.form
             form[name] = value;
-            this.setState({form:form})
+            this.setState({ form: form })
         }
         this.loadSpinner(false)
 
     }
 
 
-    async handleSubmit(event)
-    {
-        if(!this.state.date) {
+    async handleSubmit(event) {
+        if (!this.state.date) {
             return;
         }
-        if(this.state.date === this.state.prevDate) {
-            this.setState({viewResearcher: !this.state.viewResearcher});
-            return ;
+        if (this.state.date === this.state.prevDate) {
+            this.setState({ viewResearcher: !this.state.viewResearcher });
+            return;
         }
-        this.loadSpinner(true,"מעדכן נתונים חדשים")
-        this.setState({prevDate:this.state.date});
+        this.loadSpinner(true, "מעדכן נתונים חדשים")
+        this.setState({ prevDate: this.state.date });
         // console.log("in");
         var request = (await db.collection("researcher").doc(auth.currentUser.uid).get()).data().type;
-        const collection = await db.collection('researcher').where("request","==",request).get()
+        const collection = await db.collection('researcher').where("request", "==", request).get()
         const researchers = [];
         const date = this.state.date
-        const collectionPromisesTeam = collection.docs.map( async function(doc) {
-            var ref =await db.collection("researcher").doc(doc.id).collection("request").doc(date).get()
+        const collectionPromisesTeam = collection.docs.map(async function (doc) {
+            var ref = await db.collection("researcher").doc(doc.id).collection("request").doc(date).get()
             var user = await db.collection("researcher").doc(doc.id).get()
-            return [ref,user]
+            return [ref, user]
 
         })
 
         Promise.all(collectionPromisesTeam).then(res => {
-            // console.log("end prommis");
-            res.forEach(doc=>{
+            res.forEach(doc => {
                 var approv = false;
                 var Request = ''
-                if(doc[0].exists) {
+                if (doc[0].exists) {
                     approv = true;
                     Request = doc[0].data().RequestPurchase;
                 }
                 var data = doc[1].data();
                 var ref = doc[1].id;
-                researchers.push({data,approv,ref,Request})
+                researchers.push({ data, approv, ref, Request })
             })
+
             let i;
-            // console.log(researchers.length)
-            this.setState({viewResearcher: !this.state.viewResearcher});
-            for (i=0;i<researchers.length;i++)
-            {
-                if(!this.state.researchers)
-                {
-                    this.setState({researchers: researchers});
+            this.setState({ viewResearcher: !this.state.viewResearcher });
+            for (i = 0; i < researchers.length; i++) {
+                if (!this.state.researchers) {
+                    this.setState({ researchers: researchers });
                     this.loadSpinner(false)
                     return
                 }
-                else if(researchers[i].approv!==this.state.researchers[i].approv)
-                {
-                    this.setState({researchers: researchers});
+                else if (researchers[i].approv !== this.state.researchers[i].approv) {
+                    this.setState({ researchers: researchers });
                     this.loadSpinner(false)
                     return
                 }
@@ -207,119 +192,84 @@ class RequestPurchase extends React.Component {
 
 
     }
-    loadPage(event){
-        this.setState({loading:event})
+    loadPage(event) {
+        this.setState({ loading: event })
     }
 
-    async sendRequest(form){
-        console.log("form2",form)
-        console.log("form.date2",form.date)
-
-        this.loadSpinner(true,"שליחת הבקשה")
+    async sendRequest(form) {
+        this.loadSpinner(true, "שליחת הבקשה")
         var path = auth.currentUser.uid
-        try{
+        try {
             var researcher = await db.collection("researcher").doc(path)
-            // console.log("form1",form)
-            var newDate = await researcher.collection("request").doc(form.date);
-            // console.log("form.date",form.date)
-            // console.log("form",form)
+            var newRequestPurchase = await researcher.collection("request").doc();
 
-            newDate.set({
+            await newRequestPurchase.set({
                 form: form,
-                date:form.date,
-            }).then(async ()=>{
-                await this.addDataToTeam(researcher,form.date);
-                alert("הטופס נשלח בהצלחה")
-                this.loadSpinner(false)
-                window.location.reload(true);
-
+                date: form.date,
             })
 
-        }catch(error) {
-            console.log("err2")
-
+            await this.addDataToTeam(researcher, form.date, newRequestPurchase.id);
+            alert("הטופס נשלח בהצלחה")
+            window.location.reload(true);
+        } catch (error) {
             alert(error.message)
             this.loadSpinner(false)
         }
     }
-    async addDataToTeam(researcher,date)
-    {
-        console.log("researcher",researcher)
-        console.log("date",date)
 
+    
+    async addDataToTeam(researcher, date, newFormId) {
         var user = firebase.auth().currentUser;
-        console.log("user",user)
 
-        var formResearcher = (await researcher.collection('request').doc(date).get()).ref;
-        console.log("formResearcher",formResearcher)
+        var formResearcher = (await researcher.collection('request').doc(newFormId).get()).ref;
 
-        try{
-
-
+        try {
             var team = (await researcher.get()).data();
-            var name =(team.fname + " "+team.lname);
-            // console.log("name2",name)
-            // console.log("team2",team)
-
+            var name = (team.fname + " " + team.lname);
             var teamCollection = await db.collection("Data").doc(team.team.id)
-            console.log("team",team)
 
-            console.log("team.team.id",team.team.id)
-            // var Collection = await teamCollection.collection("Requests").doc(name)
-            var newDate = await teamCollection.collection("Requests").doc(date)
-            // var newDate = Collection.collection(date).doc();
-            var doc =  await newDate.get()
-            var {year,month,day} = this.parser(date)
+            var newDate = await teamCollection.collection("Requests").doc(newFormId)
+
+            var doc = await newDate.get()
+            var { year, month, day } = this.parser(date)
             var fullDate = new Date()
             fullDate.setTime(0)
-            fullDate.setFullYear(year,month-1,day)
+            fullDate.setFullYear(year, month - 1, day)
 
-
-
-
-            if(!doc.exists){
-
-                // console.log("doc.exists",doc.exists)
-                // console.log("doc",doc)
+            if (!doc.exists) {
 
                 newDate.set({
-                    date:fullDate,
+                    date: fullDate,
                     RequestResearcher: formResearcher,
-                    nameResearcher: team.fname + " "+team.lname,
+                    nameResearcher: team.fname + " " + team.lname,
                     uid: user.uid
 
                 })
             }
             else {
-
-                // console.log("doc.exists",doc.exists)
-                // console.log("doc",doc)
-
                 newDate.update({
-                    date:fullDate,
+                    date: fullDate,
                     RequestResearcher: formResearcher,
                     uid: user.uid
 
                 })
             }
-        }catch(error) {
+        } catch (error) {
             alert(error.message)
         }
 
     }
 
     async componentDidMount() {
-        var href =  window.location.href.split("/",5)
+        var href = window.location.href.split("/", 5)
         // console.log(href)
-        auth.onAuthStateChanged(async user=>{
-            if(user)
-            {
+        auth.onAuthStateChanged(async user => {
+            if (user) {
 
                 // console.log("in1")
                 var type = await getUser(user)
                 // console.log(type)
-                if(href[4] === user.uid && (href[3] === type||type==='Tester'))
-                {
+                if (href[4] === user.uid && (href[3] === type || type === 'Tester')) {
                     // console.log("in2")
                     this.setState({
                         isLoad: true,
@@ -328,8 +278,7 @@ class RequestPurchase extends React.Component {
                     })
 
                 }
-                else
-                {
+                else {
                     // console.log("in3")
                     this.notfound()
                     return
@@ -352,39 +301,33 @@ class RequestPurchase extends React.Component {
             //     this.loadSpinner(false)
             //     this.BackPage()
             // }
-            this.loadSpinner(false,"")
-            this.setState({loadPage:true})
+            this.loadSpinner(false, "")
+            this.setState({ loadPage: true })
             this.render()
 
         })
 
     }
 
-    approvResearcher(researcher)
-    {
+    approvResearcher(researcher) {
 
-        var researchers =  this.state.researchers;
-        for(var i=0;i<researchers.length;i++)
-        {
-            if(researchers[i] === researcher)
-            {
+        var researchers = this.state.researchers;
+        for (var i = 0; i < researchers.length; i++) {
+            if (researchers[i] === researcher) {
                 researchers[i].approv = !researchers[i].approv;
-                this.setState({researchers:researchers})
+                this.setState({ researchers: researchers })
                 return
             }
         }
     }
 
-    RequestPurchase(event,researcher)
-    {
+    RequestPurchase(event, researcher) {
         var researchers = this.state.researchers;
         // console.log(event.target.value);
-        for(var i=0;i<researchers.length;i++)
-        {
-            if(researchers[i] === researcher)
-            {
+        for (var i = 0; i < researchers.length; i++) {
+            if (researchers[i] === researcher) {
                 researchers[i].Request = event.target.value
-                this.setState({researchers: researchers})
+                this.setState({ researchers: researchers })
                 return
             }
         }
@@ -394,7 +337,7 @@ class RequestPurchase extends React.Component {
 
 
     render() {
-        if(this.state.loadPage) {
+        if (this.state.loadPage) {
             return (
                 <div id="ResearcherRequest" className="sec-design">
 
@@ -407,8 +350,8 @@ class RequestPurchase extends React.Component {
                                     borderRadius: "25px"
                                 }}
                                     //   css={override}
-                                            size={120}
-                                            color={"#123abc"}
+                                    size={120}
+                                    color={"#123abc"}
 
                                 />
                             </div>
@@ -417,13 +360,13 @@ class RequestPurchase extends React.Component {
                     <div dir="rtl">
                         <label id="date" className="title-input">תאריך הבקשה:</label>
                         <input type="date" id="insert-date" name="date" onChange={(e) => this.handleChange(e)}
-                               required/>
+                            required />
 
-                        <br/>
+                        <br />
 
                         <Grid item xs={6}>
                             <TextField
-                                inputProps={{style: {textAlign: 'center'}}}
+                                inputProps={{ style: { textAlign: 'center' } }}
                                 id="q1i"
                                 name="q1"
                                 type="tel"
@@ -442,12 +385,12 @@ class RequestPurchase extends React.Component {
 
                         <div id="name-group">
                             <label id="QL" className="title-input">טלפון המכון: 04-6123901. פקס: 04-6961930</label>
-                            <br/>
+                            <br />
                         </div>
 
                         <Grid item xs={6}>
                             <TextField
-                                inputProps={{style: {textAlign: 'center'}}}
+                                inputProps={{ style: { textAlign: 'center' } }}
                                 id="q2i"
                                 name="q2"
                                 type="tel"
@@ -461,11 +404,11 @@ class RequestPurchase extends React.Component {
                                 label="נייד"
                             />
                         </Grid>
-                        <br/>
+                        <br />
 
                         <Grid item xs={6}>
                             <TextField
-                                inputProps={{style: {textAlign: 'center'}}}
+                                inputProps={{ style: { textAlign: 'center' } }}
                                 id="q3i"
                                 name="q3"
                                 type="tel"
@@ -479,11 +422,11 @@ class RequestPurchase extends React.Component {
                                 label="טופס הזמנה מס'"
                             />
                         </Grid>
-                        <br/>
+                        <br />
 
                         <Grid item xs={6}>
                             <TextField
-                                inputProps={{style: {textAlign: 'center'}}}
+                                inputProps={{ style: { textAlign: 'center' } }}
                                 id="q4i"
                                 name="q4"
                                 type="tel"
@@ -514,40 +457,40 @@ class RequestPurchase extends React.Component {
                                 <td>
                                     <div id="name-group">
                                         <input type="text" name="q5" id="q5i" placeholder={''}
-                                               value={this.state.form.q5 ? (this.state.form.q5) : ('')} onChange={(e) => {
-                                            this.handleChange(e)
-                                        }} required/>
+                                            value={this.state.form.q5 ? (this.state.form.q5) : ('')} onChange={(e) => {
+                                                this.handleChange(e)
+                                            }} required />
                                     </div>
                                 </td>
                                 <td>    <div id="name-group">
                                     <input type="text" name="q6" id="q6i" placeholder={''}
-                                           value={this.state.form.q6 ? (this.state.form.q6) : ('')} onChange={(e) => {
-                                        this.handleChange(e)
-                                    }} required/>
+                                        value={this.state.form.q6 ? (this.state.form.q6) : ('')} onChange={(e) => {
+                                            this.handleChange(e)
+                                        }} required />
                                 </div></td>
                                 <td><div id="name-group">
                                     <input type="text" name="q7" id="q7i" placeholder={''}
-                                           value={this.state.form.q7 ? (this.state.form.q7) : ('')} onChange={(e) => {
-                                        this.handleChange(e)
-                                    }} required/>
+                                        value={this.state.form.q7 ? (this.state.form.q7) : ('')} onChange={(e) => {
+                                            this.handleChange(e)
+                                        }} required />
                                 </div></td>
                                 <td><div id="name-group">
                                     <input type="text" name="q8" id="q8i" placeholder={''}
-                                           value={this.state.form.q8 ? (this.state.form.q8) : ('')} onChange={(e) => {
-                                        this.handleChange(e)
-                                    }} required/>
+                                        value={this.state.form.q8 ? (this.state.form.q8) : ('')} onChange={(e) => {
+                                            this.handleChange(e)
+                                        }} required />
                                 </div></td>
                                 <td><div id="name-group">
                                     <input type="text" name="q9" id="q9i" placeholder={''}
-                                           value={this.state.form.q9 ? (this.state.form.q9) : ('')} onChange={(e) => {
-                                        this.handleChange(e)
-                                    }} required/>
+                                        value={this.state.form.q9 ? (this.state.form.q9) : ('')} onChange={(e) => {
+                                            this.handleChange(e)
+                                        }} required />
                                 </div></td>
                                 <td><div id="name-group">
                                     <input type="text" name="q10" id="q10i" placeholder={''}
-                                           value={this.state.form.q10 ? (this.state.form.q10) : ('')} onChange={(e) => {
-                                        this.handleChange(e)
-                                    }} required/>
+                                        value={this.state.form.q10 ? (this.state.form.q10) : ('')} onChange={(e) => {
+                                            this.handleChange(e)
+                                        }} required />
                                 </div></td>
 
                             </tr>
@@ -555,40 +498,40 @@ class RequestPurchase extends React.Component {
                                 <td>
                                     <div id="name-group">
                                         <input type="text" name="q50" id="q50i" placeholder={''}
-                                               value={this.state.form.q50 ? (this.state.form.q50) : ('')} onChange={(e) => {
-                                            this.handleChange(e)
-                                        }} required/>
+                                            value={this.state.form.q50 ? (this.state.form.q50) : ('')} onChange={(e) => {
+                                                this.handleChange(e)
+                                            }} required />
                                     </div>
                                 </td>
                                 <td>    <div id="name-group">
                                     <input type="text" name="q60" id="q60i" placeholder={''}
-                                           value={this.state.form.q60 ? (this.state.form.q60) : ('')} onChange={(e) => {
-                                        this.handleChange(e)
-                                    }} required/>
+                                        value={this.state.form.q60 ? (this.state.form.q60) : ('')} onChange={(e) => {
+                                            this.handleChange(e)
+                                        }} required />
                                 </div></td>
                                 <td><div id="name-group">
                                     <input type="text" name="q70" id="q70i" placeholder={''}
-                                           value={this.state.form.q70 ? (this.state.form.q70) : ('')} onChange={(e) => {
-                                        this.handleChange(e)
-                                    }} required/>
+                                        value={this.state.form.q70 ? (this.state.form.q70) : ('')} onChange={(e) => {
+                                            this.handleChange(e)
+                                        }} required />
                                 </div></td>
                                 <td><div id="name-group">
                                     <input type="text" name="q80" id="q80i" placeholder={''}
-                                           value={this.state.form.q80 ? (this.state.form.q80) : ('')} onChange={(e) => {
-                                        this.handleChange(e)
-                                    }} required/>
+                                        value={this.state.form.q80 ? (this.state.form.q80) : ('')} onChange={(e) => {
+                                            this.handleChange(e)
+                                        }} required />
                                 </div></td>
                                 <td><div id="name-group">
                                     <input type="text" name="q90" id="q90i" placeholder={''}
-                                           value={this.state.form.q90 ? (this.state.form.q90) : ('')} onChange={(e) => {
-                                        this.handleChange(e)
-                                    }} required/>
+                                        value={this.state.form.q90 ? (this.state.form.q90) : ('')} onChange={(e) => {
+                                            this.handleChange(e)
+                                        }} required />
                                 </div></td>
                                 <td><div id="name-group">
                                     <input type="text" name="q100" id="q100i" placeholder={''}
-                                           value={this.state.form.q100 ? (this.state.form.q100) : ('')} onChange={(e) => {
-                                        this.handleChange(e)
-                                    }} required/>
+                                        value={this.state.form.q100 ? (this.state.form.q100) : ('')} onChange={(e) => {
+                                            this.handleChange(e)
+                                        }} required />
                                 </div></td>
 
                             </tr>
@@ -596,43 +539,43 @@ class RequestPurchase extends React.Component {
                                 <td>
                                     <div id="name-group">
                                         <input type="text" name="q51" id="q51i" placeholder={''}
-                                               value={this.state.form.q51 ? (this.state.form.q51) : ('')} onChange={(e) => {
-                                            this.handleChange(e)
-                                        }} required/>
+                                            value={this.state.form.q51 ? (this.state.form.q51) : ('')} onChange={(e) => {
+                                                this.handleChange(e)
+                                            }} required />
                                     </div>
                                 </td>
                                 <td>    <div id="name-group">
                                     <input type="text" name="q61" id="q61i" placeholder={''}
-                                           value={this.state.form.q61 ? (this.state.form.q61) : ('')} onChange={(e) => {
-                                        this.handleChange(e)
-                                    }} required/>
+                                        value={this.state.form.q61 ? (this.state.form.q61) : ('')} onChange={(e) => {
+                                            this.handleChange(e)
+                                        }} required />
                                 </div></td>
                                 <td><div id="name-group">
                                     <input type="text" name="q71" id="q71i" placeholder={''}
-                                           value={this.state.form.q71 ? (this.state.form.q71) : ('')} onChange={(e) => {
-                                        this.handleChange(e)
-                                    }} required/>
+                                        value={this.state.form.q71 ? (this.state.form.q71) : ('')} onChange={(e) => {
+                                            this.handleChange(e)
+                                        }} required />
                                 </div></td>
                                 <td><div id="name-group">
                                     <input type="text" name="q81" id="q81i" placeholder={''}
-                                           value={this.state.form.q81 ? (this.state.form.q81) : ('')} onChange={(e) => {
-                                        this.handleChange(e)
-                                    }} required/>
+                                        value={this.state.form.q81 ? (this.state.form.q81) : ('')} onChange={(e) => {
+                                            this.handleChange(e)
+                                        }} required />
                                 </div></td>
                                 <td><div id="name-group">
                                     <input type="text" name="q91" id="q91i" placeholder={''}
-                                           value={this.state.form.q91 ? (this.state.form.q91) : ('')} onChange={(e) => {
-                                        this.handleChange(e)
-                                    }} required/>
+                                        value={this.state.form.q91 ? (this.state.form.q91) : ('')} onChange={(e) => {
+                                            this.handleChange(e)
+                                        }} required />
                                 </div></td>
                                 <td><div id="name-group">
                                     <input type="text" name="q101" id="q101i" placeholder={''}
-                                           value={this.state.form.q101 ? (this.state.form.q101) : ('')} onChange={(e) => {
-                                        this.handleChange(e)
-                                    }} required/>
+                                        value={this.state.form.q101 ? (this.state.form.q101) : ('')} onChange={(e) => {
+                                            this.handleChange(e)
+                                        }} required />
                                 </div></td>
 
-                                <br/>
+                                <br />
 
                             </tr>
                         </table>
@@ -644,11 +587,11 @@ class RequestPurchase extends React.Component {
                         {/*        this.handleChange(e)*/}
                         {/*    }} required/>*/}
                         {/*</div>*/}
-                        <br/>
+                        <br />
 
                         <Grid item xs={6}>
                             <TextField
-                                inputProps={{style: {textAlign: 'center'}}}
+                                inputProps={{ style: { textAlign: 'center' } }}
                                 id="q11i"
                                 name="q11"
                                 type="tel"
@@ -662,23 +605,23 @@ class RequestPurchase extends React.Component {
                                 label="סה'כ כולל מע'מ"
                             />
                         </Grid>
-                        <br/>
+                        <br />
 
                         <h4>אבקש לספק לנו את המוצרים הבאים:</h4>
 
                         <div id="name-group">
                             <label id="QL" className="title-input">המעבדה ממוקמת במבנה החדש של מכון שמיר למחקר (קומה 2), צמוד למכללת אוהלו</label>
-                            <br/>
+                            <br />
                         </div>
 
                         <div id="name-group">
                             <label id="QL" className="title-input">תנאי תשלום: שוטף + 30</label>
-                            <br/>
+                            <br />
                         </div>
 
                         <Grid item xs={6}>
                             <TextField
-                                inputProps={{style: {textAlign: 'center'}}}
+                                inputProps={{ style: { textAlign: 'center' } }}
                                 id="q12i"
                                 name="q12"
                                 type="tel"
@@ -692,13 +635,13 @@ class RequestPurchase extends React.Component {
                                 label="נא לתאם את קבלת המשלוח עם"
                             />
                         </Grid>
-                        <br/>
+                        <br />
 
                         <h4>לשימוש משרד המכון בלבד:</h4>
 
                         <Grid item xs={6}>
                             <TextField
-                                inputProps={{style: {textAlign: 'center'}}}
+                                inputProps={{ style: { textAlign: 'center' } }}
                                 id="q13i"
                                 name="q13"
                                 type="tel"
@@ -712,11 +655,11 @@ class RequestPurchase extends React.Component {
                                 label="מטרת הרכישה"
                             />
                         </Grid>
-                        <br/>
+                        <br />
 
                         <Grid item xs={6}>
                             <TextField
-                                inputProps={{style: {textAlign: 'center'}}}
+                                inputProps={{ style: { textAlign: 'center' } }}
                                 id="q14i"
                                 name="q14"
                                 type="tel"
@@ -730,11 +673,11 @@ class RequestPurchase extends React.Component {
                                 label="תקציב המחקר"
                             />
                         </Grid>
-                        <br/>
+                        <br />
 
                         <Grid item xs={6}>
                             <TextField
-                                inputProps={{style: {textAlign: 'center'}}}
+                                inputProps={{ style: { textAlign: 'center' } }}
                                 id="q15i"
                                 name="q15"
                                 type="tel"
@@ -748,11 +691,11 @@ class RequestPurchase extends React.Component {
                                 label="מס' מחקר"
                             />
                         </Grid>
-                        <br/>
+                        <br />
 
                         <div id="name-group">
                             <label id="QL" className="title-input">שם החוקר: {this.state.user.displayName}</label>
-                            <br/>
+                            <br />
                         </div>
 
                         {/*<Grid item xs={6}>*/}
@@ -771,14 +714,16 @@ class RequestPurchase extends React.Component {
                         {/*        label="חתימת החוקר"*/}
                         {/*    />*/}
                         {/*</Grid>*/}
-                        <br/>
+                        <br />
 
 
                         <Fragment>
                             <div className="main">
                                 <p>חתימת החוקר</p>
-                                <div style={{backgroundColor: "#a0a0a0", width: 400,
-                                    height: 200,}}>
+                                <div style={{
+                                    backgroundColor: "#a0a0a0", width: 400,
+                                    height: 200,
+                                }}>
                                     <SignatureCanvas
 
                                         penColor="green"
@@ -822,20 +767,20 @@ class RequestPurchase extends React.Component {
                         </Fragment>
 
 
-                        <br/>
+                        <br />
 
                     </div>
                     <div>
-                    <p>העלאת נספחי הבקשה</p>
+                        <p>העלאת נספחי הבקשה</p>
 
-                    <Grid item xs={5}
-                          container
-                          direction="column"
-                          justify="flex-start"
-                          alignItems="flex-start"
-                    >
-                        <DropzoneFiles2/>
-                    </Grid>
+                        <Grid item xs={5}
+                            container
+                            direction="column"
+                            justify="flex-start"
+                            alignItems="flex-start"
+                        >
+                            <DropzoneFiles2 />
+                        </Grid>
                     </div>
 
 
@@ -862,8 +807,8 @@ class RequestPurchase extends React.Component {
                             borderRadius: "25px"
                         }}
                             //   css={override}
-                                    size={120}
-                                    color={"#123abc"}
+                            size={120}
+                            color={"#123abc"}
 
                         />
                     </div>
@@ -871,15 +816,13 @@ class RequestPurchase extends React.Component {
             }</div>)
     }
 
-    notfound()
-    {
+    notfound() {
         this.props.history.push({
             pathname: `/404`,
             data: this.state.user // your data array of objects
         })
     }
-    BackPage()
-    {
+    BackPage() {
         this.props.history.push({
             pathname: `/Researcher/${this.state.user.uid}`,
             data: this.state.user // your data array of objects
@@ -890,4 +833,4 @@ class RequestPurchase extends React.Component {
 
 
 
-export  default  RequestPurchase;
+export default RequestPurchase;

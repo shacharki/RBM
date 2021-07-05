@@ -1,8 +1,6 @@
 
 
-function DisplayPurchaseRequests({ form, index, requests }) {
-    console.log({ form: form, requests: requests })
-    
+function DisplayPurchaseRequests({ form, index, requests }) {    
     var date = form.date.toDate()
     var day = date.getDate()
     var month = date.getMonth() + 1

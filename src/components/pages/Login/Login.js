@@ -1,11 +1,12 @@
 import React from "react";
 import Grid from "@material-ui/core/Grid";
 import TextField from "@material-ui/core/TextField";
-import {Avatar, Button, Typography} from "@material-ui/core";
-import {Link} from "react-router-dom";
-import {auth} from "../../../firebase/firebase";
+import { Avatar, Button, Typography } from "@material-ui/core";
+import { Link } from "react-router-dom";
+import { auth } from "../../../firebase/firebase";
 import './Login.css'
 import LockOutlinedIcon from "@material-ui/icons/LockOutlined";
+import { NotificationManager } from "react-notifications";
 
 
 
@@ -14,27 +15,23 @@ class Login extends React.Component {
         super(props);
         this.state = {
 
-            email:'',
-            password:'',
+            email: '',
+            password: '',
         };
 
 
     }
 
     async Canlogin() {
-        if(this.state.email.length <= 0)
-        {
-            alert("לא הוזן email")
-            return
+        if (this.state.email.length <= 0) {
+            return NotificationManager.error("לא הוזן email", "", 1500)
         }
-        if(this.state.password.length <= 0)
-        {
-            alert("לא הוזנה סיסמה")
-            return
+        if (this.state.password.length <= 0) {
+            return NotificationManager.error("לא הוזנה סיסמה", "", 1500)
         }
 
         try {
-            await auth.signInWithEmailAndPassword(this.state.email, this.state.password).then((user)=>{
+            await auth.signInWithEmailAndPassword(this.state.email, this.state.password).then((user) => {
                 this.props.history.push({
                     pathname: '/User',
                     data: user.user // your data array of objects
@@ -42,12 +39,12 @@ class Login extends React.Component {
                 // props.history.push('/User')
 
             })
-                .catch(function(error) {
-                    alert("שם משתמש או סיסמה לא נכונים")
+                .catch(function (error) {
+                    NotificationManager.error("שם משתמש או סיסמה לא נכונים","", 1500)
                 });
 
 
-        } catch(error) {
+        } catch (error) {
 
         }
     }
@@ -61,8 +58,8 @@ class Login extends React.Component {
                 <div id="instructor_menu" className="form-design" name="student_form">
                     <Grid container spacing={2}>
                         <Grid item xs={5}>
-                            <Avatar style={{style: {background:"black"}}}>
-                                <LockOutlinedIcon  />
+                            <Avatar style={{ style: { background: "black" } }}>
+                                <LockOutlinedIcon />
                             </Avatar>
                         </Grid>
                         <Grid item xs={4}>
@@ -72,7 +69,7 @@ class Login extends React.Component {
                         </Grid>
                         <Grid item xs={12} dir="ltr">
                             <TextField
-                                inputProps={{style: {textAlign: 'center'}}}
+                                inputProps={{ style: { textAlign: 'center' } }}
                                 id="email"
                                 name="email"
                                 type="email"
@@ -80,7 +77,7 @@ class Login extends React.Component {
                                 autoFocus
                                 value={this.state.email}
                                 onChange={e => {
-                                    this.setState({email:e.target.value})
+                                    this.setState({ email: e.target.value })
                                 }}
                                 variant="standard"
                                 required
@@ -88,16 +85,16 @@ class Login extends React.Component {
                                 label="Email"
                             />
                         </Grid>
-                        <Grid item xs={12}dir="ltr">
+                        <Grid item xs={12} dir="ltr">
                             <TextField
-                                inputProps={{style: {textAlign: 'center'}}}
+                                inputProps={{ style: { textAlign: 'center' } }}
                                 id="password"
                                 name="password"
                                 type="password"
                                 autoComplete="off"
                                 value={this.state.password}
                                 onChange={e => {
-                                    this.setState({password:e.target.value})
+                                    this.setState({ password: e.target.value })
                                 }}
                                 variant="standard"
                                 required
@@ -112,7 +109,7 @@ class Login extends React.Component {
                                     fullWidth
                                     variant="contained"
                                     id="LoginBtn"
-                                    onClick={()=>{this.Canlogin()}}>
+                                    onClick={() => { this.Canlogin() }}>
                                     כניסה
                                 </Button>
                             </div>
@@ -122,7 +119,7 @@ class Login extends React.Component {
 
                                 <Button
                                     type="submit"
-                                    style={{style: {margin: '10px'}}}
+                                    style={{ style: { margin: '10px' } }}
                                     fullWidth
                                     variant="contained"
                                     id="registerBtn2"
@@ -137,7 +134,7 @@ class Login extends React.Component {
 
                                 <Button
                                     type="submit"
-                                    style={{style: {margin: '10px'}}}
+                                    style={{ style: { margin: '10px' } }}
                                     fullWidth
                                     variant="contained"
                                     id="registerBtn1"
@@ -168,4 +165,4 @@ class Login extends React.Component {
     }
 }
 
-export  default  Login;
+export default Login;

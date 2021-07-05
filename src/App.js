@@ -2,10 +2,8 @@
 import React from 'react'
 import './App.css';
 import LoadPage from "./AllPages";
-
-import {auth} from './firebase/firebase';
-import {render} from "@testing-library/react";
-
+import { NotificationContainer } from 'react-notifications'
+import 'react-notifications/lib/notifications.css';
 
 
 
@@ -14,6 +12,7 @@ function App() {
     return (
         <div>
             <LoadPage/>
+            <NotificationContainer />
         </div>
     );
 }

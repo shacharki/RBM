@@ -63,6 +63,7 @@ class mngRequestPurchase extends Component {
 
         var options = []
         this.setState({ options: options, show: false })
+
         var nameData = await db.collection("Data")
             .orderBy('name', 'asc')
             .get()
@@ -78,7 +79,10 @@ class mngRequestPurchase extends Component {
                 Requests.forEach(async function (doc) {
                     if (doc.data().RequestResearcher) {
                         var FormsResearcher = await getPathData(doc.data().RequestResearcher.path)
-                        forms.push(FormsResearcher)
+
+                        if (FormsResearcher !== undefined) {
+                            forms.push(FormsResearcher)
+                        }
                     }
                 })
                 return [doc, Requests, forms]
@@ -415,6 +419,7 @@ class mngRequestPurchase extends Component {
                                     <Grid item xs={3} hidden={!this.state.teamName}>
                                         <button id="viewReport" className="btn btn-info" onClick={() => {
                                             this.setState({ show: !this.state.show, forms: this.state.team[1].docs, RequestResearcher: this.state.team[2] })
+
                                             this.createCsvFile(this.state.team[1].docs, this.state.team[2])
                                         }}>{!this.state.show ? ("הצג בקשות לרכישה") : ("הסתר בקשות לרכישה")}<span
                                             className="fa fa-arrow-right"></span></button>
@@ -430,24 +435,25 @@ class mngRequestPurchase extends Component {
                                         data={csvData}
                                         filename={this.state.dateFrom + "-" + this.state.dateTo + "בקשות לרכישה.csv"}
                                         className="btn btn-primary"
-                                        target="_blank"
-                                    >
+                                        target="_blank">
                                         <button>
                                             הורדת הבקשות בתאריכים שנבחרו לאקסל
                                         </button>
                                     </CSVLink>
 
+                                    <div className="reports-list-container">
+                                        {
 
+                                            this.state.forms.map((form, index) => (
+                                                <Grid item xs={12} key={index}>
+                                                    <hr />
+                                                    {this.Requests(form.data(), index, form.id)}
+                                                </Grid>
+                                            ))
+                                        }
 
-                                    {
+                                    </div>
 
-                                        this.state.forms.map((Form, index) => (
-                                            <Grid item xs={12} key={index}>
-                                                <hr />
-                                                {this.Requests(Form.data(), index)}
-                                            </Grid>
-                                        ))
-                                    }
                                 </Grid >
                             ) : (<div></div>)}
                             <button id="go-back" className="btn btn-info" onClick={() => { this.BackPage() }}>חזור</button>
@@ -502,14 +508,21 @@ class mngRequestPurchase extends Component {
     }
 
 
-    Requests(form, index) {
+    /**
+     * Generate the component that displays the form to the user.
+     * @param { any } form The form data to display.
+     * @param { number } formIndex The index of the form.
+     * @param { string } formDocumentId The id of the document in firestore. 
+     * @returns { JSX.Element }
+     */
+    Requests(form, formIndex, formDocumentId) {
         var user = form.uid
 
-        if (index >= this.state.RequestResearcher.length) {
+        if (formIndex >= this.state.RequestResearcher.length) {
             return
         }
         if (form && this.state.show) {
-            var requests = this.state.RequestResearcher[index].form
+            var requests = this.state.RequestResearcher[formIndex].form
             var date = form.date.toDate()
             var day = date.getDate()
             var month = date.getMonth() + 1
@@ -534,7 +547,7 @@ class mngRequestPurchase extends Component {
                                     />
 
                                     <div ref={value => this.toPrintRef = value}>
-                                        <DisplayPurchaseRequests form={form} index={index} requests={{ requests }} />
+                                        <DisplayPurchaseRequests form={form} index={formIndex} requests={{ requests }} />
                                     </div>
                                 </div>
 
@@ -582,6 +595,21 @@ class mngRequestPurchase extends Component {
                                 }}>שמירת נתונים
                                 </button>
 
+                                <button onClick={async () => {
+                                    this.loadSpinner(true, 'מוחק בקשה')
+                                    try {
+                                        await this.deletePurchaseRequest(formDocumentId)
+
+                                        var forms = Array.from(this.state.forms)
+                                        forms.splice(formIndex, 1)
+
+                                        this.setState({ forms: forms })
+
+                                    } catch (err) { }
+
+
+                                    this.loadSpinner(false, '')
+                                }}>מחק בקשה</button>
                             </div>
                         </div>
                     </div>
@@ -734,7 +762,6 @@ class mngRequestPurchase extends Component {
     loadPage(event) {
         this.setState({ loading: event })
     }
-
     async sendRequest(form, date, user) {
         // console.log("form2",form)
         // console.log("form.date2",form.date)
@@ -765,13 +792,7 @@ class mngRequestPurchase extends Component {
             this.loadSpinner(false)
         }
     }
-
-
     async addDataToTeam(researcher, date, user) {
-        // console.log("researcher2",researcher)
-        // console.log("date2",date)
-        //console.log("user3",user)
-
 
         var formResearcher = (await researcher.collection('request').doc(date).get()).ref;
         try {
@@ -788,9 +809,6 @@ class mngRequestPurchase extends Component {
             fullDate.setFullYear(year, month - 1, day)
 
             if (!doc.exists) {
-
-                // console.log("doc.exists",doc.exists)
-                // console.log("doc",doc)
 
                 newDate.set({
                     date: fullDate,
@@ -826,7 +844,6 @@ class mngRequestPurchase extends Component {
             }
         }
     }
-
     RequestPurchase(event, researcher) {
         var researchers = this.state.researchers;
         // console.log(event.target.value);
@@ -838,8 +855,6 @@ class mngRequestPurchase extends Component {
             }
         }
     }
-
-
     GetDates(date) {
         date = this.parser(date)
         var parsDate = new Date()
@@ -850,7 +865,6 @@ class mngRequestPurchase extends Component {
 
 
     }
-
     loadUser(page) {
         this.props.history.push({
             // pathname: `/${page}/${this.state.user.id}`,
@@ -858,21 +872,36 @@ class mngRequestPurchase extends Component {
             data: this.state.user // your data array of objects
         })
     }
-
     BackPage() {
         this.props.history.push({
             pathname: `/Manager/${this.state.user.uid}`,
             data: this.state.user // your data array of objects
         })
     }
-
-
-
     notfound() {
         this.props.history.push({
             pathname: `/404`,
             data: this.state.user // your data array of objects
         })
+    }
+
+    async deletePurchaseRequest(documentId) {
+        const [teamDataDoc] = this.state.team;
+
+        const documentToDelete = await db.collection('Data')
+            .doc(teamDataDoc.id)
+            .collection('Requests')
+            .doc(documentId)
+
+
+        try {
+            await documentToDelete.delete()
+        } catch (error) {
+            return alert(error.message)
+        }
+
+
+        alert('הבקשה נמחקה מהמערכת')
     }
 }
 

@@ -111,8 +111,8 @@ class Manager extends React.Component {
                                     backgroundColor: "rgba(255,255,255,0.85)",
                                     borderRadius: "25px"
                                 }}
-                                            size={120}
-                                            color={"#123abc"}
+                                    size={120}
+                                    color={"#123abc"}
                                 />
                             </div>
                         </div>
@@ -135,11 +135,6 @@ class Manager extends React.Component {
                         return
                     }}>תקציבי מחקר<span
                         className="fa fa-arrow-right"></span></button>
-                    {/*<button id="BudgetSpreadsheet" className="btn btn-info" onClick={() => {*/}
-                    {/*    this.ChangePage("BudgetSpreadsheet")*/}
-                    {/*    return*/}
-                    {/*}}>דיווח הוצאות<span*/}
-                    {/*    className="fa fa-arrow-right"></span></button>*/}
                     <button id="financialReports" className="btn btn-info" onClick={() => {
                         this.ChangePage("financialReports")
                         return
@@ -183,8 +178,8 @@ class Manager extends React.Component {
                                     backgroundColor: "rgba(255,255,255,0.85)",
                                     borderRadius: "25px"
                                 }}
-                                            size={120}
-                                            color={"#123abc"}
+                                    size={120}
+                                    color={"#123abc"}
 
                                 />
                             </div>
@@ -206,7 +201,6 @@ class Manager extends React.Component {
             pathname: `${this.props.location.pathname}/${path}`,
             data: this.state.user
         })
-
     }
 
     loadUser(page) {

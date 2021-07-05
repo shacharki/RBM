@@ -5,6 +5,7 @@ import {Button} from "@material-ui/core";
 import {Link} from "react-router-dom";
 import '../Users/UserPage.css'
 import {auth} from "../../../firebase/firebase";
+import { NotificationManager } from "react-notifications";
 
 
 
@@ -21,7 +22,7 @@ class resetPassword extends React.Component {
         var emailAddress = this.state.email;
         console.log(emailAddress)
         auth.sendPasswordResetEmail(emailAddress).then(function() {
-            alert("מייל נשלח בהצלחה")
+            NotificationManager.success("מייל נשלח בהצלחה")
         }).catch(function(error) {
             alert("המייל לא קיים")
         });
