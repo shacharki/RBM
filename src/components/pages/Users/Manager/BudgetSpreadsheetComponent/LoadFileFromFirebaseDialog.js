@@ -35,7 +35,7 @@ function FileListItem({ displayName, url, user, uploadDate, isActiveFile, onClic
  * @param { () => void } props.onCancel Callback that is called when the cancel button is clicked.. 
  * @param { (url: string, displayName: string) => void } props.onFileSelected Callback function that is called when the user has selected a file.
  */
-function LoadFileFromFirebaseDialog({ open, onCancel, onFileSelected }) {
+function LoadFileFromFirebaseDialog({ open, onCancel, onFileSelected, onFilesListLoaded }) {
     const [filesList, setFilesList] = useState([])
     const [activeFile, setActiveFile] = useState({})
 

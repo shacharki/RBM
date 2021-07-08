@@ -6,6 +6,7 @@ import { Badge } from '@material-ui/core'
 import { NextPage } from "../UserPage";
 import ClipLoader from "react-spinners/ClipLoader";
 import './Manager.css'
+import { NotificationManager } from "react-notifications";
 
 class Manager extends React.Component {
     constructor(props) {
@@ -35,7 +36,7 @@ class Manager extends React.Component {
 
                 var type = await getUser(user)
                 if (type === "wait") {
-                    alert('המנהל עדיין לא אישר את הבקשה')
+                    NotificationManager.error('המנהל עדיין לא אישר את הבקשה')
                     window.location.href = '/Login';
                     return
                 }
@@ -52,10 +53,23 @@ class Manager extends React.Component {
                     this.loadSpinner(false, "")
 
                     this.unsubNewMessages = db.collection("messages")
-                        .where('addresee', '==', auth.currentUser.uid) // Only messages adreesed to this user.
-                        .where('createdAt', '>', this.state.lastRecivedMessageDate) // Only messages that have been sent after the last message that was recived.
+                        .where('addresee', '==', auth.currentUser.uid) 
+                        .where('createdAt', '>', this.state.lastRecivedMessageDate) 
                         .onSnapshot(snap => {
-                            this.setState({ waitingNewMessages: this.state.waitingNewMessages + 1, lastRecivedMessageDate: new Date() })
+                            // Filter the first call.
+                            if (snap.docs.length <= 0) {
+                                return;
+                            }
+
+                            const msg = snap.docs[0].data()
+                            const shortenedText = msg.text.substr(0, 15) + '...'
+
+                            NotificationManager.success(`הודעה חדשה התקבלה ממשתמש ${msg.displayName}`,
+                                shortenedText,
+                                5000,
+                                () => { // Move to the chat page if the user clicks on the message.
+                                    NextPage({...this.props, selectedUserUid: msg.uid}, "ChatM", this.state.user)
+                                })
                         })
 
                     return
@@ -72,9 +86,7 @@ class Manager extends React.Component {
                 })
                 window.location.href = '/Login';
                 return;
-
             }
-
         })
     }
 
@@ -96,7 +108,6 @@ class Manager extends React.Component {
         await auth.signOut();
         window.location.href = '/';
     }
-
 
 
     render() {
@@ -147,15 +158,17 @@ class Manager extends React.Component {
                         צ'אט לחוקר<span className="fa fa-arrow-right"></span>
                     </button>
 
+                    <button className="btn btn-info" onClick={() => {
+                        NextPage(this.props, "ScientificReport", this.state.user)
+                    }}>
+                        דוחות מדעיים
+                    </button>
 
                     <button id="ExpenseReporting1" className="btn btn-info" onClick={() => {
                         this.ChangePage("UpdatesFirebase")
-                        return
                     }}>פעולות ועדכון<span
                         className="fa fa-arrow-right"></span></button>
-
-
-
+                        
                     <button id="UpdateDetails" className="btn btn-info" onClick={() => {
                         NextPage(this.props, "Profile", this.state.user)
                     }}>עדכון פרטים או סיסמא<span

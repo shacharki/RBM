@@ -1,5 +1,5 @@
 import React from "react";
-import { auth, GetFormDownload, getUser, signOut } from '../../../../firebase/firebase'
+import { auth, db, GetFormDownload, getUser, signOut } from '../../../../firebase/firebase'
 import { NextPage } from "../UserPage";
 import ClipLoader from "react-spinners/ClipLoader";
 import './Researcher.css'
@@ -13,10 +13,9 @@ class Researcher extends React.Component {
             loadPage: false,
             user: props.location,
             spinner: [true, 'נא להמתין הדף נטען'],
+            lastRecivedMessageDate: new Date()
         };
     }
-
-
 
     loadSpinner(event, massage = "") {
         var spinner = []
@@ -24,8 +23,6 @@ class Researcher extends React.Component {
         spinner.push(massage)
         this.setState({ spinner: spinner })
     }
-
-
 
     async componentDidMount() {
         var href = window.location.href.split("/", 5)
@@ -48,6 +45,26 @@ class Researcher extends React.Component {
                     this.loadSpinner(false, "")
                     this.setState({ loadPage: true })
                     this.render()
+
+                    this.unsubNewMessages = db.collection("messages")
+                        .where('addresee', '==', auth.currentUser.uid)
+                        .where('createdAt', '>', this.state.lastRecivedMessageDate)
+                        .onSnapshot(snap => {
+                            // Filter the first call.
+                            if (snap.docs.length <= 0) {
+                                return;
+                            }
+
+                            const msg = snap.docs[0].data()
+                            const shortenedText = msg.text.substr(0, 15) + '...'
+
+                            NotificationManager.success(`הודעה חדשה התקבלה ממשתמש ${msg.displayName}`,
+                                shortenedText,
+                                5000,
+                                () => { // Move to the chat page if the user clicks on the message.
+                                    NextPage({ ...this.props, selectedUserUid: msg.uid }, "ChatR", this.state.user)
+                                })
+                        })
                     return
                 }
                 else {
@@ -70,7 +87,11 @@ class Researcher extends React.Component {
 
     }
 
-
+    componentWillUnmount() {
+        if(this.unsubNewMessages) {
+            this.unsubNewMessages()
+        }
+    }
 
 
     loadTempPage(page) {
@@ -93,8 +114,6 @@ class Researcher extends React.Component {
         })
         this.render()
     }
-
-
 
     render() {
         if (this.state.loadPage) {
@@ -145,7 +164,6 @@ class Researcher extends React.Component {
                         signOut()
                     }}>התנתק
                     </button>
-
                 </div>
             )
         }
@@ -158,10 +176,8 @@ class Researcher extends React.Component {
                             backgroundColor: "rgba(255,255,255,0.85)",
                             borderRadius: "25px"
                         }}
-                            //   css={override}
                             size={120}
                             color={"#123abc"}
-
                         />
                     </div>
                 </div>

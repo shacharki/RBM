@@ -1,16 +1,10 @@
-import { useState, useRef } from 'react';
+import { useState, useRef, useEffect } from 'react';
 import { buildColumns, buildSingleRow, buildRows, convertArrays, lettersToNumbers, convertNumberToSpradsheetColumn } from './SpreadsheetBuilders';
 import React from 'react';
 import Spreadsheet from './Spreadsheet'
 import { Tab, Tabs, TabList, TabPanel } from 'react-tabs';
 import 'react-tabs/style/react-tabs.css';
 import SpreadsheetState from './SpreadsheetState';
-import TextField from '@material-ui/core/TextField';
-import Dialog from '@material-ui/core/Dialog';
-import DialogActions from '@material-ui/core/DialogActions';
-import DialogContent from '@material-ui/core/DialogContent';
-import DialogContentText from '@material-ui/core/DialogContentText';
-import DialogTitle from '@material-ui/core/DialogTitle';
 import "./spreadsheetStyles.css"
 import Spinner from '../../../Spinner'
 import XLSX from 'xlsx';
@@ -18,11 +12,10 @@ import { parseSpreadsheetCellPosition } from './EvaluateCellNode';
 import GetFilenameDialog from './ExportDataDialog';
 import saveByteArray from './util/saveFile';
 import { auth, db, storage } from '../.../../../../../../firebase/firebase'
-import ProgressBarDialog from './util/ProgressBarDialog';
 import firebase from 'firebase/app'
 import LoadFileFromFirebaseDialog from './LoadFileFromFirebaseDialog';
-
-
+import { NotificationManager } from 'react-notifications';
+import inferUserTypeFromUrl from '../.../../../../../../firebase/inferUserTypeFromUrl'
 
 /**
  * Split the sheet ref to 2 points. Sheet ref = '<COL><ROW>:<COL><ROW>'. e.g. A23, O40, etc.
@@ -93,6 +86,10 @@ const BudgetSpreadsheet = (props) => {
 
     const [loadFileFromFirebaseDialog, setLoadFileFromFirebase] = useState(false)
 
+    const [firestorageData, setFirestorageData] = useState({ fileUrl: '', used: false })
+
+    const userType = inferUserTypeFromUrl();
+
     const dataToArrayBuffer = () => {
         var workbook = XLSX.utils.book_new()
 
@@ -111,6 +108,33 @@ const BudgetSpreadsheet = (props) => {
 
         return { buffer: excelData, workbook: workbook }
     }
+
+    useEffect(async () => {
+        if (userType === 'Manager') return;
+
+        const sheets = await db.collection('researchBudgets')
+            .where('canView', 'array-contains', auth.currentUser.uid)
+            .get()
+
+        if (sheets.docs.length !== 0) {
+            const file = sheets.docs[0].data()
+            const filePath = file.fileUrl
+            const ref = storage.ref('researchBudgets').child(filePath)
+            const downloadUrl = await ref.getDownloadURL()
+
+            setSpinnerState({ show: false, text: 'מוריד את התקציב...' })
+            const response = await (await fetch(downloadUrl)).arrayBuffer()
+
+            await getXlsxFile(response)
+
+            setSpinnerState({ show: false, text: '' })
+
+            setFirestorageData({ fileUrl: filePath, used: true })
+            return NotificationManager.success('התקציב נטען בהצלחה');
+        }
+
+        NotificationManager.error('לא נמצא תקציב מחקר במערכת. פנה למנהל להוסיף תקציב.')
+    }, [])
 
     /**
      * Read the excel file and update the state of the component.
@@ -203,7 +227,31 @@ const BudgetSpreadsheet = (props) => {
             }}>הורד קובץ למחשב</button>
 
             <button onClick={() => {
-                setUploadFileDialog(true)
+                if (userType == "Manager") {
+                    return setUploadFileDialog(true)
+                }
+
+                if (firestorageData.used) {
+                    setSpinnerState({ text: 'מעדכנים את התקציב...', show: true })
+
+                    const { buffer } = dataToArrayBuffer()
+                    const storageRef = storage.ref('researchBudgets')
+
+                    const uploadTask = storageRef.child(firestorageData.fileUrl).put(buffer)
+
+                    uploadTask.on(firebase.storage.TaskEvent.STATE_CHANGED,
+                        () => undefined,
+                        (err) => {
+                            setSpinnerState({ text: '', show: false })
+                            NotificationManager.error(err.message)
+                            console.log(err)
+                        },
+                        async () => {
+                            setSpinnerState({ text: '', show: false })
+                            NotificationManager.success("התקציב עודכן")
+                        })
+                }
+
             }}>
                 שמור שינויים
             </button>
@@ -223,7 +271,8 @@ const BudgetSpreadsheet = (props) => {
                 dialogStatus={uploadFileDialog}
                 setDialogStatus={(v) => setUploadFileDialog(v)}
                 dialogContentText={".הכנס את השם של הקובץ"}
-                onSubmit={(filename) => {
+                showResearchersSelection
+                onSubmit={(filename, researchersUids) => {
                     const { buffer } = dataToArrayBuffer()
                     const storageRef = storage.ref('researchBudgets')
 
@@ -253,7 +302,8 @@ const BudgetSpreadsheet = (props) => {
                                 user: auth.currentUser.uid,
                                 fileUrl: childPath,
                                 uploadDate: uploadDate,
-                                displayName: filename
+                                displayName: filename,
+                                canView: researchersUids
                             })
 
                             setSpinnerState({ text: '', show: false })
@@ -276,10 +326,10 @@ const BudgetSpreadsheet = (props) => {
                     const downloadUrl = await ref.getDownloadURL()
 
                     const response = await (await fetch(downloadUrl)).arrayBuffer()
-                    
+
                     await getXlsxFile(response)
 
-                    setSpinnerState({ text: '',show: false })
+                    setSpinnerState({ text: '', show: false })
                 }} />
 
             <Spinner {...spinnerState} ></Spinner>

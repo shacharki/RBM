@@ -1,6 +1,11 @@
 import { useEffect, useState, useRef, useCallback } from 'react';
 import './Researcher.css'
 
+/**
+ * Make subscribing to data in firestore exteremly easy.
+ * @param { any } query The query to execute.
+ * @returns { any[] } The data that was retrived from the database.
+ */
 export function useFirestoreQuery(query) {
     const [docs, setDocs] = useState([]);
 

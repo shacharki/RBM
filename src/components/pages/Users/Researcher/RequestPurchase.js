@@ -6,11 +6,11 @@ import Grid from "@material-ui/core/Grid";
 import ClipLoader from "react-spinners/ClipLoader";
 import TextField from "@material-ui/core/TextField";
 import firebase from "firebase";
-//import {storage} from "./firebase";
 
 import ReactDOM from 'react-dom'
 import SignatureCanvas from 'react-signature-canvas'
 import DropzoneFiles2 from "../Researcher/DropzoneFiles2";
+import NotificationManager from "react-notifications/lib/NotificationManager";
 
 class RequestPurchase extends React.Component {
     constructor(props) {
@@ -39,12 +39,9 @@ class RequestPurchase extends React.Component {
 
         this.handleSubmit = this.handleSubmit.bind(this)
         this.handleChange = this.handleChange.bind(this)
-        // this.handleChangeDate = this.handleChangeDate.bind(this)
         this.approvResearcher = this.approvResearcher.bind(this)
 
         this.RequestPurchase = this.RequestPurchase.bind(this)
-
-
     }
 
     parser(date) {
@@ -80,7 +77,6 @@ class RequestPurchase extends React.Component {
     }
     save() {
         const imgUrl = this.canvas.toDataURL("image/png");
-        console.log(imgUrl)
         var form = this.state.form
         form["signature"] = imgUrl;
         this.setState({ form: form })
@@ -102,32 +98,24 @@ class RequestPurchase extends React.Component {
         var name = event.target.name;
         var value = event.target.value;
         var e = event.target
-        // console.log("name2",name)
-        // console.log("value2",value)
-        // console.log("e2",e)
 
         if (name === 'date' && event.target.value !== '') {
-            // console.log("1111111111111")
 
             this.loadSpinner(true, "טוען נתוני חוקר")
             var formResearcher = await db.collection("researcher").doc(auth.currentUser.uid).collection("request").doc(event.target.value).get()
 
             if (formResearcher.data()) {
-                // console.log("222222222222222")
                 this.setState({ form: formResearcher.data().form })
             }
             else {
-                // console.log("33333333333333")
                 var researcherData = await db.collection("researcher").doc(auth.currentUser.uid).get()
                 form = {}
                 form[name] = value;
                 form['name'] = researcherData.data().fname + ' ' + researcherData.data().lname;
-                // form['team']=researcherData.data().teamName
                 this.setState({ form: form })
             }
         }
         else {
-            // console.log("44444444444444")
             form = this.state.form
             form[name] = value;
             this.setState({ form: form })
@@ -147,7 +135,6 @@ class RequestPurchase extends React.Component {
         }
         this.loadSpinner(true, "מעדכן נתונים חדשים")
         this.setState({ prevDate: this.state.date });
-        // console.log("in");
         var request = (await db.collection("researcher").doc(auth.currentUser.uid).get()).data().type;
         const collection = await db.collection('researcher').where("request", "==", request).get()
         const researchers = [];
@@ -209,11 +196,13 @@ class RequestPurchase extends React.Component {
             })
 
             await this.addDataToTeam(researcher, form.date, newRequestPurchase.id);
-            alert("הטופס נשלח בהצלחה")
+            NotificationManager.success("הטופס נשלח בהצלחה")
             window.location.reload(true);
         } catch (error) {
-            alert(error.message)
+            NotificationManager.error(error.message)
+            console.log(error.message)
             this.loadSpinner(false)
+
         }
     }
 
@@ -251,7 +240,6 @@ class RequestPurchase extends React.Component {
                     date: fullDate,
                     RequestResearcher: formResearcher,
                     uid: user.uid
-
                 })
             }
         } catch (error) {
@@ -580,13 +568,6 @@ class RequestPurchase extends React.Component {
                             </tr>
                         </table>
 
-                        {/*<div id="name-group">*/}
-                        {/*    <label id="Q102L" className="title-input">סה"כ כולל מע"מ: </label>*/}
-                        {/*    <input type="text" name="q102" id="q102i" placeholder={'התשובה שלך'}*/}
-                        {/*           value={this.state.form.q102 ? (this.state.form.q102) : ('')} onChange={(e) => {*/}
-                        {/*        this.handleChange(e)*/}
-                        {/*    }} required/>*/}
-                        {/*</div>*/}
                         <br />
 
                         <Grid item xs={6}>

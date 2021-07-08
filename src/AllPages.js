@@ -75,6 +75,7 @@ function LoadPage() {
                     <Route exact path="/Manager/:id/ResearchBudgets" component={ResearchBudgets} />
                     <Route exact path="/Manager/:id/ChatManager" component={ChatManager} />
                     <Route exact path="/Manager/:id/ChatM" component={ChatM} />
+                    <Route exact path="/Manager/:id/ScientificReport" component={ScientificReport} />
 
                     <Route exact path="/Manager/:id/Budget" component={Budget} />
                     <Route exact path="/Manager/:id/BudgetSpreadsheet" component={BudgetSpreadsheet} />

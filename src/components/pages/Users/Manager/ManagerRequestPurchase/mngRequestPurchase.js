@@ -4,15 +4,13 @@ import Select from "react-select";
 import { auth, db, getPathData, getUser } from "../../../../../firebase/firebase";
 import ClipLoader from "react-spinners/ClipLoader";
 import { CSVLink } from "react-csv";
-import { Button } from "@material-ui/core";
 import 'classlist.js';
 import TextField from "@material-ui/core/TextField";
-import { useRef } from 'react';
-import { useReactToPrint } from 'react-to-print';
 import { render } from "react-dom";
 import ReactToPrint from 'react-to-print';
 import ErrorBoundry from '../../../general/ErrorBoundry'
 import DisplayPurchaseRequests from "./DisplayPurchaseRequests";
+import NotificationManager from 'react-notifications'
 
 var sum = 0
 var csvData = [];
@@ -56,9 +54,8 @@ class mngRequestPurchase extends Component {
         var to = this.GetDates(this.state.dateTo)
 
         if (!this.state.dateFrom || !this.state.dateTo) {
-            alert("נא למלא תאריך התחלה וסיום")
-            this.loadSpinner(false, '')
-            return
+            NotificationManager.warning("נא למלא תאריך התחלה וסיום")
+            return this.loadSpinner(false, '')
         }
 
         var options = []
@@ -99,32 +96,6 @@ class mngRequestPurchase extends Component {
             this.loadSpinner(false, "")
         })
     }
-
-
-    async Word(element) {
-        var html, link, blob, url, css;
-
-        css = (
-            '<style>' +
-            '@page WordSection1{size: 841.95pt 595.35pt;mso-page-orientation: landscape;}' +
-            'div.WordSection1 {page: WordSection1;}' +
-            '</style>'
-        );
-
-        html = element.innerHTML;
-        blob = new Blob(['\ufeff', css + html], {
-            type: 'application/msword'
-        });
-        url = URL.createObjectURL(blob);
-        link = document.createElement('A');
-        link.href = url;
-        link.download = 'Document';  // default name without extension
-        document.body.appendChild(link);
-        if (navigator.msSaveOrOpenBlob) navigator.msSaveOrOpenBlob(blob, 'Document.doc'); // IE10-11
-        else link.click();  // other browsers
-        document.body.removeChild(link);
-        alert("test")
-    };
 
     createTableFile(forms, RequestResearcher) {
         RequestResearcher.map(report => {
@@ -538,17 +509,14 @@ class mngRequestPurchase extends Component {
                         <div>
                             <div dir="rtl">
 
-                                <div>
-                                    <ReactToPrint
-                                        trigger={() => {
-                                            return <a href="#">Print Request</a>
-                                        }}
-                                        content={() => this.toPrintRef}
-                                    />
+                                <ReactToPrint
+                                    trigger={() => {
+                                        return <button>הדפס בקשה</button>
+                                    }}
+                                    content={() => this.toPrintRef} />
 
-                                    <div ref={value => this.toPrintRef = value}>
-                                        <DisplayPurchaseRequests form={form} index={formIndex} requests={{ requests }} />
-                                    </div>
+                                <div ref={value => this.toPrintRef = value}>
+                                    <DisplayPurchaseRequests form={form} index={formIndex} requests={requests} />
                                 </div>
 
                                 <Grid item xs={6}>
@@ -713,7 +681,7 @@ class mngRequestPurchase extends Component {
         }
         this.loadSpinner(true, "מעדכן נתונים חדשים")
         this.setState({ prevDate: this.state.date });
-        // console.log("in");
+
         var request = (await db.collection("researcher").doc(auth.currentUser.uid).get()).data().type;
         const collection = await db.collection('researcher').where("request", "==", request).get()
         const researchers = [];
@@ -726,7 +694,6 @@ class mngRequestPurchase extends Component {
         })
 
         Promise.all(collectionPromisesTeam).then(res => {
-            // console.log("end prommis");
             res.forEach(doc => {
                 var approv = false;
                 var Request = ''
@@ -738,8 +705,8 @@ class mngRequestPurchase extends Component {
                 var ref = doc[1].id;
                 researchers.push({ data, approv, ref, Request })
             })
+
             let i;
-            // console.log(researchers.length)
             this.setState({ viewResearcher: !this.state.viewResearcher });
             for (i = 0; i < researchers.length; i++) {
                 if (!this.state.researchers) {
@@ -763,15 +730,10 @@ class mngRequestPurchase extends Component {
         this.setState({ loading: event })
     }
     async sendRequest(form, date, user) {
-        // console.log("form2",form)
-        // console.log("form.date2",form.date)
-        // console.log("user2",user)
-
         this.loadSpinner(true, "שליחת הבקשה")
         var path = auth.currentUser.uid
         try {
             var researcher = await db.collection("researcher").doc(user)
-            // console.log("form1",form)
             var newDate = await researcher.collection("request").doc(form.date);
 
             newDate.set({
@@ -779,7 +741,7 @@ class mngRequestPurchase extends Component {
                 date: form.date
             }).then(async () => {
                 await this.addDataToTeam(researcher, form.date, user);
-                alert("הטופס נשלח בהצלחה")
+                NotificationManager.success("הטופס נשלח בהצלחה")
                 this.loadSpinner(false)
                 window.location.reload(true);
 
@@ -788,7 +750,7 @@ class mngRequestPurchase extends Component {
         } catch (error) {
             console.log("err2")
 
-            alert(error.message)
+            NotificationManager.error(error.message)
             this.loadSpinner(false)
         }
     }
@@ -797,7 +759,6 @@ class mngRequestPurchase extends Component {
         var formResearcher = (await researcher.collection('request').doc(date).get()).ref;
         try {
             var team = (await researcher.get()).data();
-            //var name =(team.fname + " "+team.lname);
             var name = this.state.teamName
 
             var teamCollection = await db.collection("Data").doc(team.team.id)
@@ -814,22 +775,16 @@ class mngRequestPurchase extends Component {
                     date: fullDate,
                     RequestResearcher: formResearcher,
                     nameResearcher: this.state.teamName,
-                    // nameResearcher: team.fname + " "+team.lname,
-
                 })
             }
             else {
-
-                // console.log("doc.exists",doc.exists)
-                // console.log("doc",doc)
-
                 newDate.update({
                     date: fullDate,
                     RequestResearcher: formResearcher,
                 })
             }
         } catch (error) {
-            alert(error.message)
+            NotificationManager.error(error.message)
         }
 
     }
@@ -846,7 +801,7 @@ class mngRequestPurchase extends Component {
     }
     RequestPurchase(event, researcher) {
         var researchers = this.state.researchers;
-        // console.log(event.target.value);
+
         for (var i = 0; i < researchers.length; i++) {
             if (researchers[i] === researcher) {
                 researchers[i].Request = event.target.value
@@ -893,15 +848,14 @@ class mngRequestPurchase extends Component {
             .collection('Requests')
             .doc(documentId)
 
-
         try {
             await documentToDelete.delete()
         } catch (error) {
-            return alert(error.message)
+            return NotificationManager.error(error.message)
         }
 
 
-        alert('הבקשה נמחקה מהמערכת')
+        NotificationManager.success('הבקשה נמחקה מהמערכת')
     }
 }
 

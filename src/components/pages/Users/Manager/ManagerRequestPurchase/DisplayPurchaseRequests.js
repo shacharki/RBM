@@ -1,6 +1,7 @@
+import * as logoUpImg from './../../../../../img/logoUp.JPG'
 
 
-function DisplayPurchaseRequests({ form, index, requests }) {    
+function DisplayPurchaseRequests({ form, index, requests }) {
     var date = form.date.toDate()
     var day = date.getDate()
     var month = date.getMonth() + 1
@@ -117,6 +118,7 @@ function DisplayPurchaseRequests({ form, index, requests }) {
                         </div></td>
 
                     </tr>
+
                 </tbody>
             </table>
 
@@ -136,7 +138,9 @@ function DisplayPurchaseRequests({ form, index, requests }) {
                 <h4> <label id="Q15L" className="title-input" htmlFor="name">מס' המחקר: {requests.q15 ? (requests.q15) : ('')}</label></h4>
             </div>
             <div id="name-group" >
-                <h4> <label id="Q16L" className="title-input" htmlFor="name">חתימת החוקר: {requests.q16 ? (requests.q16) : ('')}</label></h4>
+                <h4> <label id="Q16L" className="title-input" htmlFor="name">חתימת החוקר: </label> </h4>
+
+                <img style={{ position: 'relative', backgroundColor: 'white' }} src={requests.signature ? requests.signature : ''} />
             </div>
 
             <div id="name-group" >

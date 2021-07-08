@@ -2,11 +2,11 @@ import React, { useEffect, useState, useRef } from 'react';
 import PropTypes from 'prop-types';
 import firebase from 'firebase/app';
 import { useFirestoreQuery } from '../Researcher/hooks';
-// Components
 import './Researcher.css'
-
 import Message from './Message';
 import { auth } from '../../../../firebase/firebase';
+import { NotificationManager } from "react-notifications";
+
 
 const Channel = ({ user = null, selectedUserUid }) => {
     const db = firebase.firestore();
@@ -59,28 +59,41 @@ const Channel = ({ user = null, selectedUserUid }) => {
     const sentBySelf = (msg) => msg.uid == auth.currentUser.uid && msg?.addresee == selectedUserUid
     const sentBySelectedUser = (msg) => msg.uid == selectedUserUid && msg?.addresee == auth.currentUser.uid;
 
+    const [lastRecivedMessageDate, setLastRecivedMessageDate] = useState(new Date())
+
+    useEffect(() => {
+        return db.collection("messages")
+            .where('addresee', '==', auth.currentUser.uid)
+            .where('createdAt', '>', lastRecivedMessageDate)
+            .onSnapshot(snap => {
+                // Filter the first call.
+                if (snap.docs.length <= 0) {
+                    return;
+                }
+
+                const msg = snap.docs[0].data()
+                const shortenedText = msg.text.substr(0, 15) + '...'
+
+                NotificationManager.success(`הודעה חדשה התקבלה ממשתמש ${msg.displayName}`,
+                    shortenedText,
+                    5000)
+            })
+    }, [])
+
     return (
-        <div className="flex flex-col h-full">
-            <div className="overflow-auto h-full">
-                <div className="py-4 max-w-screen-lg mx-auto">
-                    <div className="border-b dark:border-gray-600 border-gray-200 py-8 mb-4">
-                        <div className="font-bold text-3xl text-center">
+        <div className="flex flex-col h-full w-full">
+
+            <div ref={bottomListRef} className="messages-list-container xs-8" >
+                {messages
+                    ?.filter(msg => sentBySelectedUser(msg) || sentBySelf(msg))
+                    ?.sort((first, second) =>
+                        first?.createdAt?.seconds <= second?.createdAt?.seconds ? -1 : 1
+                    )
+                    ?.map(message => (
+                        <div key={message.id} style={{ alignSelf: sentBySelf(message) ? 'flex-end' : 'flex-start' }}>
+                            <h4><Message {...message} sentBySelf={sentBySelf(message)} /></h4>
                         </div>
-                    </div>
-                    <ul>
-                        {messages
-                            ?.filter(msg => sentBySelectedUser(msg) || sentBySelf(msg))
-                            ?.sort((first, second) =>
-                                first?.createdAt?.seconds <= second?.createdAt?.seconds ? -1 : 1
-                            )
-                            ?.map(message => (
-                                <li key={message.id}>
-                                    <h4><Message {...message} /></h4>
-                                </li>
-                            ))}
-                    </ul>
-                    <div ref={bottomListRef} />
-                </div>
+                    ))}
             </div>
             <div className="mb-6 mx-4">
                 <form

@@ -35,14 +35,10 @@ export async function GetFormDownload()
 
 
 }
-
-
 export async function GetFormDownloadReportsfinancial()
 {
     const file =  await firebase.storage().refFromURL("gs://rbms-b759b.appspot.com/דוח כספי.doc").getDownloadURL()
     return file;
-
-
 }
 
 export async function CreateNewUser(email,phone) {
@@ -128,8 +124,6 @@ export async function CreateNewTeam(team) {
 
 }
 
-
-
 export async function getUser(user) {
     var researcher = await db.collection('researcher').doc(user.uid).get()
     var manager = await db.collection('managers').doc(user.uid).get()
@@ -139,7 +133,6 @@ export async function getUser(user) {
         return 'wait'
     else if (manager.exists)
     {
-        // console.log("manager.data()",manager.data())
         return 'Manager'
     }
     else if(researcher.exists)
@@ -158,12 +151,3 @@ export async function getManagerData(uid) {
     var managerData = await (await db.collection("managers").doc(uid).get()).data();
     return managerData;
 }
-
-
-
-
-
-
-
-
-

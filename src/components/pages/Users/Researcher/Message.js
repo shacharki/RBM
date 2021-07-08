@@ -17,35 +17,31 @@ const formatDate = date => {
 };
 
 const Message = ({
-                     createdAt = null,
-                     text = '',
-                     displayName = '',
-                     photoURL = '',
-                 }) => {
+    createdAt = null,
+    text = '',
+    displayName = '',
+    photoURL = '',
+    sentBySelf
+}) => {
     if (!text) return null;
 
     return (
-        <Card className="px-4 py-4 rounded-md hover:bg-gray-50 dark:hover:bg-coolDark-600 overflow-hidden flex items-start">
-            {photoURL ? (
-                <img
-                    src={photoURL}
-                    alt="Avatar"
-                    className="rounded-full mr-4"
-                    width={45}
-                    height={45}
-                />
-            ) : null}
-            <div>
-                <div className="flex items-center mb-1">
-                    {displayName ? (
+        <Card className="px-4 py-4 rounded-md hover:bg-gray-50 dark:hover:bg-coolDark-600 overflow-hidden flex items-start message-list-item" style={{ backgroundColor: sentBySelf ? 'rgb(220, 248, 198)' : 'white' }}>
+            <div className="msg-sender-name">
+                {
+                    displayName ? (
                         <p className="mr-2 text-primary-500">{displayName}</p>
-                    ) : null}
-                    {createdAt?.seconds ? (
-                        <span className="text-gray-500 text-xs">
-                            {formatDate(new Date(createdAt.seconds * 1000))}
-                        </span>
-                    ) : null}
-                </div>
+                    ) : null
+                }
+            </div>
+
+            <div className="msg-time">
+                {createdAt?.seconds ? (
+                    <p>{formatDate(new Date(createdAt.seconds * 1000))}</p>
+                ) : null}
+            </div>
+
+            <div className="msg-text">
                 <p>{text}</p>
             </div>
         </Card>
@@ -59,6 +55,7 @@ Message.propTypes = {
     }),
     displayName: PropTypes.string,
     photoURL: PropTypes.string,
+    sentBySelf: PropTypes.bool
 };
 
 export default Message;

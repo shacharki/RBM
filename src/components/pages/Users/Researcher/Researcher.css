@@ -13,52 +13,67 @@ input[type=text], input[type=date] {
     appearance: none;
     font-family: "Helvetica", arial, sans-serif;
     font-size: 18px;
-    border:1px solid #ecf0f1;
-    background:#ecf0f1;
-    visibility: visible ;
+    border: 1px solid #ecf0f1;
+    background: #ecf0f1;
+    visibility: visible;
 }
-#RequestPurchase{
-//color: black;
-    background-color: rgba(0, 180, 0, 0.69);
-//background-color: #65b0ff;
 
+#RequestPurchase {
+    //color: black;
+    background-color: rgba(0, 180, 0, 0.69); //background-color: #65b0ff;
 }
-#BalanceMode{
-//color: black;
-    background-color: rgba(0, 180, 0, 0.69);
-//background-color: #65b0ff;
 
-}#ScientificReport{
- //color: black;
-     background-color: rgba(0, 120, 190, 0.69);
- //background-color: #65b0ff;
+#BalanceMode {
+    //color: black;
+    background-color: rgba(0, 180, 0, 0.69); //background-color: #65b0ff;
+}
 
- }#ChatR{
-  //color: black;
-      background-color: rgba(0, 120, 190, 0.69);
-  //background-color: #65b0ff;
+#ScientificReport {
+    //color: black;
+    background-color: rgba(0, 120, 190, 0.69); //background-color: #65b0ff;
+}
 
-  }#repor-button{
-   //color: black;
-       background-color: rgba(0, 120, 190, 0.69);
-   //background-color: #65b0ff;
+#ChatR {
+    //color: black;
+    background-color: rgba(0, 120, 190, 0.69); //background-color: #65b0ff;
+}
 
-   }
-/*#ExpenseReporting1{*/
-/*//color: black;*/
-/*    background-color: rgba(0, 170, 220, 0.69);*/
-/*//background-color: #65b0ff;*/
+#repor-button {
+    //color: black;
+    background-color: rgba(0, 120, 190, 0.69); //background-color: #65b0ff;
+}
 
-/*}*/
-/*#ChatResearcher{*/
-/*//color: black;*/
-/*    background-color: rgba(0, 120, 190, 0.69);*/
-/*//background-color: #65b0ff;*/
+.messages-list-container {
+    max-height: 60vh;
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    overflow-y: scroll;
+    scroll-behavior: smooth;
+    justify-content: flex-start;
+    align-items: flex-start;
+}
 
-/*}*/
-/*#UpdateDetails{*/
-/*//color: black;*/
-/*    background-color: rgba(0, 90, 150, 0.69);*/
-/*//background-color: #65b0ff;*/
+.message-list-item {
+    min-width: 250px;
+    display: grid;
+    grid-template-rows: 20px 1fr 1fr;
+    grid-template-columns: 1fr;
+    grid-template-areas: "msg-sender-name" "msg-text" "msg-time";
 
-/*}*/
+    height: fit-content;
+}
+
+.message-list-item .msg-sender-name {
+    font-size: smaller;
+    text-align: center;
+    grid-area: msg-sender-name;
+}
+.message-list-item .msg-text {
+    grid-area: msg-text;
+}
+.message-list-item .msg-time {
+    font-size: small;
+    font-weight: 400;
+    grid-area: msg-time;
+}

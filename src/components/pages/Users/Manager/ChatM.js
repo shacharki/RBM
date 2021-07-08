@@ -14,7 +14,7 @@ class ChatR extends React.Component {
             loadPage: false,
             spinner: [true, 'נא להמתין הדף נטען'],
             researchersList: [],
-            selectedUserUid: ''
+            selectedUserUid: props.selectedUserUid == undefined ? '' : props.selectedUserUid
         };
 
     }
@@ -105,8 +105,8 @@ class ChatR extends React.Component {
                                 backgroundColor: "rgba(255,255,255,0.85)",
                                 borderRadius: "25px"
                             }}
-                                        size={120}
-                                        color={"#123abc"}
+                                size={120}
+                                color={"#123abc"}
 
                             />
                         </div>
@@ -115,16 +115,13 @@ class ChatR extends React.Component {
 
                 <Grid container spacing={2}>
                     <Grid item xs={8} >
-                        <Select placeholder={" בחר משתמש "} options={this.state.researchersList} onChange={(e) => {
+                        <Select defaultValue={this.state.researchersList.filter(opt => opt.value == this.selectedUserUid)} placeholder={" בחר משתמש "} options={this.state.researchersList} onChange={(e) => {
                             this.setState({ selectedUserUid: e.value })
                         }} required />
                     </Grid>
                     <Grid item xs={5}>
                         <ChatManager selectedUserUid={this.state.selectedUserUid} />
                     </Grid>
-
-
-
 
                     <button id="go-back" className="btn btn-info" onClick={() => {
                         this.loadPage()
