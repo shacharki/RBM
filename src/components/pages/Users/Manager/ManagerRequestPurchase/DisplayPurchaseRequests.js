@@ -1,5 +1,7 @@
 import * as logoUpImg from './../../../../../img/logoUp.JPG'
-
+import * as logoFooterImg from './../../../../../img/logoDown.JPG'
+import './purchaseRequest.css'
+import { useEffect, useRef } from 'react'
 
 function DisplayPurchaseRequests({ form, index, requests }) {
     var date = form.date.toDate()
@@ -11,8 +13,14 @@ function DisplayPurchaseRequests({ form, index, requests }) {
     if (month < 10)
         month = '0' + month
 
+
     return (
         <div>
+            <div className="doc-header">
+                <img style={{ position: 'relative' }} src={logoUpImg.default} />
+            </div>
+
+
             <h4> שם החוקר: {form.nameResearcher}</h4>
             <h4> תאריך הבקשה: {day + '/' + month + "/" + year}</h4>
             <h4><label id="Q1L" className="title-input"> שם הספק: {requests.q1 ? (requests.q1) : ('')}</label></h4>
@@ -139,7 +147,6 @@ function DisplayPurchaseRequests({ form, index, requests }) {
             </div>
             <div id="name-group" >
                 <h4> <label id="Q16L" className="title-input" htmlFor="name">חתימת החוקר: </label> </h4>
-
                 <img style={{ position: 'relative', backgroundColor: 'white' }} src={requests.signature ? requests.signature : ''} />
             </div>
 
@@ -148,6 +155,10 @@ function DisplayPurchaseRequests({ form, index, requests }) {
             </div>
             <div id="name-group" >
                 <h4> <label id="Q18L" className="title-input" htmlFor="name">מס' חשבונית: {requests.q18 ? (requests.q18) : ('')}</label></h4>
+            </div>
+
+            <div className="doc-footer">
+                <img style={{ position: 'relative' }} src={logoFooterImg.default} />
             </div>
         </div>
     );

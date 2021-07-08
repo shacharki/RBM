@@ -83,7 +83,7 @@ const Channel = ({ user = null, selectedUserUid }) => {
     return (
         <div className="flex flex-col h-full w-full">
 
-            <div ref={bottomListRef} className="messages-list-container xs-8" >
+            <div ref={bottomListRef} className="messages-list-container" style={{width: '1000px'}}>
                 {messages
                     ?.filter(msg => sentBySelectedUser(msg) || sentBySelf(msg))
                     ?.sort((first, second) =>

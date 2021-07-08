@@ -6,9 +6,7 @@ import ClipLoader from "react-spinners/ClipLoader";
 import { CSVLink } from "react-csv";
 import 'classlist.js';
 import TextField from "@material-ui/core/TextField";
-import { render } from "react-dom";
 import ReactToPrint from 'react-to-print';
-import ErrorBoundry from '../../../general/ErrorBoundry'
 import DisplayPurchaseRequests from "./DisplayPurchaseRequests";
 import NotificationManager from 'react-notifications'
 
@@ -38,7 +36,7 @@ class mngRequestPurchase extends Component {
                 name: "",
             },
             dateTo: new Date().toISOString().split('T')[0],
-            dateFrom: new Date(Date.now() - 60 * 60 * 24 * 30 * 3).toISOString().split('T')[0]
+            dateFrom: this.getInitialDateFrom()
         };
 
 
@@ -46,6 +44,12 @@ class mngRequestPurchase extends Component {
         this.handleChange = this.handleChange.bind(this)
         this.approvResearcher = this.approvResearcher.bind(this)
         this.RequestPurchase = this.RequestPurchase.bind(this)
+    }
+
+    getInitialDateFrom() {
+        var date = new Date();
+        date.setMonth(date.getMonth() - 1);
+        return date.toISOString().split('T')[0]
     }
 
     async GetData() {
@@ -454,30 +458,6 @@ class mngRequestPurchase extends Component {
         }
     }
 
-    generate(from, index) {
-        const Data = this.Requests(from, index)
-
-
-        class ComponentToPrint extends React.PureComponent {
-            render() {
-                return (
-                    <ErrorBoundry>
-                        <ReactToPrint
-                            trigger={() => {
-                                return <a href="#">Print To PDF</a>
-                            }}
-                            content={() => this.componentRef} />
-                        <div ref={value => this.componentRef = value}>
-                            <h1>Hello!</h1>
-                        </div>
-                    </ErrorBoundry>
-                );
-            }
-        }
-
-        render(<ComponentToPrint />, document.querySelector("#root"))
-    }
-
 
     /**
      * Generate the component that displays the form to the user.
@@ -508,12 +488,14 @@ class mngRequestPurchase extends Component {
                     <div className="report" id="report">
                         <div>
                             <div dir="rtl">
-
                                 <ReactToPrint
                                     trigger={() => {
                                         return <button>הדפס בקשה</button>
                                     }}
-                                    content={() => this.toPrintRef} />
+                                    content={() => this.toPrintRef}
+                                    copyStyles={false}
+                                    documentTitle={`${form.nameResearcher}_דוח`}
+                                />
 
                                 <div ref={value => this.toPrintRef = value}>
                                     <DisplayPurchaseRequests form={form} index={formIndex} requests={requests} />
@@ -558,8 +540,8 @@ class mngRequestPurchase extends Component {
                                     />
                                 </Grid>
                                 <button id="sendData" className="btn btn-info" onClick={() => {
-                                    sum = 0
-                                    this.sendRequest(this.state.form, year + '-' + month + "-" + day, user)
+                                    //sum = 0
+                                    //this.sendRequest(this.state.form, year + '-' + month + "-" + day, user)
                                 }}>שמירת נתונים
                                 </button>
 

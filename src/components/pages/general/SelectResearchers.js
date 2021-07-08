@@ -8,12 +8,23 @@ import { ListItemText } from "@material-ui/core";
  * Create a select list that displayes all of the researchers.
  * @param { Object } props The props of the component 
  * @param { string } props.key The key of the component.
- * @param { (string[]) => undefined } props.selectedValueUpdated A callback that is called when the list of selected item has updated.
+ * @param { (list: string[]) => undefined } props.selectedValueUpdated A callback that is called when the list of selected item has updated.
+ * @param { (setter: React.Dispatch<React.SetStateAction<any[]>>) => undefined } props.setCheckedResearchers
  */
-function SelectResearchers({ key, selectedValueUpdated }) {
-
+function SelectResearchers({ key, selectedValueUpdated, setCheckedResearchers }) {
     const [researchersOptions, setResearchersOptions] = useState({})
     const [checked, setChecked] = useState([])
+
+    useEffect(() => {
+        if (selectedValueUpdated === undefined) {
+            selectedValueUpdated = (_) => undefined
+        }
+
+        if(setCheckedResearchers) {
+            setCheckedResearchers((val) => setChecked(val) )
+        }
+        
+    }, [])
 
     const updateSelection = (value) => {
         const currentIndex = checked.indexOf(value);

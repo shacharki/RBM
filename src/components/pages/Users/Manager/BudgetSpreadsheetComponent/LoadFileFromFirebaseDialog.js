@@ -33,7 +33,7 @@ function FileListItem({ displayName, url, user, uploadDate, isActiveFile, onClic
  * @param { Object } props The props of the component.
  * @param { boolean } props.open The open status of the dialog.
  * @param { () => void } props.onCancel Callback that is called when the cancel button is clicked.. 
- * @param { (url: string, displayName: string) => void } props.onFileSelected Callback function that is called when the user has selected a file.
+ * @param { ({url: string, displayName: string, docId}) => void } props.onFileSelected Callback function that is called when the user has selected a file.
  */
 function LoadFileFromFirebaseDialog({ open, onCancel, onFileSelected, onFilesListLoaded }) {
     const [filesList, setFilesList] = useState([])
@@ -54,7 +54,7 @@ function LoadFileFromFirebaseDialog({ open, onCancel, onFileSelected, onFilesLis
                 <DialogActions>
                     <button onClick={() => onCancel()}>בטל</button>
                     <button onClick={() => {
-                        onFileSelected(activeFile.fileUrl, activeFile.displayName)
+                        onFileSelected(activeFile)
                     }}>טען</button>
                 </DialogActions>
             </Dialog>
