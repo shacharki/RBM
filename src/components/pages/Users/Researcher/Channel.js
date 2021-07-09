@@ -81,7 +81,7 @@ const Channel = ({ user = null, selectedUserUid }) => {
     }, [])
 
     return (
-        <div className="flex flex-col h-full w-full">
+        <div  className="flex flex-col h-full w-full">
 
             <div ref={bottomListRef} className="messages-list-container" style={{width: '1000px'}}>
                 {messages
@@ -90,7 +90,7 @@ const Channel = ({ user = null, selectedUserUid }) => {
                         first?.createdAt?.seconds <= second?.createdAt?.seconds ? -1 : 1
                     )
                     ?.map(message => (
-                        <div key={message.id} style={{ alignSelf: sentBySelf(message) ? 'flex-end' : 'flex-start' }}>
+                        <div key={message.id} style={{  alignSelf: sentBySelf(message) ? 'flex-end' : 'flex-start' }}>
                             <h4><Message {...message} sentBySelf={sentBySelf(message)} /></h4>
                         </div>
                     ))}
@@ -98,14 +98,14 @@ const Channel = ({ user = null, selectedUserUid }) => {
             <div className="mb-6 mx-4">
                 <form
                     onSubmit={handleOnSubmit}
-                    className="flex flex-row bg-gray-200 dark:bg-coolDark-400 rounded-md px-4 py-3 z-10 max-w-screen-lg mx-auto dark:text-white shadow-md">
+                    >
                     <input
                         ref={inputRef}
                         type="text"
                         value={newMessage}
                         onChange={handleOnChange}
                         placeholder=" הקלד כאן את תשובתך"
-                        className="flex-1 bg-transparent outline-none" />
+                         />
                     <button
                         type="submit"
                         disabled={!newMessage}

@@ -78,7 +78,7 @@ input[type=text], input[type=date] {
     grid-area: msg-time;
 }
 #HomeBtn{
-    color: black;
+    color: whitesmoke;
     background-color: rgba(203, 146, 133, 0.75);
 }
 #go-back{
