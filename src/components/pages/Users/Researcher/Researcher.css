@@ -77,3 +77,11 @@ input[type=text], input[type=date] {
     font-weight: 400;
     grid-area: msg-time;
 }
+#HomeBtn{
+    color: black;
+    background-color: rgba(203, 146, 133, 0.75);
+}
+#go-back{
+    color: whitesmoke;
+    background-color: rgba(203, 146, 133, 0.75);
+}

@@ -80,13 +80,20 @@ button{
 button:hover {
   background-color: #0088cc;
 }
+/*#logout{*/
+/*  background-color:#ff4d4d;*/
+/*}*/
+/*#logout:hover{*/
+/*  background-color:#ff1a1a;*/
+/*}*/
 #logout{
-  background-color:#ff4d4d;
+  color: whitesmoke;
+  background-color: rgba(203, 146, 133, 0.75);
 }
 #logout:hover{
-  background-color:#ff1a1a;
+  color: whitesmoke;
+  background-color: rgba(203, 146, 133, 0.75);
 }
-
 
 label{
   display: block;

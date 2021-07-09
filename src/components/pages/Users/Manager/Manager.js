@@ -158,7 +158,7 @@ class Manager extends React.Component {
                         צ'אט לחוקר<span className="fa fa-arrow-right"></span>
                     </button>
 
-                    <button className="btn btn-info" onClick={() => {
+                    <button id="ChatResearcher" className="btn btn-info" onClick={() => {
                         NextPage(this.props, "ScientificReport", this.state.user)
                     }}>
                         דוחות מדעיים

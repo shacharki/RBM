@@ -56,11 +56,11 @@ class resetPassword extends React.Component {
 
                         <Grid item xs={12}>
                             <div>
-                                <Button
+                                <Button id="registerBtn2"
                                     type="submit"
                                     fullWidth
                                     variant="contained"
-                                    id="submit"
+
                                     onClick={()=>{this.sendEmail()}}
                                 >
                                     שלח

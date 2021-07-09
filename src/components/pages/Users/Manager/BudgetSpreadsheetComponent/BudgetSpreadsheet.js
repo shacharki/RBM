@@ -246,7 +246,8 @@ const BudgetSpreadsheet = (props) => {
                 תקציב חדש
             </button>
 
-            <button hidden={!firestorageData.used && userType === 'Manager'} onClick={() => {
+            <button hidden={userType === "Researcher" || (userType === 'Manager' && firestorageData.used === false)} onClick={() => {
+
                 setSpinnerState({ text: 'מעדכנים את התקציב...', show: true })
                 const { buffer } = dataToArrayBuffer()
                 const storageRef = storage.ref('researchBudgets')

@@ -310,7 +310,7 @@ class UpdatesFirebase extends Component {
 
 
                         <Grid item xs={12}>
-                            <button id="feedback-button" className="btn btn-info" onClick={()=>{this.BackPage()}}>חזרה לתפריט</button>
+                            <button id="go-back" className="btn btn-info" onClick={()=>{this.BackPage()}}>חזרה לתפריט</button>
                         </Grid>
 
 

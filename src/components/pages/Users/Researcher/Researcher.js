@@ -141,12 +141,12 @@ class Researcher extends React.Component {
                     }}>בקשה לרכישה<span
                         className="fa fa-arrow-right"></span></button>
 
+                    {/*<button id="BalanceMode" className="btn btn-info" onClick={() => {*/}
+                    {/*}}>מצב הוצאות ויתרה<span*/}
+                    {/*    className="fa fa-arrow-right"></span></button>*/}
                     <button id="BalanceMode" className="btn btn-info" onClick={() => {
-                    }}>מצב הוצאות ויתרה<span
-                        className="fa fa-arrow-right"></span></button>
-                    <button id="BudgetSpreadshee" className="btn btn-info" onClick={() => {
                         NextPage(this.props, "Budget", this.state.user)
-                    }}>תקציבי מחקר<span className="fa fa-arrow-right"></span></button>
+                    }}>מצב הוצאות ויתרה<span className="fa fa-arrow-right"></span></button>
                     <button id="repor-button" className="btn btn-info" onClick={() => {
                         NextPage(this.props, "ScientificReport", this.state.user)
                     }}>דוחות מדעים<span
@@ -160,7 +160,7 @@ class Researcher extends React.Component {
                         NextPage(this.props, "Profile", this.state.user)
                     }}>עדכון פרטים או סיסמא<span
                         className="fa fa-arrow-right"></span></button>
-                    <button id="logout" className="btn btn-info" onClick={() => {
+                    <button id="HomeBtn" className="btn btn-info" onClick={() => {
                         signOut()
                     }}>התנתק
                     </button>
