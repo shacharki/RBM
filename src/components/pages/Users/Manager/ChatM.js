@@ -78,9 +78,7 @@ class ChatR extends React.Component {
 
         // Get all of the researchers of the current teamm and add them to the list of researchers.
         getAllUsers().then(async users => {
-            const manager = await this.getManagerObject();
-
-            var list = users.filter(doc => doc.teamName === manager.teamName).map(doc => {
+            var list = users.map(doc => {
                 return {
                     label: `${doc.fname} ${doc.lname}`,
                     value: doc.uid
@@ -95,7 +93,7 @@ class ChatR extends React.Component {
 
     render() {
         return (
-            <div id="ReportScientific" className="sec-design2">
+            <div id="ReportScientific" className="sec-design">
 
                 {!this.state.spinner[0] ? "" :
                     <div id='fr'>
@@ -105,8 +103,8 @@ class ChatR extends React.Component {
                                 backgroundColor: "rgba(255,255,255,0.85)",
                                 borderRadius: "25px"
                             }}
-                                size={120}
-                                color={"#123abc"}
+                                        size={120}
+                                        color={"#123abc"}
 
                             />
                         </div>
