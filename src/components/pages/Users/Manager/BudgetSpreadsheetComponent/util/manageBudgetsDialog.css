@@ -1,0 +1,43 @@
+.budgets-list-container {
+    display: flex;
+    flex-direction: column;
+
+    align-items: center;
+}
+
+.budgets-list-container .budgets-list-item {
+    display: grid;
+
+    grid-template-rows: 1fr 30px;
+    grid-template-columns: 2250px 100px;
+    grid-template-areas: "name-input can-view" "update-btn delete-btn";
+}
+
+.budgets-list-item .can-view {
+    grid-area: can-view;
+}
+
+.budgets-list-item .name-input {
+    grid-area: name-input;
+    height: 100px;
+}
+
+.budgets-list-item .update-btn {
+    grid-area: update-btn;
+    text-align: center;
+    width: 50px;
+}
+
+.budgets-list-item .delete-btn {
+    grid-area: delete-btn;
+    background-color: #dc3545;
+}
+
+.cancel-btn {
+    height: 30px;
+}
+
+.sperator {
+    width: 500px;
+    border-bottom: 1px solid black;
+}

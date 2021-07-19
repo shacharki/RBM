@@ -36,7 +36,7 @@ const GetFilenameDialog = ({ dialogStatus, setDialogStatus, onSubmit, dialogCont
             />
 
             {
-                showResearchersSelection ? <SelectResearchers selectedValueUpdated={selected => { console.log(selected);setSelectedResearchers(selected) }} /> : null
+                showResearchersSelection ? <SelectResearchers selectedValueUpdated={selected => { setSelectedResearchers(selected) }} /> : null
             }
 
         </DialogContent>

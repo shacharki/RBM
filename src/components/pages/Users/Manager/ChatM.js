@@ -19,8 +19,6 @@ class ChatR extends React.Component {
 
     }
 
-
-
     async getManagerObject() {
         const result = await db.collection("managers").doc(auth.currentUser.uid).get();
         return result.data();
@@ -40,7 +38,6 @@ class ChatR extends React.Component {
 
     async componentDidMount() {
         var href = window.location.href.split("/", 5)
-        // console.log(href)
         auth.onAuthStateChanged(async user => {
             if (user) {
 
@@ -103,8 +100,8 @@ class ChatR extends React.Component {
                                 backgroundColor: "rgba(255,255,255,0.85)",
                                 borderRadius: "25px"
                             }}
-                                        size={120}
-                                        color={"#123abc"}
+                                size={120}
+                                color={"#123abc"}
 
                             />
                         </div>

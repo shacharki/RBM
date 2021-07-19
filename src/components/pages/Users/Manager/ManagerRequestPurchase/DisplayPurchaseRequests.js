@@ -8,6 +8,7 @@ function DisplayPurchaseRequests({ form, index, requests }) {
     var day = date.getDate()
     var month = date.getMonth() + 1
     var year = date.getFullYear()
+
     if (day < 10)
         day = '0' + day
     if (month < 10)
@@ -15,11 +16,10 @@ function DisplayPurchaseRequests({ form, index, requests }) {
 
 
     return (
-        <div>
-            <div className="doc-header">
+        <div style={{ textAlign: 'right' }}>
+            <div className="report-logo">
                 <img style={{ position: 'relative' }} src={logoUpImg.default} />
             </div>
-
 
             <h4> שם החוקר: {form.nameResearcher}</h4>
             <h4> תאריך הבקשה: {day + '/' + month + "/" + year}</h4>
@@ -35,101 +35,102 @@ function DisplayPurchaseRequests({ form, index, requests }) {
                 <h4> <label id="Q4L" className="title-input">מצורפת הצעת מחיר מס': {requests.q4 ? (requests.q4) : ('')}</label></h4>
             </div>
             <h4>פירוט ההצעה:</h4>
-            <table border="1">
-                <tbody>
-                    <tr>
-                        <th>מק"ט</th>
-                        <th>תיאור הפריט</th>
-                        <th>מחיר במט"ח</th>
-                        <th>מחיר יח' בש"ח</th>
-                        <th>מס' יחידות</th>
-                        <th>מחיר בש"ח</th>
+            <div style={{ display: 'flex', flexDirection: 'column', justifyContent: 'flex-start', padding: '25px' }}>
+                <table border="1" >
+                    <tbody>
+                        <tr>
+                            <th>מק"ט</th>
+                            <th>תיאור הפריט</th>
+                            <th>מחיר במט"ח</th>
+                            <th>מחיר יח' בש"ח</th>
+                            <th>מס' יחידות</th>
+                            <th>מחיר בש"ח</th>
 
-                    </tr>
-                    <tr>
-                        <td><div id="name-group" >
-                            <h4> <label id="Q5L" className="title-input" htmlFor="name">{requests.q5 ? (requests.q5) : ('')}</label></h4>
-                        </div></td>
+                        </tr>
+                        <tr>
+                            <td><div id="name-group" >
+                                <h4> <label id="Q5L" className="title-input" htmlFor="name">{requests.q5 ? (requests.q5) : ('')}</label></h4>
+                            </div></td>
 
-                        <td><div id="name-group" >
-                            <h4> <label id="Q6L" className="title-input" htmlFor="name">{requests.q6 ? (requests.q6) : ('')}</label></h4>
-                        </div></td>
+                            <td><div id="name-group" >
+                                <h4> <label id="Q6L" className="title-input" htmlFor="name">{requests.q6 ? (requests.q6) : ('')}</label></h4>
+                            </div></td>
 
-                        <td><div id="name-group" >
-                            <h4> <label id="Q7L" className="title-input" htmlFor="name">{requests.q7 ? (requests.q7) : ('')}</label></h4>
-                        </div></td>
+                            <td><div id="name-group" >
+                                <h4> <label id="Q7L" className="title-input" htmlFor="name">{requests.q7 ? (requests.q7) : ('')}</label></h4>
+                            </div></td>
 
-                        <td><div id="name-group" >
-                            <h4> <label id="Q8L" className="title-input" htmlFor="name"> {requests.q8 ? (requests.q8) : ('')}</label></h4>
-                        </div></td>
+                            <td><div id="name-group" >
+                                <h4> <label id="Q8L" className="title-input" htmlFor="name"> {requests.q8 ? (requests.q8) : ('')}</label></h4>
+                            </div></td>
 
-                        <td><div id="name-group" >
-                            <h4> <label id="insert-name" className="title-input" htmlFor="name"> {requests.q9 ? (requests.q9) : ('')}</label></h4>
-                        </div></td>
+                            <td><div id="name-group" >
+                                <h4> <label id="insert-name" className="title-input" htmlFor="name"> {requests.q9 ? (requests.q9) : ('')}</label></h4>
+                            </div></td>
 
-                        <td><div id="name-group" >
-                            <h4> <label id="insert-name" className="title-input" htmlFor="name"> {requests.q10 ? (requests.q10) : ('')}</label></h4>
-                        </div></td>
+                            <td><div id="name-group" >
+                                <h4> <label id="insert-name" className="title-input" htmlFor="name"> {requests.q10 ? (requests.q10) : ('')}</label></h4>
+                            </div></td>
 
-                    </tr>
+                        </tr>
 
-                    <tr>
-                        <td><div id="name-group" >
-                            <h4> <label id="Q50L" className="title-input" htmlFor="name">{requests.q50 ? (requests.q50) : ('')}</label></h4>
-                        </div></td>
+                        <tr>
+                            <td><div id="name-group" >
+                                <h4> <label id="Q50L" className="title-input" htmlFor="name">{requests.q50 ? (requests.q50) : ('')}</label></h4>
+                            </div></td>
 
-                        <td><div id="name-group" >
-                            <h4> <label id="Q60L" className="title-input" htmlFor="name">{requests.q60 ? (requests.q60) : ('')}</label></h4>
-                        </div></td>
+                            <td><div id="name-group" >
+                                <h4> <label id="Q60L" className="title-input" htmlFor="name">{requests.q60 ? (requests.q60) : ('')}</label></h4>
+                            </div></td>
 
-                        <td><div id="name-group" >
-                            <h4> <label id="Q70L" className="title-input" htmlFor="name">{requests.q70 ? (requests.q70) : ('')}</label></h4>
-                        </div></td>
+                            <td><div id="name-group" >
+                                <h4> <label id="Q70L" className="title-input" htmlFor="name">{requests.q70 ? (requests.q70) : ('')}</label></h4>
+                            </div></td>
 
-                        <td><div id="name-group" >
-                            <h4> <label id="Q80L" className="title-input" htmlFor="name"> {requests.q80 ? (requests.q80) : ('')}</label></h4>
-                        </div></td>
+                            <td><div id="name-group" >
+                                <h4> <label id="Q80L" className="title-input" htmlFor="name"> {requests.q80 ? (requests.q80) : ('')}</label></h4>
+                            </div></td>
 
-                        <td><div id="name-group" >
-                            <h4> <label id="Q90L" className="title-input" htmlFor="name"> {requests.q90 ? (requests.q90) : ('')}</label></h4>
-                        </div></td>
+                            <td><div id="name-group" >
+                                <h4> <label id="Q90L" className="title-input" htmlFor="name"> {requests.q90 ? (requests.q90) : ('')}</label></h4>
+                            </div></td>
 
-                        <td><div id="name-group" >
-                            <h4> <label id="Q100L" className="title-input" htmlFor="name"> {requests.q100 ? (requests.q100) : ('')}</label></h4>
-                        </div></td>
+                            <td><div id="name-group" >
+                                <h4> <label id="Q100L" className="title-input" htmlFor="name"> {requests.q100 ? (requests.q100) : ('')}</label></h4>
+                            </div></td>
 
-                    </tr>
+                        </tr>
 
-                    <tr>
-                        <td><div id="name-group" >
-                            <h4> <label id="Q51L" className="title-input" htmlFor="name">{requests.q51 ? (requests.q51) : ('')}</label></h4>
-                        </div></td>
+                        <tr>
+                            <td><div id="name-group" >
+                                <h4> <label id="Q51L" className="title-input" htmlFor="name">{requests.q51 ? (requests.q51) : ('')}</label></h4>
+                            </div></td>
 
-                        <td><div id="name-group" >
-                            <h4> <label id="Q61L" className="title-input" htmlFor="name">{requests.q61 ? (requests.q61) : ('')}</label></h4>
-                        </div></td>
+                            <td><div id="name-group" >
+                                <h4> <label id="Q61L" className="title-input" htmlFor="name">{requests.q61 ? (requests.q61) : ('')}</label></h4>
+                            </div></td>
 
-                        <td><div id="name-group" >
-                            <h4> <label id="Q71L" className="title-input" htmlFor="name">{requests.q71 ? (requests.q71) : ('')}</label></h4>
-                        </div></td>
+                            <td><div id="name-group" >
+                                <h4> <label id="Q71L" className="title-input" htmlFor="name">{requests.q71 ? (requests.q71) : ('')}</label></h4>
+                            </div></td>
 
-                        <td><div id="name-group" >
-                            <h4> <label id="Q81L" className="title-input" htmlFor="name"> {requests.q81 ? (requests.q81) : ('')}</label></h4>
-                        </div></td>
+                            <td><div id="name-group" >
+                                <h4> <label id="Q81L" className="title-input" htmlFor="name"> {requests.q81 ? (requests.q81) : ('')}</label></h4>
+                            </div></td>
 
-                        <td><div id="name-group" >
-                            <h4> <label id="Q91L" className="title-input" htmlFor="name"> {requests.q91 ? (requests.q91) : ('')}</label></h4>
-                        </div></td>
+                            <td><div id="name-group" >
+                                <h4> <label id="Q91L" className="title-input" htmlFor="name"> {requests.q91 ? (requests.q91) : ('')}</label></h4>
+                            </div></td>
 
-                        <td><div id="name-group" >
-                            <h4> <label id="Q101L" className="title-input" htmlFor="name"> {requests.q101 ? (requests.q101) : ('')}</label></h4>
-                        </div></td>
+                            <td><div id="name-group" >
+                                <h4> <label id="Q101L" className="title-input" htmlFor="name"> {requests.q101 ? (requests.q101) : ('')}</label></h4>
+                            </div></td>
 
-                    </tr>
+                        </tr>
 
-                </tbody>
-            </table>
-
+                    </tbody>
+                </table>
+            </div>
             <div id="name-group" >
                 <h4> <label id="Q11L" className="title-input" htmlFor="name">סה"כ כולל מע"מ: {requests.q11 ? (requests.q11) : ('')}</label></h4>
             </div>
@@ -157,7 +158,7 @@ function DisplayPurchaseRequests({ form, index, requests }) {
                 <h4> <label id="Q18L" className="title-input" htmlFor="name">מס' חשבונית: {requests.q18 ? (requests.q18) : ('')}</label></h4>
             </div>
 
-            <div className="doc-footer">
+            <div className="report-logo">
                 <img style={{ position: 'relative' }} src={logoFooterImg.default} />
             </div>
         </div>

@@ -164,7 +164,7 @@ class UserApproval extends React.Component {
                                     </Grid>
                                 </Grid>
                                 <Grid item xs={12}>
-                                    <button id="go-back" className="btn btn-info" onClick={() => {
+                                    <button id="feedback-button" className="btn btn-info" onClick={() => {
                                         this.BackPage()
                                     }}>חזרה לתפריט
                                     </button>
@@ -212,7 +212,7 @@ class UserApproval extends React.Component {
 
                                     </Grid>
                                     <Grid item xs={12}>
-                                        <button id="go-back" className="btn btn-info" onClick={() => {
+                                        <button id="feedback-button" className="btn btn-info" onClick={() => {
                                             this.BackPage()
                                         }}>חזרה לתפריט
                                         </button>
@@ -330,7 +330,7 @@ class UserApproval extends React.Component {
 
                     <Grid item xs={6}>
                         <button
-                            style={{backgroundColor: "rgb(0, 203, 0, 0.69)"}}
+                            style={{backgroundColor: "rgb(50,248,6)"}}
                             onClick={()=>{
                                 CreateUser(user).then(()=>{
                                     var newUsers = []
@@ -344,7 +344,7 @@ class UserApproval extends React.Component {
                     </Grid>
                     <Grid item xs={6}>
                         <button
-                            style={{backgroundColor: "rgb(248,105,30)"}}
+                            style={{backgroundColor: "rgb(248,6,6)"}}
                             onClick={()=>{
                                 DeleteUser(user.uid).then(()=>{
                                     var newUsers = []

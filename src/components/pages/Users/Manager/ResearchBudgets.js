@@ -243,57 +243,22 @@ class ResearchBudgets extends React.Component {
     }
     async addDataToTeam(researcher,date)
     {
-        console.log("researcher2",researcher)
-        console.log("date2",date)
-
         var user = firebase.auth().currentUser;
 
         var formResearcher = (await researcher.collection('request').doc(date).get()).ref;
         try{
             var team = (await researcher.get()).data();
             var name =(team.fname + " "+team.lname);
-            // console.log("name2",name)
-            // console.log("team2",team)
 
             var teamCollection = await db.collection("Data").doc(team.team.id)
-            // var Collection = await teamCollection.collection("Requests").doc(name)
             var newDate = await teamCollection.collection("Requests").doc(date)
-            // var newDate = Collection.collection(date).doc();
             var doc =  await newDate.get()
             var {year,month,day} = this.parser(date)
             var fullDate = new Date()
             fullDate.setTime(0)
             fullDate.setFullYear(year,month-1,day)
 
-            // console.log("team.team.id",team.team.id)
-            // console.log("teamCollection",teamCollection)
-            // console.log("newDate",newDate)
-            // console.log("fullDate",fullDate)
-            // console.log("formResearcher",formResearcher)
-
-            // var temp = newDate.set({
-            //     date:fullDate,
-            //     RequestResearcher: formResearcher,
-            //     nameResearcher: team.fname + " "+team.lname,
-            //
-            // })
-            //
-            // // db.collection("Data").doc().set({name})
-            // await db.collection("Data").doc().collection(name).set(temp).then(()=>{
-            //         alert("הדוח נוסף")
-            //         return true;
-            //     }
-            // ).catch((e)=>{
-            //     alert("הדוח לא הוסף")
-            //     return false;
-            // })
-
-
             if(!doc.exists){
-
-                // console.log("doc.exists",doc.exists)
-                // console.log("doc",doc)
-
                 newDate.set({
                     date:fullDate,
                     RequestResearcher: formResearcher,
@@ -303,10 +268,6 @@ class ResearchBudgets extends React.Component {
                 })
             }
             else {
-
-                // console.log("doc.exists",doc.exists)
-                // console.log("doc",doc)
-
                 newDate.update({
                     date:fullDate,
                     RequestResearcher: formResearcher,

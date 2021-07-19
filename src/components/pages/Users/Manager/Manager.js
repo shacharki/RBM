@@ -19,7 +19,7 @@ class Manager extends React.Component {
             error: false,
             loading: true,
             rule: "Manager",
-            waitingNewMessages: 0,
+            unreadMessages: 0,
             lastRecivedMessageDate: new Date()
         };
     }
@@ -53,8 +53,8 @@ class Manager extends React.Component {
                     this.loadSpinner(false, "")
 
                     this.unsubNewMessages = db.collection("messages")
-                        .where('addresee', '==', auth.currentUser.uid) 
-                        .where('createdAt', '>', this.state.lastRecivedMessageDate) 
+                        .where('addresee', '==', auth.currentUser.uid)
+                        .where('createdAt', '>', this.state.lastRecivedMessageDate)
                         .onSnapshot(snap => {
                             // Filter the first call.
                             if (snap.docs.length <= 0) {
@@ -68,8 +68,9 @@ class Manager extends React.Component {
                                 shortenedText,
                                 5000,
                                 () => { // Move to the chat page if the user clicks on the message.
-                                    NextPage({...this.props, selectedUserUid: msg.uid}, "ChatM", this.state.user)
+                                    NextPage({ ...this.props, selectedUserUid: msg.uid }, "ChatM", this.state.user)
                                 })
+                            this.setState({ unreadMessages: this.state.unreadMessages + 1 })
                         })
 
                     return
@@ -155,10 +156,11 @@ class Manager extends React.Component {
                     <button id="ChatResearcher" className="btn btn-info" onClick={() => {
                         NextPage(this.props, "ChatM", this.state.user)
                     }}>
+                        <p> {this.state.unreadMessages} הודעות חדשות</p>
                         צ'אט לחוקר<span className="fa fa-arrow-right"></span>
                     </button>
 
-                    <button id="ChatResearcher" className="btn btn-info" onClick={() => {
+                    <button className="btn btn-info" onClick={() => {
                         NextPage(this.props, "ScientificReport", this.state.user)
                     }}>
                         דוחות מדעיים
@@ -168,7 +170,7 @@ class Manager extends React.Component {
                         this.ChangePage("UpdatesFirebase")
                     }}>פעולות ועדכון<span
                         className="fa fa-arrow-right"></span></button>
-                        
+
                     <button id="UpdateDetails" className="btn btn-info" onClick={() => {
                         NextPage(this.props, "Profile", this.state.user)
                     }}>עדכון פרטים או סיסמא<span
@@ -178,6 +180,7 @@ class Manager extends React.Component {
                         signOut()
                     }}>התנתק
                     </button>
+
                 </div>
             );
         } else {

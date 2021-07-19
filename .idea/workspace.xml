@@ -65,22 +65,22 @@
     <option name="version" value="3" />
   </component>
   <component name="WindowStateProjectService">
-    <state width="1299" height="278" key="GridCell.Tab.0.bottom" timestamp="1625779046029">
+    <state width="1299" height="278" key="GridCell.Tab.0.bottom" timestamp="1626727065955">
       <screen x="0" y="0" width="1920" height="1040" />
     </state>
-    <state width="1299" height="278" key="GridCell.Tab.0.bottom/0.0.1920.1040@0.0.1920.1040" timestamp="1625779046029" />
-    <state width="1299" height="278" key="GridCell.Tab.0.center" timestamp="1625779046028">
+    <state width="1299" height="278" key="GridCell.Tab.0.bottom/0.0.1920.1040@0.0.1920.1040" timestamp="1626727065955" />
+    <state width="1299" height="278" key="GridCell.Tab.0.center" timestamp="1626727065955">
       <screen x="0" y="0" width="1920" height="1040" />
     </state>
-    <state width="1299" height="278" key="GridCell.Tab.0.center/0.0.1920.1040@0.0.1920.1040" timestamp="1625779046028" />
-    <state width="1299" height="278" key="GridCell.Tab.0.left" timestamp="1625779046028">
+    <state width="1299" height="278" key="GridCell.Tab.0.center/0.0.1920.1040@0.0.1920.1040" timestamp="1626727065955" />
+    <state width="1299" height="278" key="GridCell.Tab.0.left" timestamp="1626727065954">
       <screen x="0" y="0" width="1920" height="1040" />
     </state>
-    <state width="1299" height="278" key="GridCell.Tab.0.left/0.0.1920.1040@0.0.1920.1040" timestamp="1625779046028" />
-    <state width="1299" height="278" key="GridCell.Tab.0.right" timestamp="1625779046028">
+    <state width="1299" height="278" key="GridCell.Tab.0.left/0.0.1920.1040@0.0.1920.1040" timestamp="1626727065954" />
+    <state width="1299" height="278" key="GridCell.Tab.0.right" timestamp="1626727065955">
       <screen x="0" y="0" width="1920" height="1040" />
     </state>
-    <state width="1299" height="278" key="GridCell.Tab.0.right/0.0.1920.1040@0.0.1920.1040" timestamp="1625779046028" />
+    <state width="1299" height="278" key="GridCell.Tab.0.right/0.0.1920.1040@0.0.1920.1040" timestamp="1626727065955" />
     <state x="980" y="0" width="938" height="1047" key="dock-window-4" timestamp="1620635363213">
       <screen x="0" y="0" width="1920" height="1040" />
     </state>
@@ -101,5 +101,9 @@
       <screen x="0" y="0" width="1920" height="1040" />
     </state>
     <state x="912" y="205" width="982" height="882" key="dock-window-8/0.0.1920.1040@0.0.1920.1040" timestamp="1624608577757" />
+    <state x="623" y="225" width="672" height="678" key="search.everywhere.popup" timestamp="1626347165708">
+      <screen x="0" y="0" width="1920" height="1040" />
+    </state>
+    <state x="623" y="225" width="672" height="678" key="search.everywhere.popup/0.0.1920.1040@0.0.1920.1040" timestamp="1626347165708" />
   </component>
 </project>

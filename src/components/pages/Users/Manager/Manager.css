@@ -116,7 +116,3 @@ input[type=checkbox]:checked:after {
 .waiting-msg-counter-badge {
     width: 100%;
 }
-#go-back{
-    color: whitesmoke;
-    background-color: rgba(203, 146, 133, 0.75);
-}

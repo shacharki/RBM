@@ -13,7 +13,8 @@ class Researcher extends React.Component {
             loadPage: false,
             user: props.location,
             spinner: [true, 'נא להמתין הדף נטען'],
-            lastRecivedMessageDate: new Date()
+            lastRecivedMessageDate: new Date(),
+            unreadMessages: 0
         };
     }
 
@@ -64,6 +65,7 @@ class Researcher extends React.Component {
                                 () => { // Move to the chat page if the user clicks on the message.
                                     NextPage({ ...this.props, selectedUserUid: msg.uid }, "ChatR", this.state.user)
                                 })
+                            this.setState({ unreadMessages: this.state.unreadMessages + 1 })
                         })
                     return
                 }
@@ -88,7 +90,7 @@ class Researcher extends React.Component {
     }
 
     componentWillUnmount() {
-        if(this.unsubNewMessages) {
+        if (this.unsubNewMessages) {
             this.unsubNewMessages()
         }
     }
@@ -140,27 +142,32 @@ class Researcher extends React.Component {
                         NextPage(this.props, "RequestPurchase", this.state.user)
                     }}>בקשה לרכישה<span
                         className="fa fa-arrow-right"></span></button>
-
-                    {/*<button id="BalanceMode" className="btn btn-info" onClick={() => {*/}
-                    {/*}}>מצב הוצאות ויתרה<span*/}
-                    {/*    className="fa fa-arrow-right"></span></button>*/}
                     <button id="BalanceMode" className="btn btn-info" onClick={() => {
-                        NextPage(this.props, "Budget", this.state.user)
                     }}>מצב הוצאות ויתרה<span className="fa fa-arrow-right"></span></button>
+
+                    <button id="BudgetSpreadshee" className="btn btn-info" onClick={() => {
+                        NextPage(this.props, "Budget", this.state.user)
+                    }}>תקציבי מחקר<span className="fa fa-arrow-right"></span></button>
+
                     <button id="repor-button" className="btn btn-info" onClick={() => {
                         NextPage(this.props, "ScientificReport", this.state.user)
                     }}>דוחות מדעים<span
-                        className="fa fa-arrow-right"></span></button>
+                        className="fa fa-arrow-right"></span>
+                    </button>
+
                     <button id="ChatR" className="btn btn-info" onClick={() => {
                         NextPage(this.props, "ChatR", this.state.user)
-                    }}>צ'אט למנהל<span
-                        className="fa fa-arrow-right"></span></button>
+                    }}>
+                        <p> {this.state.unreadMessages} הודעות חדשות</p>
+                        <p>צ'אט למנהל</p>
+                        <span className="fa fa-arrow-right"></span>
+                    </button>
 
                     <button id="repor-button" className="btn btn-info" onClick={() => {
                         NextPage(this.props, "Profile", this.state.user)
                     }}>עדכון פרטים או סיסמא<span
                         className="fa fa-arrow-right"></span></button>
-                    <button id="HomeBtn" className="btn btn-info" onClick={() => {
+                    <button id="logout" className="btn btn-info" onClick={() => {
                         signOut()
                     }}>התנתק
                     </button>

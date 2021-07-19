@@ -33,6 +33,7 @@ import UserApproval from "./components/pages/Users/Manager/UserApproval";
 import Profile from "./components/pages/Users/profile";
 import Wait from "./components/pages/Users/await";
 import notFound from "./404";
+import ManageRequestPurchase from './components/pages/Users/Researcher/ManageRequestPurchase/ManageRequestPurchase';
 
 
 
@@ -64,7 +65,6 @@ function LoadPage() {
                     <Route exact path="/Researcher/:id/ChatResearcher" component={ChatResearcher} />
                     <Route exact path="/Researcher/:id/ChatR" component={ChatR} />
                     <Route exact path="/Researcher/:id/Budget" component={Budget} />
-
 
                     <Route exact path="/Manager/:id" component={Managers} />
                     <Route exact path="/Manager/:id/UserApproval" component={UserApproval} />

@@ -1,13 +1,14 @@
 import React, { Component } from "react";
-import { auth, db, GetFormDownload, getPathData, getUser, signOut } from '../../../../firebase/firebase';
+import firebase, { auth, db, GetFormDownload, getManager, getUser, signOut, storage } from '../../../../firebase/firebase';
 import './Researcher.css'
-import Grid from "@material-ui/core/Grid";
 import ClipLoader from "react-spinners/ClipLoader";
 import DropzoneFiles from "./DropzoneFiles";
 import inferUserTypeFromUrl from "../../../../firebase/inferUserTypeFromUrl";
 import getUsersLists from "../../../../firebase/getAllUsers";
 import Select from 'react-select'
 import NotificationManager from "react-notifications/lib/NotificationManager";
+import sendGeneralNotificationMail from './../../../../emailjs/sendGeneralNotificationMail'
+import sendMailToManagerOfResearcher from "../../../../emailjs/sendMailToManagerOfResearcher";
 
 const options = [
 ]
@@ -44,6 +45,8 @@ class ScientificReport extends React.Component {
         this.handleChange = this.handleChange.bind(this)
         this.approvResearcher = this.approvResearcher.bind(this)
         this.RequestPurchase = this.RequestPurchase.bind(this)
+
+        this.userType = inferUserTypeFromUrl()
     }
 
     loadSpinner(event, massage) {
@@ -190,6 +193,7 @@ class ScientificReport extends React.Component {
             }
         }
     }
+
     approvResearcher(researcher) {
 
         let researchers = this.state.researchers;
@@ -201,6 +205,7 @@ class ScientificReport extends React.Component {
             }
         }
     }
+
     render() {
         return (
             <div id="ReportScientific" className="sec-design">
@@ -215,13 +220,12 @@ class ScientificReport extends React.Component {
                             }}
                                 size={120}
                                 color={"#123abc"}
-
                             />
                         </div>
                     </div>
                 }
 
-                <Grid container spacing={2}>
+                <div container spacing={2}>
                     <button id="ReportScientific" className="btn btn-info" onClick={async () => {
                         let file = await GetFormDownload()
                         const link = document.createElement('a');
@@ -235,72 +239,100 @@ class ScientificReport extends React.Component {
                         className="fa fa-arrow-right"></span></button>
 
                     <label id="insert-student" className="title-input" htmlFor="name">:העלאת דוח </label>
-                    <Grid item xs={5}
+                    <div item xs={5}
                         container
                         direction="column"
                         justify="flex-start"
                         alignItems="flex-start">
                         <DropzoneFiles />
-                    </Grid>
+                    </div>
 
-                    <Grid item xs={12}>
+                    <div item xs={12}>
 
                         <label id="insert-student" className="title-input" htmlFor="name">:חיפוש דוחות </label>
 
                         <div hidden={inferUserTypeFromUrl() === 'Researcher'}>
                             <Select options={this.state.managerResearcherSelectOptions} placeholder={"בחר חוקר"} onChange={({ label, value }) => {
-                                console.log({label, value})
+                                console.log({ label, value })
                                 this.setState({ userReportsUid: value })
                             }} />
                         </div>
 
-                        <Grid container spacing={2} >
-                            <Grid item xs={5}>
+                        <div container spacing={2} >
+                            <div item xs={5}>
                                 <label id="insert-student" className="title-input" htmlFor="name">עד תאריך </label>
                                 <input type="date" className="form-control" id="insert-date" name="date" defaultValue={this.state.dateTo}
                                     onChange={(e) => {
                                         this.setState({ dateTo: e.target.value, options: null, show: false, teamName: null })
                                     }}
                                     required />
-                            </Grid>
+                            </div>
 
-                            <Grid item xs={5}>
+                            <div item xs={5}>
                                 <label id="insert-student" className="title-input" htmlFor="name">מתאריך </label>
                                 <input type="date" className="form-control" name="date" defaultValue={this.state.dateFrom}
                                     onChange={(e) => {
                                         this.setState({ dateFrom: e.target.value, options: null, show: false, teamName: null })
                                     }}
                                     required />
-                            </Grid>
+                            </div>
 
 
-                            <Grid item xs={2} hidden={!this.state.dateTo || !this.state.dateFrom}>
+                            <div item xs={2} hidden={!this.state.dateTo || !this.state.dateFrom}>
                                 <label id="insert-student" className="btn btn-info" htmlFor="name"> &nbsp;</label>
                                 <button id="viewReport" className="btn btn-info" onClick={() => this.GetReport()}>מצא דוחות<span
                                     className="fa fa-arrow-right"></span></button>
-                            </Grid>
+                            </div>
+                        </div>
 
-
-
-                        </Grid>
-
-
-
-                        <Grid item xs={12} hidden={this.state.reports.length < 1}>
-                            <hr />
+                        <div className="reports-list-container">
                             {
-                                this.state.reports.map(report => (
-                                    <a href={report.link}>{report.date + " " + report.nameR}<hr /></a>
-                                ))
+                                this.state.reports.map(report => {
+                                    const { reportId, researcherApproved } = report;
+
+                                    return <div className="reports-list-item">
+                                        <a className="report-link" href={report.link}>{report.date + " " + report.nameR}</a>
+                                        <input type="file" onChange={async (e) => {
+                                            const file = e.target.files[0]
+
+                                            if (!file) {
+                                                return NotificationManager.error("לא נבחרו קבצים")
+                                            }
+
+                                            await this.updateReportFile(await file.arrayBuffer(), reportId)
+                                        }} />
+
+                                        <button hidden={this.userType === 'Manager' || researcherApproved === true} className="approve-report-btn" onClick={async () => {
+                                            if (!window.confirm("להגיש את הדוח?")) {
+                                                return NotificationManager.success("הדוח לא הוגש")
+                                            }
+
+                                            this.loadSpinner(true, "...מעדכן את הדוח")
+
+                                            await db.collection('researcher')
+                                                .doc(auth.currentUser.uid)
+                                                .collection("ScientificReport")
+                                                .doc(reportId)
+                                                .update({ researcherApproved: true })
+
+                                            this.loadSpinner(false, "")
+
+                                            NotificationManager.success("הדוח הוגש בהצלחה")
+
+                                            await sendMailToManagerOfResearcher(auth.currentUser.uid, (researcher) => `החוקר ${researcher.data().fname} ${researcher.data().lname} אישר דוח חדש במערכת.`,(_) => "דוח מדעי חדש ממתין במערכת לאישורך.")
+                                            NotificationManager.success("המנהלים עודכנו עם הדוח")
+                                        }}>הגש דוח</button>
+                                    </div>
+                                })
                             }
-                        </Grid>
-                    </Grid>
+                        </div>
+                    </div>
                     <button id="go-back" className="btn btn-info" onClick={() => {
                         this.loadPage()
                         this.BackPage()
                     }}>חזור לתפריט
                     </button>
-                </Grid>
+                </div>
 
 
             </div>
@@ -346,7 +378,7 @@ class ScientificReport extends React.Component {
     }
 
     async GetReport() {
-        if(!this.state.userReportsUid) {
+        if (!this.state.userReportsUid) {
             return inferUserTypeFromUrl() == 'Researcher' ? NotificationManager.error("בבקשה התחבר למערכת") : NotificationManager.error("בבקשה בחר חוקר")
         }
 
@@ -356,25 +388,31 @@ class ScientificReport extends React.Component {
 
 
         if (!this.state.dateFrom || !this.state.dateTo) {
-            alert("נא למלא תאריך התחלה וסיום")
-            this.loadSpinner(false, '')
-            return
+            NotificationManager.error("נא למלא תאריך התחלה וסיום")
+            return this.loadSpinner(false, '')
         }
 
         let options = []
         this.setState({ options, show: false })
 
-        let researcherReports = await db.collection("researcher").doc(this.state.userReportsUid).collection("ScientificReport")
+        let researcherReports = await db.collection("researcher")
+            .doc(this.state.userReportsUid)
+            .collection("ScientificReport")
             .where("date", "<=", to.toISOString().split('T')[0])
             .where("date", ">=", from.toISOString().split('T')[0])
-            .get();
-        const reportDocs = await Promise.all(researcherReports.docs.map(doc => doc.data()));
+            .get()
+
+        // Filter the reports based on the type of user. The manager can view only the approved reports.
+        // This is a client side validation.
+        const reportsFilter = (data) => this.userType == "Researcher" ? true : data.researcherApproved == true
+
+        const reportDocs = await Promise.all(researcherReports.docs.filter(doc => reportsFilter(doc.data())).map(doc => { return { ...doc.data(), reportId: doc.id } }));
 
         this.setState({ reports: reportDocs })
 
         this.loadSpinner(false, "")
 
-        if(reportDocs.length == 0) {
+        if (reportDocs.length == 0) {
             return NotificationManager.warning('לא נמצאו דוחות')
         }
 
@@ -417,7 +455,6 @@ class ScientificReport extends React.Component {
     }
 
 
-
     BackPage() {
         const userType = inferUserTypeFromUrl();
 
@@ -425,6 +462,39 @@ class ScientificReport extends React.Component {
             pathname: `/${userType}/${this.state.user.uid}`,
             data: this.state.user // your data array of objects
         })
+    }
+
+
+    /**
+     * Update the file of the report in firestorage.
+     * @param { ArrayBuffer } buffer The file to upload. 
+     * @param { string } reportId The id of the report.
+     */
+    async updateReportFile(buffer, reportId) {
+        this.loadSpinner(true, "מעדכן קובץ")
+
+        const reportDoc = await db.collection('researcher')
+            .doc(this.userReportsUid)
+            .collection("ScientificReport")
+            .doc(reportId)
+            .get()
+
+        const link = reportDoc.data().link;
+
+        const ref = storage.refFromURL(link)
+        const task = ref.put(buffer)
+
+        task.on(firebase.storage.TaskEvent.STATE_CHANGED,
+            () => undefined,
+            (error) => {
+                NotificationManager.error("חלה בעיה. נסה שוב מאוחר יותר")
+                this.loadSpinner(false, "")
+                console.log(error)
+            },
+            () => {
+                NotificationManager.success("הקובץ עודכן בהצלחה")
+                this.loadSpinner(false, "")
+            })
     }
 
 }

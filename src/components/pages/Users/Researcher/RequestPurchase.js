@@ -11,6 +11,7 @@ import ReactDOM from 'react-dom'
 import SignatureCanvas from 'react-signature-canvas'
 import DropzoneFiles2 from "../Researcher/DropzoneFiles2";
 import NotificationManager from "react-notifications/lib/NotificationManager";
+import sendMailToManagerOfResearcher from "../../../../emailjs/sendMailToManagerOfResearcher";
 
 class RequestPurchase extends React.Component {
     constructor(props) {
@@ -179,6 +180,7 @@ class RequestPurchase extends React.Component {
 
 
     }
+    
     loadPage(event) {
         this.setState({ loading: event })
     }
@@ -186,6 +188,7 @@ class RequestPurchase extends React.Component {
     async sendRequest(form) {
         this.loadSpinner(true, "שליחת הבקשה")
         var path = auth.currentUser.uid
+     
         try {
             var researcher = await db.collection("researcher").doc(path)
             var newRequestPurchase = await researcher.collection("request").doc();
@@ -200,9 +203,7 @@ class RequestPurchase extends React.Component {
             window.location.reload(true);
         } catch (error) {
             NotificationManager.error(error.message)
-            console.log(error.message)
             this.loadSpinner(false)
-
         }
     }
 
@@ -232,7 +233,6 @@ class RequestPurchase extends React.Component {
                     RequestResearcher: formResearcher,
                     nameResearcher: team.fname + " " + team.lname,
                     uid: user.uid
-
                 })
             }
             else {
@@ -765,9 +765,11 @@ class RequestPurchase extends React.Component {
                     </div>
 
 
-                    <button id="sendData" className="btn btn-info" onClick={() => {
+                    <button id="sendData" className="btn btn-info" onClick={async () => {
                         this.save();
                         this.sendRequest(this.state.form)
+
+                        await sendMailToManagerOfResearcher(auth.currentUser.uid, (researcher) => `החוקר ${researcher.data().fname} ${researcher.data().lname} אישר דוח חדש במערכת.`,(_) => "בקשת רכישה חדשה ממתינה במערכת לאישורך.")
                     }}>שלח בקשה
                     </button>
                     <button id="go-back" className="btn btn-info" onClick={() => {

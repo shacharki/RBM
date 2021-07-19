@@ -100,7 +100,7 @@ class ChatR extends React.Component {
 
     render() {
         return (
-            <div id="ReportScientific" className="sec-design2">
+            <div id="ReportScientific" className="sec-design">
 
                 {!this.state.spinner[0] ? "" :
                     <div id='fr'>

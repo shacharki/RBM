@@ -38,12 +38,6 @@ class SignUp extends React.Component {
     }
 
     async  GetTeams() {
-        // console.log("בדיקה")
-
-        // var temp =await getAllUsers('teamEmpty')
-        // // this.setState({showTeamWithoutGuide:!this.state.showTeamWithoutGuide})
-        // this.setState({TeamEmpty:[e.value]})
-
         if (!op) {
             op=true
             var nameTeams = await db.collection("Data")

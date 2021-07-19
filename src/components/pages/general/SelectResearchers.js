@@ -10,20 +10,20 @@ import { ListItemText } from "@material-ui/core";
  * @param { string } props.key The key of the component.
  * @param { (list: string[]) => undefined } props.selectedValueUpdated A callback that is called when the list of selected item has updated.
  * @param { (setter: React.Dispatch<React.SetStateAction<any[]>>) => undefined } props.setCheckedResearchers
+ * @param { string[] } props.initialSelectedResearchers The initial checked researchers
  */
-function SelectResearchers({ key, selectedValueUpdated, setCheckedResearchers }) {
+function SelectResearchers({ key, selectedValueUpdated, setCheckedResearchers, initialSelectedResearchers }) {
     const [researchersOptions, setResearchersOptions] = useState({})
-    const [checked, setChecked] = useState([])
+    const [checked, setChecked] = useState(initialSelectedResearchers ? initialSelectedResearchers : [])
 
     useEffect(() => {
         if (selectedValueUpdated === undefined) {
             selectedValueUpdated = (_) => undefined
         }
 
-        if(setCheckedResearchers) {
-            setCheckedResearchers((val) => setChecked(val) )
+        if (setCheckedResearchers) {
+            setCheckedResearchers((val) => setChecked(val))
         }
-        
     }, [])
 
     const updateSelection = (value) => {

@@ -17,6 +17,8 @@ import LoadFileFromFirebaseDialog from './LoadFileFromFirebaseDialog';
 import { NotificationManager } from 'react-notifications';
 import inferUserTypeFromUrl from '../.../../../../../../firebase/inferUserTypeFromUrl'
 import SelectResearchers from './../../../general/SelectResearchers'
+import sendBudgetUpdatedMails from '../../../../../emailjs/sendBudgetUpdatedMails';
+import ManageBudgetDialog from './util/ManageBudgetsDialog';
 
 /**
  * Split the sheet ref to 2 points. Sheet ref = '<COL><ROW>:<COL><ROW>'. e.g. A23, O40, etc.
@@ -82,9 +84,12 @@ const BudgetSpreadsheet = (props) => {
         show: false
     })
 
+    const [canViewBudget, setCanViewBudget] = useState([])
     const [exportDialogStatus, setExportDialogStatus] = useState(false)
     const [uploadFileDialog, setUploadFileDialog] = useState(false)
     const [loadFileFromFirebaseDialog, setLoadFileFromFirebase] = useState(false)
+    const [manageBudgetsDialogStatus, setManageBudgetDialogStatus] = useState(false)
+
     const [firestorageData, setFirestorageData] = useState({ fileUrl: '', used: false, docId: '' })
     const [filenameHeader, setFilenameHeader] = useState("excel.xlsx")
 
@@ -207,7 +212,6 @@ const BudgetSpreadsheet = (props) => {
                             </TabPanel>
                         })
                 }
-
             </Tabs>
 
             <input type="file" onChange={async (event) => {
@@ -247,8 +251,8 @@ const BudgetSpreadsheet = (props) => {
             </button>
 
             <button hidden={userType === "Researcher" || (userType === 'Manager' && firestorageData.used === false)} onClick={() => {
-
                 setSpinnerState({ text: 'מעדכנים את התקציב...', show: true })
+
                 const { buffer } = dataToArrayBuffer()
                 const storageRef = storage.ref('researchBudgets')
 
@@ -262,8 +266,12 @@ const BudgetSpreadsheet = (props) => {
                         console.log(err)
                     },
                     async () => {
-                        setSpinnerState({ text: '', show: false })
                         NotificationManager.success("התקציב עודכן")
+
+                        setSpinnerState({ text: '...מעדכנים את החוקרים', show: true })
+
+                        await sendBudgetUpdatedMails(canViewBudget, auth.currentUser.email, filenameHeader)
+                        setSpinnerState({ text: '', show: false })
                     })
             }}>
                 עדכן קובץ
@@ -273,7 +281,7 @@ const BudgetSpreadsheet = (props) => {
             <button hidden={userType == 'Researcher'} onClick={() => setLoadFileFromFirebase(true)}>
                 טען קובץ מהענן
             </button>
-
+            <button hidden={userType == 'Researcher'} onClick={() => setManageBudgetDialogStatus(true)}>נהל תקציבים</button>
             <GetFilenameDialog
                 dialogStatus={exportDialogStatus}
                 setDialogStatus={(v) => setExportDialogStatus(v)}
@@ -284,6 +292,11 @@ const BudgetSpreadsheet = (props) => {
                     saveByteArray([buffer], filename)
                 }} />
 
+            {
+                /**
+                 * Upload file to firebase dialog.
+                 */
+            }
             <GetFilenameDialog
                 dialogStatus={uploadFileDialog}
                 setDialogStatus={(v) => setUploadFileDialog(v)}
@@ -302,6 +315,8 @@ const BudgetSpreadsheet = (props) => {
 
                     const getSpinnerText = (progress) => `${progress}...מעלה קובץ`
                     setSpinnerState({ text: getSpinnerText(0), show: true })
+
+                    setCanViewBudget(researchersUids)
 
                     uploadTask.on(firebase.storage.TaskEvent.STATE_CHANGED,
                         (snapshot) => {
@@ -325,10 +340,18 @@ const BudgetSpreadsheet = (props) => {
 
                             setSpinnerState({ text: '', show: false })
                             setFilenameHeader(filename)
+
+                            setSpinnerState({ text: '...מעדכנים את החוקרים', show: true })
+                            await sendBudgetUpdatedMails(canViewBudget, auth.currentUser.email, filenameHeader)
+                            setSpinnerState({ text: '', show: false })
                         })
                 }} />
 
-
+            {
+                /**
+                 * Load file from firebase dialog.
+                 */
+            }
             <LoadFileFromFirebaseDialog
                 open={loadFileFromFirebaseDialog}
                 onCancel={() => setLoadFileFromFirebase(false)}
@@ -348,8 +371,57 @@ const BudgetSpreadsheet = (props) => {
                     setSpinnerState({ text: '', show: false })
                     setFirestorageData({ fileUrl: fileUrl, used: true, docId: docId })
                     setFilenameHeader(displayName)
+                    setCanViewBudget(canView)
                 }} />
 
+            <ManageBudgetDialog
+                open={manageBudgetsDialogStatus}
+                setOpen={(value) => setManageBudgetDialogStatus(value)}
+                onNoBudgets={() => {
+                    NotificationManager.error("לא נמצאו תקציבים")
+                    setManageBudgetDialogStatus(false)
+                }}
+                onCancel={() => setManageBudgetDialogStatus(false)}
+                onAction={async (budget) => {
+                    setSpinnerState({ show: true, text: 'מעדכנים נתונים' })
+
+                    const ref = db.collection('researchBudgets').doc(budget.budgetUid)
+
+                    try {
+                        await ref.update({ canView: budget.canViewUids, displayName: budget.displayName, })
+                    } catch (error) {
+                        NotificationManager.error("אי אפשר היה לעדכן את הנתונים")
+                        return console.log(error)
+                    }
+
+                    setSpinnerState({ show: false, text: 'מעדכנים נתונים' })
+
+                    NotificationManager.success("התקציב עודכן בהצלחה")
+                }}
+
+                onBudgetDelete={async uid => {
+                    if (window.confirm("למחוק את התקציב שנבחר?")) {
+                        const budget = await db.collection("researchBudgets").doc(uid).get()
+
+                        setSpinnerState({ text: 'מוחקים קובץ מהענן', show: true })
+                        await storage.refFromURL(budget.data().fileUrl).delete()
+
+                        await db.collection('researchBudgets')
+                            .doc(uid)
+                            .delete()
+                            .catch(err => {
+                                NotificationManager.error("חלה בעיה. התקציב לא נמחק")
+                                console.log(err)
+                            })
+
+                        setManageBudgetDialogStatus(false)
+
+                        setSpinnerState({ show: false })
+                        return NotificationManager.success("התקציב נמחק בהצלחה")
+                    }
+
+                    NotificationManager.error("התקציב לא נמחק")
+                }} />
             <Spinner {...spinnerState} ></Spinner>
         </div>
 

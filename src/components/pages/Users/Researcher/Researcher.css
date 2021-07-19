@@ -60,7 +60,6 @@ input[type=text], input[type=date] {
     grid-template-rows: 20px 1fr 1fr;
     grid-template-columns: 1fr;
     grid-template-areas: "msg-sender-name" "msg-text" "msg-time";
-
     height: fit-content;
 }
 
@@ -69,20 +68,36 @@ input[type=text], input[type=date] {
     text-align: center;
     grid-area: msg-sender-name;
 }
+
 .message-list-item .msg-text {
     grid-area: msg-text;
 }
+
 .message-list-item .msg-time {
     font-size: small;
     font-weight: 400;
     grid-area: msg-time;
 }
-#HomeBtn{
-    color: whitesmoke;
-    background-color: rgba(203, 146, 133, 0.75);
-}
-#go-back {
-    color: whitesmoke;
-    background-color: rgba(203, 146, 133, 0.75);
 
+.reports-list-container {
+    display: flex;
+    flex-direction: column;
+    align-items: baseline;
+}
+
+.reports-list-container .reports-list-item {
+    display: flex;
+    align-items: center;
+}
+
+.reports-list-item .report-link {
+    width: 400px;
+}
+
+.reports-list-item .upload-new-button {
+    width: 200px;
+}
+
+.reports-list-item .approve-report-btn {
+    width: 100px;
 }

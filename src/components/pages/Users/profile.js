@@ -256,7 +256,7 @@ class Profile extends React.Component {
                         this.sendData()
                     }}>עדכון פרטים<span
                         className="fa fa-arrow-right"></span></button>
-                    <button id="go-back" onClick={() => {
+                    <button onClick={() => {
                         this.BackPage()
                     }}>חזרה
                     </button>

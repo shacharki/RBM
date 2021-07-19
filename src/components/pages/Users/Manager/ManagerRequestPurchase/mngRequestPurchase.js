@@ -8,8 +8,9 @@ import 'classlist.js';
 import TextField from "@material-ui/core/TextField";
 import ReactToPrint from 'react-to-print';
 import DisplayPurchaseRequests from "./DisplayPurchaseRequests";
-import NotificationManager from 'react-notifications'
-
+import { NotificationManager } from 'react-notifications'
+import * as logoUpImg from './../../../../../img/logoUp.JPG'
+import * as logoFooterImg from './../../../../../img/logoDown.JPG'
 var sum = 0
 var csvData = [];
 var csvTableData = [];
@@ -467,7 +468,15 @@ class mngRequestPurchase extends Component {
      * @returns { JSX.Element }
      */
     Requests(form, formIndex, formDocumentId) {
-        var user = form.uid
+        var userUid = form.uid
+
+        const setLogosOpacity = (opacity) => {
+            const logos = document.getElementsByClassName("report-logo")
+
+            for (var i = 0; i < logos.length; i++) {
+                logos.item(i).style.opacity = opacity
+            }
+        }
 
         if (formIndex >= this.state.RequestResearcher.length) {
             return
@@ -493,8 +502,10 @@ class mngRequestPurchase extends Component {
                                         return <button>הדפס בקשה</button>
                                     }}
                                     content={() => this.toPrintRef}
-                                    copyStyles={false}
+                                    copyStyles={true}
                                     documentTitle={`${form.nameResearcher}_דוח`}
+                                    onBeforeGetContent={() => setLogosOpacity("1")}
+                                    onAfterPrint={() => setLogosOpacity("0")}
                                 />
 
                                 <div ref={value => this.toPrintRef = value}>
@@ -510,7 +521,7 @@ class mngRequestPurchase extends Component {
                                         autoComplete="off"
                                         value={this.state.q17}
                                         onChange={(e) => {
-                                            this.handleChange(e, year + '-' + month + "-" + day, user, sum)
+                                            this.handleChange(e, year + '-' + month + "-" + day, userUid, sum)
                                             if (sum == 0)
                                                 sum = 1
                                         }}
@@ -530,7 +541,7 @@ class mngRequestPurchase extends Component {
                                         autoComplete="off"
                                         value={this.state.q18}
                                         onChange={(e) => {
-                                            this.handleChange(e, year + '-' + month + "-" + day, user, sum)
+                                            this.handleChange(e, year + '-' + month + "-" + day, userUid, sum)
                                             if (sum == 0)
                                                 sum = 2
                                         }}
@@ -540,15 +551,15 @@ class mngRequestPurchase extends Component {
                                     />
                                 </Grid>
                                 <button id="sendData" className="btn btn-info" onClick={() => {
-                                    //sum = 0
-                                    //this.sendRequest(this.state.form, year + '-' + month + "-" + day, user)
+                                    sum = 0
+                                    this.sendRequest(form, year + '-' + month + "-" + day, userUid)
                                 }}>שמירת נתונים
                                 </button>
 
                                 <button onClick={async () => {
                                     this.loadSpinner(true, 'מוחק בקשה')
                                     try {
-                                        await this.deletePurchaseRequest(formDocumentId)
+                                        await this.deletePurchaseRequest(formDocumentId, userUid)
 
                                         var forms = Array.from(this.state.forms)
                                         forms.splice(formIndex, 1)
@@ -716,13 +727,13 @@ class mngRequestPurchase extends Component {
         var path = auth.currentUser.uid
         try {
             var researcher = await db.collection("researcher").doc(user)
-            var newDate = await researcher.collection("request").doc(form.date);
+            var newDate = await researcher.collection("request").doc(form.uid);
 
             newDate.set({
                 form: form,
                 date: form.date
             }).then(async () => {
-                await this.addDataToTeam(researcher, form.date, user);
+                //await this.addDataToTeam(researcher, form.date, user);
                 NotificationManager.success("הטופס נשלח בהצלחה")
                 this.loadSpinner(false)
                 window.location.reload(true);
@@ -730,9 +741,8 @@ class mngRequestPurchase extends Component {
             })
 
         } catch (error) {
-            console.log("err2")
-
             NotificationManager.error(error.message)
+            console.log(error)
             this.loadSpinner(false)
         }
     }
@@ -809,12 +819,14 @@ class mngRequestPurchase extends Component {
             data: this.state.user // your data array of objects
         })
     }
+    
     BackPage() {
         this.props.history.push({
             pathname: `/Manager/${this.state.user.uid}`,
             data: this.state.user // your data array of objects
         })
     }
+
     notfound() {
         this.props.history.push({
             pathname: `/404`,
@@ -822,16 +834,29 @@ class mngRequestPurchase extends Component {
         })
     }
 
-    async deletePurchaseRequest(documentId) {
+    /**
+     * Delete the purchase request.
+     * @param { string } documentId The id of the request. 
+     * @param { string } researcherUid The uid of the researcher that the request belongs to.
+     * @returns { Promise<void> }
+     */
+    async deletePurchaseRequest(documentId, researcherUid) {
         const [teamDataDoc] = this.state.team;
 
-        const documentToDelete = await db.collection('Data')
+        const dataCollDocument = await db.collection('Data')
             .doc(teamDataDoc.id)
             .collection('Requests')
             .doc(documentId)
 
+        const researcherCollDocument = await db.collection("researcher")
+            .doc(researcherUid)
+            .collection("request")
+            .doc(documentId)
+
+
         try {
-            await documentToDelete.delete()
+            await dataCollDocument.delete()
+            await researcherCollDocument.delete()
         } catch (error) {
             return NotificationManager.error(error.message)
         }

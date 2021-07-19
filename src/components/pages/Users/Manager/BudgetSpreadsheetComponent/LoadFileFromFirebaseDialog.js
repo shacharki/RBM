@@ -12,7 +12,7 @@ async function getFilesList() {
 
         return obj;
     }).map(doc => {
-        doc.uploadDate = new Date(doc.uploadDate.seconds)
+        doc.uploadDate = new Date(doc.uploadDate.seconds * 1000)
         return doc;
     })
 

@@ -18,8 +18,6 @@ class Login extends React.Component {
             email: '',
             password: '',
         };
-
-
     }
 
     async Canlogin() {
@@ -38,14 +36,14 @@ class Login extends React.Component {
                 })
                 // props.history.push('/User')
 
-            })
-                .catch(function (error) {
+            }).catch(function (error) {
                     NotificationManager.error("שם משתמש או סיסמה לא נכונים","", 1500)
                 });
 
 
         } catch (error) {
-
+            NotificationManager.error("חלה בעיה")
+            console.log(error)
         }
     }
 
@@ -146,10 +144,11 @@ class Login extends React.Component {
                         </Grid>
                         <Grid item xs={12}>
                             <div>
-                                <Button id={"ff"}
+                                <Button
                                     type="submit"
                                     fullWidth
                                     variant="contained"
+                                    id="HomeBtn"
                                     component={Link}
                                     to="/">
                                     חזרה לעמוד הראשי

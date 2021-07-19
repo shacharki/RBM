@@ -1,0 +1,6 @@
+
+
+.request-purchases-container {
+    display: flex;
+    flex-direction: column;
+}

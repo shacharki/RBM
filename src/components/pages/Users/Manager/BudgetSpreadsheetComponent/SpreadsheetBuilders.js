@@ -70,7 +70,6 @@ function SpreadsheetCellFormatter(props) {
         if (!style || !('bgColor' in style)) {
             return ''
         }
-
         return `#${style.bgColor.rgb}`
     }
 
@@ -78,13 +77,14 @@ function SpreadsheetCellFormatter(props) {
 
     useEffect(() => {
         if (ref !== null) {
+
             const parent = ref.current.parentElement
             // Allow the background color to fill the cell.
             parent.style.padding = '0px 0px 0px 0px';
         }
     }, [ref])
 
-    const cell = props.row[props.column.key]
+    const cell = props.row[props.column.key] || {  }
 
     // HTML is disabled.
     const getContent = () => cell.h == undefined || true ?
@@ -92,11 +92,10 @@ function SpreadsheetCellFormatter(props) {
 
     return (
         <div ref={ref} key={`key_${props.rowIdx}`}>
-            <div style={{ backgroundColor: getBackgroundColor(cell.s), position: 'relative', zIndex: 100 }}>
+            <div style={{ backgroundColor: getBackgroundColor(cell.s), position: 'relative', zIndex: 100 }} >
                 {
                     getContent()
                 }
-
             </div>
         </div>
     )
@@ -118,7 +117,6 @@ export function buildSingleColumn(index, editable) {
         resizeable: true,
         editor: SpreadsheetTextEditor,
         formatter: SpreadsheetCellFormatter,
-
     };
 
     return item;
@@ -147,14 +145,18 @@ export function buildColumns(length) {
     return arr.reverse();
 }
 
+export function buildEmptyCell() {
+    return {
+        v: undefined,
+        s: {},
+    }
+}
+
 export function buildSingleRow(columns, row_number) {
     var obj = {}
 
     columns.forEach(col => {
-        obj[col.key] = {
-            v: undefined,
-            s: {}
-        }
+        obj[col.key] = buildEmptyCell()
     })
 
     return obj;

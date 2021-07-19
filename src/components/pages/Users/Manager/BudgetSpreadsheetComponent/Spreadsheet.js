@@ -1,6 +1,9 @@
 import React, { useEffect, useState, useRef } from "react";
 import DataGrid, { Cell } from 'react-data-grid'
+import inferUserTypeFromUrl from "../../../../../firebase/inferUserTypeFromUrl";
+import ErrorBoundary from "../../../general/ErrorBoundry";
 import { executeFormula } from "./ForumulaParser";
+import { buildEmptyCell, buildSingleColumn, buildSingleRow } from "./SpreadsheetBuilders";
 import SpreadsheetState from "./SpreadsheetState";
 import "./spreadsheetStyles.css"
 import setStyleOfCell from "./util/gridCellStyling";
@@ -23,12 +26,11 @@ function calculateRow(row, spreadsheet) {
 
 /**
  * 
- * @param { {state: SpreadsheetState, setSpreadsheetState: (SpreadsheetState) => void} } props 
+ * @param { {state: SpreadsheetState, setSpreadsheetState: (SpreadsheetState) => void } } props 
  * @returns { JSX.Element }
  */
 const Spreadsheet = (props) => {
     const [state, setSpreadsheetState] = useState(props.state)
-
 
     return <div style={state.style}>
         <DataGrid
@@ -60,7 +62,24 @@ const Spreadsheet = (props) => {
                     rowNumber: pos.rowIdx
                 }
             }}
+
         />
+
+        <button color="grey" hidden={inferUserTypeFromUrl() === "Manager"} onClick={() => {
+            var stateCopy = { ...state }
+            const newColumn = buildSingleColumn(stateCopy.columns.length, true);
+
+            stateCopy.columns = [newColumn, ...stateCopy.columns]
+
+            stateCopy.rows.forEach(row => {
+                row[newColumn.key] = buildEmptyCell();
+            })
+
+            stateCopy.rows = [...stateCopy.rows, buildSingleRow(stateCopy.columns, stateCopy.rows.length)]
+
+            setSpreadsheetState(stateCopy)
+        }}>Expand</button>
+
     </div>
 }
 
