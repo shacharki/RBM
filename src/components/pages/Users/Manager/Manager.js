@@ -155,8 +155,8 @@ class Manager extends React.Component {
 
                     <button id="ChatResearcher" className="btn btn-info chat-button-container" onClick={() => {
                         NextPage(this.props, "ChatM", this.state.user)
-                    }}>
-                        <p className="text">צ'אט לחוקר</p>
+                    }}>צ'אט לחוקר
+                        {/*<p className="text">צ'אט לחוקר</p>*/}
 {/*                        <p className="*/}
 {/*">{this.state.unreadMessages} הודעות חדשות</p>*/}
                     </button>
