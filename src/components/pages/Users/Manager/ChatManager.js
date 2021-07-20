@@ -91,7 +91,7 @@ function ChatManager({ selectedUserUid }) {
         if (user) return <Channel user={user} selectedUserUid={selectedUserUid}/>;
 
         return (
-            <div className="sec-design">
+            <div className="sec-design2">
                 <div className="flex flex-col items-center justify-center max-w-xl w-full mx-4 p-8 rounded-md shadow-card bg-white dark:bg-coolDark-600 transition-all">
                     <h2 className="mb-2 text-3xl flex items-center">
                         <svg
