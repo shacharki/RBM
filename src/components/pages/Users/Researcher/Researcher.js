@@ -142,12 +142,12 @@ class Researcher extends React.Component {
                         NextPage(this.props, "RequestPurchase", this.state.user)
                     }}>בקשה לרכישה<span
                         className="fa fa-arrow-right"></span></button>
-                    <button id="BalanceMode" className="btn btn-info" onClick={() => {
-                    }}>מצב הוצאות ויתרה<span className="fa fa-arrow-right"></span></button>
+                    {/*<button id="BalanceMode" className="btn btn-info" onClick={() => {*/}
+                    {/*}}>מצב הוצאות ויתרה<span className="fa fa-arrow-right"></span></button>*/}
 
-                    <button id="BudgetSpreadshee" className="btn btn-info" onClick={() => {
+                    <button id="RequestPurchase" className="btn btn-info" onClick={() => {
                         NextPage(this.props, "Budget", this.state.user)
-                    }}>תקציבי מחקר<span className="fa fa-arrow-right"></span></button>
+                    }}>מצב הוצאות ויתרה<span className="fa fa-arrow-right"></span></button>
 
                     <button id="repor-button" className="btn btn-info" onClick={() => {
                         NextPage(this.props, "ScientificReport", this.state.user)

@@ -139,7 +139,7 @@ class Manager extends React.Component {
                     <button id="mngRequestPurchase" className="btn btn-info" onClick={() => {
                         this.ChangePage("mngRequestPurchase")
                         return
-                    }}>אישור דוחות ובקשות<span
+                    }}>ניהול בקשות לרכישה<span
                         className="fa fa-arrow-right"></span></button>
 
                     <button id="BudgetSpreadshee" className="btn btn-info" onClick={() => {
@@ -160,7 +160,7 @@ class Manager extends React.Component {
                         צ'אט לחוקר<span className="fa fa-arrow-right"></span>
                     </button>
 
-                    <button className="btn btn-info" onClick={() => {
+                    <button id="financialReports1" className="btn btn-info" onClick={() => {
                         NextPage(this.props, "ScientificReport", this.state.user)
                     }}>
                         דוחות מדעיים

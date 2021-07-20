@@ -94,6 +94,10 @@ input[type=checkbox]:checked:after {
 //color: black;
     background-color: rgba(0, 120, 190, 0.69); //background-color: #65b0ff;
 }
+#financialReports1 {
+//color: black;
+    background-color: rgba(0, 120, 190, 0.69); //background-color: #65b0ff;
+}
 
 #ExpenseReporting1 {
 //color: black;
