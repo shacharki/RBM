@@ -22,8 +22,39 @@
     opacity: 1;
 }
 
-.file-list-item {
+.budget-files-list {
+    overflow-y: scroll;
+}
+
+.budget-files-list .file-list-item-container {
     display: flex;
-    flex-direction: row-reverse;
+
+    justify-content: flex-start;
     align-items: center;
+}
+
+.file-list-item-container .index-text {
+    margin-right: 10px;
+}
+
+.file-list-item {
+    display: grid;
+    margin-top: 20px;
+    flex-grow: 1;
+
+    grid-template-columns: 1fr 1fr 1fr;
+    grid-template-rows: auto;
+    grid-template-areas: "budget-name creator date";
+}
+
+.file-list-item .budget-name {
+    grid-area: budget-name;
+}
+
+.file-list-item .creator-text {
+    grid-area: creator;
+}
+
+.file-list-item .creation-date {
+    grid-area: date;
 }

@@ -260,15 +260,6 @@ class ScientificReport extends React.Component {
 
                         <div container spacing={2} >
                             <div item xs={5}>
-                                <label id="insert-student" className="title-input" htmlFor="name">עד תאריך </label>
-                                <input type="date" className="form-control" id="insert-date" name="date" defaultValue={this.state.dateTo}
-                                    onChange={(e) => {
-                                        this.setState({ dateTo: e.target.value, options: null, show: false, teamName: null })
-                                    }}
-                                    required />
-                            </div>
-
-                            <div item xs={5}>
                                 <label id="insert-student" className="title-input" htmlFor="name">מתאריך </label>
                                 <input type="date" className="form-control" name="date" defaultValue={this.state.dateFrom}
                                     onChange={(e) => {
@@ -276,7 +267,15 @@ class ScientificReport extends React.Component {
                                     }}
                                     required />
                             </div>
-
+                            
+                            <div item xs={5}>
+                                <label id="insert-student" className="title-input" htmlFor="name">עד תאריך </label>
+                                <input type="date" className="form-control" id="insert-date" name="date" defaultValue={this.state.dateTo}
+                                    onChange={(e) => {
+                                        this.setState({ dateTo: e.target.value, options: null, show: false, teamName: null })
+                                    }}
+                                    required />
+                            </div>
 
                             <div item xs={2} hidden={!this.state.dateTo || !this.state.dateFrom}>
                                 <label id="insert-student" className="btn btn-info" htmlFor="name"> &nbsp;</label>
@@ -319,7 +318,7 @@ class ScientificReport extends React.Component {
 
                                             NotificationManager.success("הדוח הוגש בהצלחה")
 
-                                            await sendMailToManagerOfResearcher(auth.currentUser.uid, (researcher) => `החוקר ${researcher.data().fname} ${researcher.data().lname} אישר דוח חדש במערכת.`,(_) => "דוח מדעי חדש ממתין במערכת לאישורך.")
+                                            await sendMailToManagerOfResearcher(auth.currentUser.uid, (researcher) => `החוקר ${researcher.data().fname} ${researcher.data().lname} אישר דוח חדש במערכת.`, (_) => "דוח מדעי חדש ממתין במערכת לאישורך.")
                                             NotificationManager.success("המנהלים עודכנו עם הדוח")
                                         }}>הגש דוח</button>
                                     </div>

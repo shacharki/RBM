@@ -1,30 +1,33 @@
 import { Card, Dialog, DialogActions, DialogContent } from '@material-ui/core'
 import { useEffect, useState } from 'react';
-import { auth, db } from '../../../../../firebase/firebase';
+import { auth, db, getManagerData } from '../../../../../firebase/firebase';
 import "./spreadsheetStyles.css"
 
 
 async function getFilesList() {
-    const query = await db.collection('researchBudgets').where('user', '==', auth.currentUser.uid).get()
-    const result = query.docs.map(snapshot => {
-        var obj = snapshot.data();
-        obj.docId = snapshot.id;
+    const query = await db.collection('researchBudgets')
+        .get()
 
-        return obj;
-    }).map(doc => {
-        doc.uploadDate = new Date(doc.uploadDate.seconds * 1000)
-        return doc;
+
+    const result = query.docs.map(async snapshot => {
+        var data = snapshot.data();
+        data.docId = snapshot.id;
+        
+        data.user = await getManagerData(data.user)
+
+        data.uploadDate = new Date(data.uploadDate.seconds * 1000)
+        return data;
     })
 
-    return result;
+
+    return Promise.all(result);
 }
 
 function FileListItem({ displayName, url, user, uploadDate, isActiveFile, onClick }) {
-    return <Card onClick={onClick} style={{ backgroundColor: isActiveFile ? 'rgba(0, 255, 255, 0.3)' : 'white' }} className="file-list-item-container">
-        <div className="file-list-item">
-            <h1>{displayName}</h1>
-            <p className="ml-55 mr-55">{uploadDate.toJSON().substr(0, 10)}</p>
-        </div>
+    return <Card onClick={onClick} style={{ backgroundColor: isActiveFile ? 'rgba(0, 255, 255, 0.2)' : 'white' }} className="file-list-item">
+        <h1 className="budget-name">{displayName}</h1>
+        <p className="creation-date">{uploadDate.toJSON().substr(0, 10)}</p>
+        <p className="creator-text">{`${user.fname} ${user.lname}`}</p>
     </Card>
 }
 
@@ -47,9 +50,16 @@ function LoadFileFromFirebaseDialog({ open, onCancel, onFileSelected, onFilesLis
         <div className="load-sheet-from-firebase-dialog">
             <Dialog open={open} fullWidth maxWidth="xl">
                 <DialogContent>
-                    {
-                        filesList.map((file, index) => <FileListItem key={`FileList_Item_${index}`} {...file} isActiveFile={file.docId == activeFile.docId} onClick={() => setActiveFile(file)} />)
-                    }
+                    <div className="budget-files-list">
+                        {
+                            filesList.map((file, index) => (
+                                <div className="file-list-item-container">
+                                    <h1 className="index-text">{index}</h1>
+                                    <FileListItem key={`FileList_Item_${index}`} {...file} isActiveFile={file.docId == activeFile.docId} onClick={() => setActiveFile(file)} />
+                                </div>
+                            ))
+                        }
+                    </div>
                 </DialogContent>
                 <DialogActions>
                     <button onClick={() => onCancel()}>בטל</button>

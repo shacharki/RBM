@@ -153,11 +153,12 @@ class Manager extends React.Component {
                     }}>דוחות כספיים<span
                         className="fa fa-arrow-right"></span></button>
 
-                    <button id="ChatResearcher" className="btn btn-info" onClick={() => {
+                    <button id="ChatResearcher" className="btn btn-info chat-button-container" onClick={() => {
                         NextPage(this.props, "ChatM", this.state.user)
                     }}>
-                        <p> {this.state.unreadMessages} הודעות חדשות</p>
-                        צ'אט לחוקר<span className="fa fa-arrow-right"></span>
+                        <p className="text">צ'אט לחוקר</p>
+                        <p className="
+">{this.state.unreadMessages} הודעות חדשות</p>
                     </button>
 
                     <button id="financialReports1" className="btn btn-info" onClick={() => {

@@ -8,9 +8,9 @@
 .budgets-list-container .budgets-list-item {
     display: grid;
 
-    grid-template-rows: 1fr 30px;
+    grid-template-rows: 1fr 30px 30px;
     grid-template-columns: 2250px 100px;
-    grid-template-areas: "name-input can-view" "update-btn delete-btn";
+    grid-template-areas: "name-input can-view" "update-btn delete-btn" "creator .";
 }
 
 .budgets-list-item .can-view {
@@ -31,6 +31,10 @@
 .budgets-list-item .delete-btn {
     grid-area: delete-btn;
     background-color: #dc3545;
+}
+
+.budgets-list-item .creator {
+    grid-area: creator;
 }
 
 .cancel-btn {

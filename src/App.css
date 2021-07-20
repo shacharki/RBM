@@ -45,3 +45,18 @@ img {
     transform: rotate(360deg);
   }
 }
+
+.chat-button-container {
+  position: relative;
+}
+
+.chat-button-container .text {
+}
+
+.chat-button-container .new-msg-container {
+  position: absolute;
+  left: 50px;
+  bottom: 50%;
+
+  transform: translateY(50%);
+}

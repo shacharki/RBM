@@ -1,6 +1,6 @@
 import { Dialog, DialogActions, DialogContent, DialogTitle } from "@material-ui/core";
 import { useEffect, useState } from "react";
-import { auth, db } from "../../../../../../firebase/firebase";
+import { auth, db, getManagerData } from "../../../../../../firebase/firebase";
 import SelectResearchers from "../../../../general/SelectResearchers";
 import "./manageBudgetsDialog.css"
 
@@ -18,23 +18,29 @@ function ManageBudgetDialog({ open, onAction, onNoBudgets, onCancel, onBudgetDel
 
     const [budgetsList, setBudgetsList] = useState([])
 
-    useEffect(async () => {
-        const query = await db.collection('researchBudgets')
-            .where('user', '==', auth.currentUser.uid)
-            .get()
+    useEffect(() => {
+        async function fetchBudgets() {
+            const query = await db.collection('researchBudgets')
+                .get()
 
-        const mergedDocs = query.docs.map(doc => {
-            var data = doc.data()
-            data.budgetUid = doc.id;
-            return data;
-        })
+            const mergedDocs = query.docs.map(doc => {
+                var data = doc.data()
+                data.budgetUid = doc.id;
+                return data;
+            }).map(async doc => {
+                doc.user = await getManagerData(doc.user)
+                return doc;
+            })
 
-        setBudgetsList(mergedDocs)
 
-        if (query.docs.length == 0 && typeof (onNoBudgets) == "function") {
-            onNoBudgets()
+            setBudgetsList(await Promise.all(mergedDocs))
+
+            if (query.docs.length == 0 && typeof (onNoBudgets) == "function") {
+                onNoBudgets()
+            }
         }
 
+        fetchBudgets()
     }, [])
 
     return <Dialog open={open} fullWidth maxWidth="lg">
@@ -44,12 +50,13 @@ function ManageBudgetDialog({ open, onAction, onNoBudgets, onCancel, onBudgetDel
             <div className="budgets-list-container">
                 {
                     budgetsList.map((doc, index) => {
-                        const { canView, displayName, fileUrl, uploadDate, budgetUid } = doc;
+                        const { canView, displayName, fileUrl, uploadDate, budgetUid, user } = doc;
                         const uploadJsDate = new Date(uploadDate.seconds * 1000).toISOString().split("T")[0]
 
                         return <div className="budget-list-item">
                             <h1>{displayName} <span>{uploadJsDate}</span></h1>
                             <div className="can-view">
+                                <h2 style={{textAlign: 'right'}}>הרשאות חוקרים</h2>
                                 <SelectResearchers initialSelectedResearchers={canView} selectedValueUpdated={(uids) => {
                                     const budgetsCopy = Array.from(budgetsList)
                                     budgetsCopy[index].canView = uids;
@@ -72,6 +79,11 @@ function ManageBudgetDialog({ open, onAction, onNoBudgets, onCancel, onBudgetDel
                             }}>עדכן</button>
 
                             <button className="delete-btn" onClick={() => onBudgetDelete(budgetUid)}>מחק</button>
+
+                            <div className="creator" style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+                                <span></span>
+                                <h3>{`נוצר על ידי ${user.fname} ${user.lname}`}</h3>
+                            </div>
 
                             <div className="sperator"></div>
                         </div>

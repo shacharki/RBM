@@ -65,7 +65,7 @@ const Spreadsheet = (props) => {
 
         />
 
-        <button color="grey" hidden={inferUserTypeFromUrl() === "Manager"} onClick={() => {
+        <button color="grey" hidden={inferUserTypeFromUrl() === "Researcher"} onClick={() => {
             var stateCopy = { ...state }
             const newColumn = buildSingleColumn(stateCopy.columns.length, true);
 

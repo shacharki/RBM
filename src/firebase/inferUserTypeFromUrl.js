@@ -5,7 +5,7 @@
  * @returns { 'Manager' | 'Researcher' } The type of user.
  */
 function inferUserTypeFromUrl() {
-    return window.location.href.indexOf("Manager") == -1 ? "Researcher" : "Manager"
+    return window.location.href.indexOf("Manager") === -1 ? "Researcher" : "Manager"
 }
 
 export default inferUserTypeFromUrl;

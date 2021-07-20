@@ -162,7 +162,7 @@ const BudgetSpreadsheet = (props) => {
 
         var newSheetsTabs = {}
 
-        Object.keys(sheets).forEach((sheetName, sheetNumber) => {
+        Object.keys(sheets).forEach((sheetName) => {
             const sheet = sheets[sheetName]
             const sheetRef = sheet['!ref']
 
@@ -242,15 +242,12 @@ const BudgetSpreadsheet = (props) => {
                 setExportDialogStatus(true)
             }}>הורד קובץ למחשב</button>
 
-            <button hidden={userType == 'Researcher'} onClick={() => {
-                if (userType == "Manager") {
-                    return setUploadFileDialog(true)
+            <button hidden={userType === "Researcher" } onClick={() => {
+                // If the file wasnt originated from firebase, upload the file to firebase.
+                if(firestorageData.used === false) {
+                    return setUploadFileDialog(true);
                 }
-            }}>
-                תקציב חדש
-            </button>
 
-            <button hidden={userType === "Researcher" || (userType === 'Manager' && firestorageData.used === false)} onClick={() => {
                 setSpinnerState({ text: 'מעדכנים את התקציב...', show: true })
 
                 const { buffer } = dataToArrayBuffer()
@@ -356,11 +353,11 @@ const BudgetSpreadsheet = (props) => {
                 open={loadFileFromFirebaseDialog}
                 onCancel={() => setLoadFileFromFirebase(false)}
                 onFileSelected={async (file) => {
-                    const { fileUrl, name, docId, canView, displayName } = file;
+                    const { fileUrl, docId, canView, displayName } = file;
                     setLoadFileFromFirebase(false)
 
 
-                    setSpinnerState({ text: `${name} טוען קובץ`, show: true })
+                    setSpinnerState({ text: `${displayName} טוען קובץ`, show: true })
                     const ref = storage.ref('researchBudgets').child(fileUrl)
                     const downloadUrl = await ref.getDownloadURL()
 
